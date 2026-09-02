@@ -72,8 +72,10 @@
         </div>
     </nav>
 
-    <header class="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 bg-cover bg-center" style="background-image: url('https://assets.invitecount.com/event-banners/580/fad37c16-7959-49aa-9dfb-a0be94039a9c.webp');">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+    <header class="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+        <!-- Static background image with blur applied, no scale/zoom on load or hover -->
+        <div class="absolute inset-0 bg-cover bg-center filter blur-[3px] scale-100" style="background-image: url('https://assets.invitecount.com/event-banners/580/fad37c16-7959-49aa-9dfb-a0be94039a9c.webp');"></div>
+        <div class="absolute inset-0 bg-black/40"></div>
         <div class="relative z-10 max-w-3xl mx-auto space-y-6 text-white py-12">
             <span class="text-xs md:text-sm tracking-[0.3em] uppercase text-sage-100 font-semibold drop-shadow-md">The Wedding of</span>
             <h1 class="text-4xl sm:text-5xl md:text-7xl font-serif tracking-wide drop-shadow-lg">Maribeth & Melbhert</h1>
