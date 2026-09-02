@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maribeth & Melbhert's Wedding Invitation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: {
+                            800: '#1e3f20',
+                            900: '#142b15',
+                        },
+                        sage: {
+                            50: '#f4f7f4',
+                            100: '#e3ece3',
+                            600: '#739574',
+                            700: '#5c7a5d',
+                        },
+                        champagne: '#f7f4ef'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Falling Leaves Canvas Background Overlay */
+        #leaves-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 40;
+        }
+    </style>
+</head>
+<body class="bg-sage-50 text-forest-900 font-sans antialiased selection:bg-sage-600 selection:text-white relative">
+    
+    <!-- Falling Leaves Canvas -->
+    <canvas id="leaves-canvas"></canvas>
+
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-sage-600/20 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="font-serif text-lg md:text-xl text-forest-900 font-bold tracking-wide">M & M</a>
+            <div class="hidden md:flex space-x-6 text-sm font-medium text-forest-800">
+                <a href="#details" class="hover:text-sage-600 transition">Details</a>
+                <a href="#dresscode" class="hover:text-sage-600 transition">Dress Code</a>
+                <a href="#story" class="hover:text-sage-600 transition">Our Story</a>
+                <a href="#verse" class="hover:text-sage-600 transition">1 Corinthians 13</a>
+                <a href="#memories" class="hover:text-sage-600 transition">Memories</a>
+                <a href="#rsvp" class="hover:text-sage-600 transition">RSVP</a>
+            </div>
+            <div class="flex md:hidden">
+                <button id="menu-btn" class="text-forest-900 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-sage-600/20 px-4 pt-2 pb-4 space-y-2">
+            <a href="#details" class="block text-sm text-forest-800 hover:text-sage-600">Details</a>
+            <a href="#dresscode" class="block text-sm text-forest-800 hover:text-sage-600">Dress Code</a>
+            <a href="#story" class="block text-sm text-forest-800 hover:text-sage-600">Our Story</a>
+            <a href="#verse" class="block text-sm text-forest-800 hover:text-sage-600">1 Corinthians 13</a>
+            <a href="#memories" class="block text-sm text-forest-800 hover:text-sage-600">Memories</a>
+            <a href="#rsvp" class="block text-sm text-forest-800 hover:text-sage-600">RSVP</a>
+        </div>
+    </nav>
+
+    <header class="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 bg-cover bg-center" style="background-image: url('https://assets.invitecount.com/event-banners/580/fad37c16-7959-49aa-9dfb-a0be94039a9c.webp');">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+        <div class="relative z-10 max-w-3xl mx-auto space-y-6 text-white py-12">
+            <span class="text-xs md:text-sm tracking-[0.3em] uppercase text-sage-100 font-semibold drop-shadow-md">The Wedding of</span>
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-serif tracking-wide drop-shadow-lg">Maribeth & Melbhert</h1>
+            <div class="w-24 h-0.5 bg-white/60 mx-auto"></div>
+            <p class="text-base sm:text-lg md:text-xl font-light italic drop-shadow-md">December 30, 2026 • Bohol, Philippines</p>
+            
+            <div id="countdown" class="grid grid-cols-4 gap-2 sm:gap-3 max-w-md mx-auto pt-6">
+                <div class="bg-black/40 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/20">
+                    <span id="days" class="block text-xl sm:text-2xl md:text-3xl font-bold text-white">00</span>
+                    <span class="text-[10px] sm:text-xs uppercase text-sage-100 tracking-wider">Days</span>
+                </div>
+                <div class="bg-black/40 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/20">
+                    <span id="hours" class="block text-xl sm:text-2xl md:text-3xl font-bold text-white">00</span>
+                    <span class="text-[10px] sm:text-xs uppercase text-sage-100 tracking-wider">Hours</span>
+                </div>
+                <div class="bg-black/40 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/20">
+                    <span id="minutes" class="block text-xl sm:text-2xl md:text-3xl font-bold text-white">00</span>
+                    <span class="text-[10px] sm:text-xs uppercase text-sage-100 tracking-wider">Minutes</span>
+                </div>
+                <div class="bg-black/40 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/20">
+                    <span id="seconds" class="block text-xl sm:text-2xl md:text-3xl font-bold text-white">00</span>
+                    <span class="text-[10px] sm:text-xs uppercase text-sage-100 tracking-wider">Seconds</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="space-y-20 py-12 relative z-10">
+        <section id="details" class="max-w-4xl mx-auto px-4 text-center pt-8">
+            <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-4">When & Where</h2>
+            <p class="text-forest-800/80 mb-10 max-w-lg mx-auto">We are overjoyed to celebrate our special day surrounded by family and friends in Bohol.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-sage-600/25 space-y-3">
+                    <div class="text-sage-600 text-lg font-semibold">Ceremony</div>
+                    <p class="text-forest-900 font-medium">December 30, 2026 at 3:00 PM</p>
+                    <p class="text-forest-800/80 text-sm">Bohol, Philippines</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-sage-600/25 space-y-3">
+                    <div class="text-sage-600 text-lg font-semibold">Reception</div>
+                    <p class="text-forest-900 font-medium">December 30, 2026 at 6:00 PM</p>
+                    <p class="text-forest-800/80 text-sm">Bohol, Philippines</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="dresscode" class="max-w-4xl mx-auto px-4 text-center pt-4">
+            <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block mb-1">What to Wear</span>
+            <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-6">Dress Code</h2>
+            
+            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25 max-w-2xl mx-auto space-y-6">
+                <div class="flex justify-center items-center space-x-12 mb-4">
+                    <div class="flex flex-col items-center">
+                        <svg class="w-16 h-20 text-forest-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a3 3 0 100 6 3 3 0 000-6zM6 10c0-1.1.9-2 2-2h8a2 2 0 012 2v10a1 1 0 01-1 1H7a1 1 0 01-1-1V10zM10 14h4M12 14v8" />
+                        </svg>
+                        <span class="text-xs text-forest-800/60 mt-1">Midi Dress</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <svg class="w-16 h-20 text-forest-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM9 9l3-2 3 2v3H9V9zM7 13h10l-1 9H8l-1-9z" />
+                        </svg>
+                        <span class="text-xs text-forest-800/60 mt-1">Suit</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-serif text-forest-900 mb-2">Semi-Formal</h3>
+                    <p class="text-forest-800/80 text-sm leading-relaxed max-w-md mx-auto">
+                        A suit (tie optional); a midi dress or smart separates.
+                    </p>
+                </div>
+
+                <div class="border-t border-sage-600/20 pt-6">
+                    <p class="text-xs font-semibold text-sage-700 uppercase tracking-widest mb-3">Suggested Palette</p>
+                    <div class="flex justify-center items-center gap-5">
+                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15 cursor-pointer hover:scale-110 transition" style="background-color: #9cb1a4;" title="Sage Gray"></div>
+                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15 cursor-pointer hover:scale-110 transition" style="background-color: #6fc38e;" title="Light Green"></div>
+                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15 cursor-pointer hover:scale-110 transition" style="background-color: #00b06f;" title="Emerald Green"></div>
+                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15 cursor-pointer hover:scale-110 transition" style="background-color: #a2b86e;" title="Olive Green"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="story" class="max-w-3xl mx-auto px-4 pt-4">
+            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
+                <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Our Love Story</span>
+                <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Where Our Forever Began</h2>
+                <div class="w-16 h-0.5 bg-sage-600/40 mx-auto"></div>
+                
+                <div class="text-forest-800/90 text-base leading-relaxed space-y-4 font-light text-left md:text-center">
+                    <p>
+                        Our story began in Bohol, where two hearts met in the simplest of ways. At first, we were just two people sharing the same space, unaware that God was slowly writing our story.
+                    </p>
+                    <p>
+                        Through ordinary days, shared smiles, conversations, and countless little moments, we grew closer. What started as a simple friendship slowly became a love that neither of us could ignore.
+                    </p>
+                    <p>
+                        As our relationship grew, we learned that true love is not only about happiness, but also about choosing each other through every challenge and every season of life.
+                    </p>
+
+                    <div class="my-6 p-6 bg-sage-50/70 rounded-2xl border border-sage-600/20 italic text-forest-900 space-y-3">
+                        <p>“Two are better than one… If either of them falls down, one can help the other up.”</p>
+                        <span class="block text-xs uppercase tracking-wider text-sage-700 not-italic font-semibold">— Ecclesiastes 4:9–10</span>
+                    </div>
+
+                    <p>
+                        Our journey began in Bohol, but we believe it was only the beginning of a much greater journey.
+                    </p>
+                    <p>
+                        One day, we hope to stand before God, our families, and the people we love, promising to walk together for the rest of our lives.
+                    </p>
+                    <p>
+                        From the place where we first met, to the day we say “I do,” and through all the years that follow—our greatest story will always be the one we write together.
+                    </p>
+                </div>
+                <div class="pt-4 font-serif text-xl italic text-forest-900 font-medium">
+                    Melbhert & Maribeth
+                </div>
+            </div>
+        </section>
+
+        <section id="verse" class="max-w-3xl mx-auto px-4 pt-4">
+            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
+                <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Scripture & Guidance</span>
+                <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Love is Patient, Love is Kind</h2>
+                <div class="w-16 h-0.5 bg-sage-600/40 mx-auto"></div>
+                
+                <div class="text-forest-800/90 text-base leading-relaxed space-y-4 font-light text-left md:text-center">
+                    <div class="my-4 p-8 bg-sage-50/70 rounded-2xl border border-sage-600/20 italic text-forest-900 space-y-4 leading-loose shadow-inner">
+                        <p>“Love is patient, love is kind. It does not envy, it does not boast, it is not proud. It does not dishonor others, it is not self-seeking, it is not easily angered, it keeps no record of wrongs.”</p>
+                        <p>“Love does not delight in evil but rejoices with the truth. It always protects, always trusts, always hopes, always perseveres. Love never fails.”</p>
+                        <p>“But where there are prophecies, they will cease; where there are tongues, they will be stilled; where there is knowledge, it will pass away.”</p>
+                        <span class="block text-xs uppercase tracking-widest text-sage-700 not-italic font-bold pt-2">— 1 Corinthians 13:4–8</span>
+                    </div>
+                    <p class="pt-2">
+                        This scripture serves as the cornerstone of our faith and our commitment to each other as we step into this lifelong covenant of marriage.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="memories" class="py-12 px-4 bg-sage-100/40 pt-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Our Memories</h2>
+                    <p class="text-forest-800/80">A glimpse of our journey together (Click to view full photo)</p>
+                    <div class="w-16 h-0.5 bg-sage-600/40 mx-auto mt-4"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/rGNP2xF.png')">
+                        <img src="https://i.imgur.com/rGNP2xF.png" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/NlrUujf.png')">
+                        <img src="https://i.imgur.com/NlrUujf.png" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/fTIiteB.jpeg')">
+                        <img src="https://i.imgur.com/fTIiteB.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/wP3xU3N.jpeg')">
+                        <img src="https://i.imgur.com/wP3xU3N.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/sWElC5g.jpeg')">
+                        <img src="https://i.imgur.com/sWElC5g.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/rsI36kw.jpeg')">
+                        <img src="https://i.imgur.com/rsI36kw.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/sHKT5Sw.jpeg')">
+                        <img src="https://i.imgur.com/sHKT5Sw.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/YtMYYGS.jpeg')">
+                        <img src="https://i.imgur.com/YtMYYGS.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/JgIZl6U.jpeg')">
+                        <img src="https://i.imgur.com/JgIZl6U.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/JwITDfw.jpeg')">
+                        <img src="https://i.imgur.com/JwITDfw.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/83eQ5B2.jpeg')">
+                        <img src="https://i.imgur.com/83eQ5B2.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/EhD1gAc.jpeg')">
+                        <img src="https://i.imgur.com/EhD1gAc.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/ReXffb8.jpeg')">
+                        <img src="https://i.imgur.com/ReXffb8.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/CkKDqsx.jpeg')">
+                        <img src="https://i.imgur.com/CkKDqsx.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/GIe0suu.jpeg')">
+                        <img src="https://i.imgur.com/GIe0suu.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rsvp" class="max-w-xl mx-auto px-4 pt-8">
+            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-serif text-forest-900 mb-2">RSVP</h2>
+                    <p class="text-forest-800/80 text-sm">Please respond by November 30, 2026</p>
+                </div>
+
+                <script>
+                    let submitted = false;
+                    function formSubmittedSuccess() {
+                        const formStatus = document.getElementById('formStatus');
+                        const form = document.getElementById('rsvpForm');
+                        const submitBtn = document.getElementById('submitBtn');
+                        if (formStatus && form && submitBtn) {
+                            formStatus.textContent = 'Thank you! Your RSVP has been recorded.';
+                            formStatus.classList.remove('hidden', 'text-red-600');
+                            formStatus.classList.add('text-green-700');
+                            form.reset();
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Send RSVP';
+                        }
+                        submitted = false;
+                    }
+                </script>
+
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(window.submitted) { formSubmittedSuccess(); }"></iframe>
+                <form id="rsvpForm" 
+                      action="https://script.google.com/macros/s/AKfycbzAojikwlWBTv6QH101AjiWPWCFGcuYArgo1UWYR9T2ZSF6ic2bTr3Owzdr5i47tHlS/exec" 
+                      method="POST" 
+                      target="hidden_iframe" 
+                      class="space-y-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Full Name</label>
+                        <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Attendance Status</label>
+                        <select name="status" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
+                            <option value="Joyfully Accepts">Joyfully Accepts</option>
+                            <option value="Regretfully Declines">Regretfully Declines</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Number of Participants</label>
+                        <input type="number" name="participants" min="1" max="5" value="1" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
+                    </div>
+                    <button type="submit" id="submitBtn" class="w-full py-3.5 bg-forest-900 text-white rounded-xl font-medium tracking-wide hover:bg-forest-800 transition shadow-md">
+                        Send RSVP
+                    </button>
+                    <p id="formStatus" class="text-center text-sm mt-3 hidden"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Photo Modal Preview -->
+    <div id="photoModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="relative max-w-4xl max-h-[90vh] flex items-center justify-center">
+            <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-xl font-bold bg-black/50 hover:bg-black w-8 h-8 rounded-full flex items-center justify-center">&times;</button>
+            <img id="modalImage" src="" alt="Enlarged Memory Photo" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl">
+        </div>
+    </div>
+
+    <footer class="text-center py-8 text-xs text-sage-700 border-t border-sage-600/20 relative z-10">
+        <p>&copy; 2026 Maribeth & Melbhert. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Interactive Falling Leaves Animation
+        const canvas = document.getElementById('leaves-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        class Leaf {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -50 - Math.random() * 200;
+                this.size = Math.random() * 12 + 10;
+                this.speedY = Math.random() * 1.5 + 0.8;
+                this.speedX = Math.random() * 2 - 1;
+                this.angle = Math.random() * Math.PI * 2;
+                this.spin = Math.random() * 0.03 - 0.015;
+                
+                // Sage and forest green shades with slight warm touches
+                const colors = ['#739574', '#5c7a5d', '#3b5c3e', '#9cb1a4', '#a2b86e'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX + Math.sin(this.angle) * 0.8;
+                this.angle += this.spin;
+
+                // Gentle mouse interaction (wind effect)
+                const dx = this.x - mouseX;
+                const dy = this.y - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                    const force = (120 - dist) / 120;
+                    this.x += (dx / dist) * force * 3;
+                    this.y += (dy / dist) * force * 3;
+                }
+
+                if (this.y > canvas.height + 50 || this.x < -50 || this.x > canvas.width + 50) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                
+                // Draw leaf shape
+                ctx.beginPath();
+                ctx.moveTo(0, -this.size / 2);
+                ctx.bezierCurveTo(this.size / 2, -this.size / 4, this.size / 2, this.size / 2, 0, this.size);
+                ctx.bezierCurveTo(-this.size / 2, this.size / 2, -this.size / 2, -this.size / 4, 0, -this.size / 2);
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        const leaves = Array.from({ length: 25 }, () => new Leaf());
+
+        function animateLeaves() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            leaves.forEach(leaf => {
+                leaf.update();
+                leaf.draw();
+            });
+            requestAnimationFrame(animateLeaves);
+        }
+        animateLeaves();
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Modal Logic
+        const photoModal = document.getElementById('photoModal');
+        const modalImage = document.getElementById('modalImage');
+
+        function openModal(src) {
+            modalImage.src = src;
+            photoModal.classList.remove('hidden');
+            photoModal.classList.add('flex');
+        }
+
+        function closeModal() {
+            photoModal.classList.remove('flex');
+            photoModal.classList.add('hidden');
+            modalImage.src = '';
+        }
+
+        photoModal.addEventListener('click', (e) => {
+            if (e.target === photoModal) closeModal();
+        });
+
+        // Countdown Logic
+        const weddingDate = new Date("December 30, 2026 00:00:00").getTime();
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance < 0) return;
+
+            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // RSVP Form Submission Handler
+        const form = document.getElementById('rsvpForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formStatus = document.getElementById('formStatus');
+
+        form.addEventListener('submit', function() {
+            window.submitted = true;
+            submitted = true;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+        });
+    </script>
+</body>
+</html>
