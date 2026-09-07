@@ -36,14 +36,80 @@
             pointer-events: none;
             z-index: 40;
         }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 40px;
+  }
+
+  #music-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #4a90d9;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background 0.2s;
+    z-index: 1000;
+  }
+
+  #music-btn:hover {
+    background: #357abd;
+    transform: scale(1.08);
+  }
+
+  #music-btn.playing {
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(74,144,217,0.5); }
+    70%  { box-shadow: 0 0 0 12px rgba(74,144,217,0); }
+    100% { box-shadow: 0 0 0 0 rgba(74,144,217,0); }
+  }
+        
     </style>
 </head>
    <body class="bg-sage-50 text-forest-900 font-sans antialiased selection:bg-sage-600 selection:text-white relative">
     
     <canvas id="leaves-canvas"></canvas>
-<audio id="bg-music" loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
+
+       
+ <audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <button id="music-btn" onclick="toggleMusic()">🎵</button>
+
+  <script>
+    const music = document.getElementById('bg-music');
+    const btn = document.getElementById('music-btn');
+
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        btn.classList.add('playing');
+        btn.textContent = '⏸';
+      } else {
+        music.pause();
+        btn.classList.remove('playing');
+        btn.textContent = '🎵';
+      }
+    }
+  </script>
+
+
+
+       
 <button onclick="document.getElementById('bg-music').play()">🎵 Play Music</button>
     <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-sage-600/20 shadow-sm">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
