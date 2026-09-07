@@ -27,7 +27,6 @@
         }
     </script>
     <style>
-        /* Falling Leaves Canvas Background Overlay */
         #leaves-canvas {
             position: fixed;
             top: 0;
@@ -41,7 +40,6 @@
 </head>
 <body class="bg-sage-50 text-forest-900 font-sans antialiased selection:bg-sage-600 selection:text-white relative">
     
-    <!-- Falling Leaves Canvas -->
     <canvas id="leaves-canvas"></canvas>
 
     <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-sage-600/20 shadow-sm">
@@ -52,6 +50,7 @@
                 <a href="#dresscode" class="hover:text-sage-600 transition">Dress Code</a>
                 <a href="#story" class="hover:text-sage-600 transition">Our Story</a>
                 <a href="#verse" class="hover:text-sage-600 transition">1 Corinthians 13</a>
+                <a href="#gifts" class="hover:text-sage-600 transition">Note on Gifts</a>
                 <a href="#memories" class="hover:text-sage-600 transition">Memories</a>
                 <a href="#rsvp" class="hover:text-sage-600 transition">RSVP</a>
             </div>
@@ -67,14 +66,15 @@
             <a href="#dresscode" class="block text-sm text-forest-800 hover:text-sage-600">Dress Code</a>
             <a href="#story" class="block text-sm text-forest-800 hover:text-sage-600">Our Story</a>
             <a href="#verse" class="block text-sm text-forest-800 hover:text-sage-600">1 Corinthians 13</a>
+            <a href="#gifts" class="block text-sm text-forest-800 hover:text-sage-600">Note on Gifts</a>
             <a href="#memories" class="block text-sm text-forest-800 hover:text-sage-600">Memories</a>
             <a href="#rsvp" class="block text-sm text-forest-800 hover:text-sage-600">RSVP</a>
         </div>
     </nav>
 
     <header class="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-        <!-- Static background image with blur applied, no scale/zoom on load or hover -->
-        <div class="absolute inset-0 bg-cover bg-center filter blur-[3px] scale-100" style="background-image: url('https://assets.invitecount.com/event-banners/580/fad37c16-7959-49aa-9dfb-a0be94039a9c.webp');"></div>
+        <!-- Static background image with blur applied, strictly NO zoom/scale -->
+        <div class="absolute inset-0 bg-cover bg-center filter blur-[3px]" style="background-image: url('https://assets.invitecount.com/event-banners/580/fad37c16-7959-49aa-9dfb-a0be94039a9c.webp');"></div>
         <div class="absolute inset-0 bg-black/40"></div>
         <div class="relative z-10 max-w-3xl mx-auto space-y-6 text-white py-12">
             <span class="text-xs md:text-sm tracking-[0.3em] uppercase text-sage-100 font-semibold drop-shadow-md">The Wedding of</span>
@@ -108,16 +108,45 @@
             <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-4">When & Where</h2>
             <p class="text-forest-800/80 mb-10 max-w-lg mx-auto">We are overjoyed to celebrate our special day surrounded by family and friends in Bohol.</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-sage-600/25 space-y-3">
-                    <div class="text-sage-600 text-lg font-semibold">Ceremony</div>
-                    <p class="text-forest-900 font-medium">December 30, 2026 at 3:00 PM</p>
-                    <p class="text-forest-800/80 text-sm">Bohol, Philippines</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                <div class="bg-white rounded-3xl shadow-sm border border-sage-600/25 overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgryCm0SDS6BRM8wt4jt7SO6iG4L5bNOHFulauAApsLPc948lLFmYvsXFI1nI3LQ6T2Vpf3oDkRU21v_bbpCOauPlq1EibAo3qQdOzckxk-XMacrr86qPPwLm2srIJdpgKY2g2igPtNMzuURCxYSQJ2_ZZAGJTkPC5SjhuoLI4YP1KhBdsKrh6OEvYf/s1024/Tagbilaran_Church_Interiors.jpg')">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgryCm0SDS6BRM8wt4jt7SO6iG4L5bNOHFulauAApsLPc948lLFmYvsXFI1nI3LQ6T2Vpf3oDkRU21v_bbpCOauPlq1EibAo3qQdOzckxk-XMacrr86qPPwLm2srIJdpgKY2g2igPtNMzuURCxYSQJ2_ZZAGJTkPC5SjhuoLI4YP1KhBdsKrh6OEvYf/s1024/Tagbilaran_Church_Interiors.jpg" alt="Tagbilaran Cathedral" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                        </div>
+                        <div class="p-6 space-y-2 text-center">
+                            <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block mb-1">Ceremony</span>
+                            <h3 class="text-2xl font-serif text-forest-900">Tagbilaran Cathedral</h3>
+                            <p class="text-forest-800/80 text-sm mt-1">December 30, 2026 at 10:00 AM</p>
+                            <p class="text-forest-800/60 text-xs">Tagbilaran City, Bohol</p>
+                            <p class="text-xs text-sage-600 mt-1">Tap photo to enlarge</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <a href="https://maps.app.goo.gl/XMZ14Uifvnp58da77" target="_blank" class="block w-full py-2.5 bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/30 rounded-xl text-xs font-semibold tracking-wider uppercase transition shadow-sm text-center">
+                            View on Google Maps
+                        </a>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-sage-600/25 space-y-3">
-                    <div class="text-sage-600 text-lg font-semibold">Reception</div>
-                    <p class="text-forest-900 font-medium">December 30, 2026 at 6:00 PM</p>
-                    <p class="text-forest-800/80 text-sm">Bohol, Philippines</p>
+
+                <div class="bg-white rounded-3xl shadow-sm border border-sage-600/25 overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal('https://scontent.fceb6-4.fna.fbcdn.net/v/t39.30808-6/512674931_9925277727541771_75934192482774825_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_eui2=AeGWt0qV4g8GTxuzHk39MTEXRHsjRU1x3wVEeyNFTXHfBcr-QrBK4xGPmvZh_Tx2npQ&_nc_ohc=LeL0G-Tgci8Q7kNvwEjZv-g&_nc_oc=AdrAKyGJl7B1bdqbIWf9LTQnuqkkBot0lILdxYY4_R1axdurdpY-SolmMtWCjgVzQPo&_nc_zt=23&_nc_ht=scontent.fceb6-4.fna&_nc_gid=yoBrfQ8nXTdRHTG6Dct1_w&_nc_ss=7b2a8&oh=00_AQK5xQewu2DYc9UhKatfLbdTmOuqCgBB0xdk7-3AIJhITA&oe=6AA3D98F')">
+                            <img src="https://scontent.fceb6-4.fna.fbcdn.net/v/t39.30808-6/512674931_9925277727541771_75934192482774825_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1365&ctp=s2048x1365&_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_eui2=AeGWt0qV4g8GTxuzHk39MTEXRHsjRU1x3wVEeyNFTXHfBcr-QrBK4xGPmvZh_Tx2npQ&_nc_ohc=LeL0G-Tgci8Q7kNvwEjZv-g&_nc_oc=AdrAKyGJl7B1bdqbIWf9LTQnuqkkBot0lILdxYY4_R1axdurdpY-SolmMtWCjgVzQPo&_nc_zt=23&_nc_ht=scontent.fceb6-4.fna&_nc_gid=yoBrfQ8nXTdRHTG6Dct1_w&_nc_ss=7b2a8&oh=00_AQK5xQewu2DYc9UhKatfLbdTmOuqCgBB0xdk7-3AIJhITA&oe=6AA3D98F" alt="Bohol Tropics" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                        </div>
+                        <div class="p-6 space-y-2 text-center">
+                            <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block mb-1">Reception</span>
+                            <h3 class="text-2xl font-serif text-forest-900">Bohol Tropics</h3>
+                            <p class="text-forest-800/80 text-sm mt-1">December 30, 2026 at 12:00 PM</p>
+                            <p class="text-forest-800/60 text-xs">Tagbilaran City, Bohol</p>
+                            <p class="text-xs text-sage-600 mt-1">Tap photo to enlarge</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <a href="https://maps.app.goo.gl/JUjXLG1MGmC7SGmn9" target="_blank" class="block w-full py-2.5 bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/30 rounded-xl text-xs font-semibold tracking-wider uppercase transition shadow-sm text-center">
+                            View on Google Maps
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -127,20 +156,11 @@
             <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-6">Dress Code</h2>
             
             <div class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25 max-w-2xl mx-auto space-y-6">
-                <div class="flex justify-center items-center space-x-12 mb-4">
-                    <div class="flex flex-col items-center">
-                        <svg class="w-16 h-20 text-forest-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a3 3 0 100 6 3 3 0 000-6zM6 10c0-1.1.9-2 2-2h8a2 2 0 012 2v10a1 1 0 01-1 1H7a1 1 0 01-1-1V10zM10 14h4M12 14v8" />
-                        </svg>
-                        <span class="text-xs text-forest-800/60 mt-1">Midi Dress</span>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <svg class="w-16 h-20 text-forest-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM9 9l3-2 3 2v3H9V9zM7 13h10l-1 9H8l-1-9z" />
-                        </svg>
-                        <span class="text-xs text-forest-800/60 mt-1">Suit</span>
-                    </div>
+                <!-- Dress code image reference -->
+                <div class="overflow-hidden rounded-2xl border border-sage-600/20 bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://kokvafvtayqrczqzgftx.supabase.co/storage/v1/object/public/gallery-images/00337716-3dc5-47c8-85b1-e2cd8d24ea85/1780471107107-xq5e7tkgl7.jpg')">
+                    <img src="https://kokvafvtayqrczqzgftx.supabase.co/storage/v1/object/public/gallery-images/00337716-3dc5-47c8-85b1-e2cd8d24ea85/1780471107107-xq5e7tkgl7.jpg" alt="Dress Code Guide" class="w-full h-auto object-contain hover:scale-105 transition duration-300">
                 </div>
+                <p class="text-xs text-sage-600">Tap photo to enlarge</p>
 
                 <div>
                     <h3 class="text-2xl font-serif text-forest-900 mb-2">Semi-Formal</h3>
@@ -169,7 +189,7 @@
                 
                 <div class="text-forest-800/90 text-base leading-relaxed space-y-4 font-light text-left md:text-center">
                     <p>
-                        Our story began in Camambugan National High School, where two hearts met in the simplest of ways. At first, we were just two people sharing the same space, unaware that God was slowly writing our story.
+                        Our story began in Bohol, where two hearts met in the simplest of ways. At first, we were just two people sharing the same space, unaware that God was slowly writing our story.
                     </p>
                     <p>
                         Through ordinary days, shared smiles, conversations, and countless little moments, we grew closer. What started as a simple friendship slowly became a love that neither of us could ignore.
@@ -184,7 +204,7 @@
                     </div>
 
                     <p>
-                        Our journey began in Camambugan National High School, but we believe it was only the beginning of a much greater journey.
+                        Our journey began in Bohol, but we believe it was only the beginning of a much greater journey.
                     </p>
                     <p>
                         One day, we hope to stand before God, our families, and the people we love, promising to walk together for the rest of our lives.
@@ -219,59 +239,70 @@
             </div>
         </section>
 
+        <section id="gifts" class="max-w-4xl mx-auto px-4 pt-4">
+            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
+                <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Registry & Contributions</span>
+                <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Note on Gifts</h2>
+                <div class="w-16 h-0.5 bg-sage-600/40 mx-auto"></div>
+                
+                <p class="text-forest-800/90 text-base leading-relaxed max-w-2xl mx-auto font-light">
+                    Your presence at our wedding is the greatest gift we could ever ask for. However, if you wish to bless us further, we will gratefully accept a small contribution towards our future home as we begin our new journey together. But if you wish to purchase a gift, feel free to surprise us on your own way.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-6 max-w-2xl mx-auto">
+                    <!-- BPI QR Card -->
+                    <div class="bg-white p-3 rounded-2xl shadow-md flex flex-col items-center border border-sage-600/20">
+                        <div class="bg-white w-full rounded-xl p-2 flex flex-col items-center">
+                            <div class="overflow-hidden rounded-lg border border-gray-200 w-full flex items-center justify-center bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/GaGzvjY.jpeg')">
+                                <img src="https://i.imgur.com/GaGzvjY.jpeg" alt="BPI QR Code" class="w-full h-auto object-contain" crossorigin="anonymous" onerror="this.onerror=null; this.src='https://placehold.co/300x350/f8fafc/dc2626?text=BPI+QR';">
+                            </div>
+                            <p class="text-xs text-gray-500 mt-3 font-medium">Tap to view QR</p>
+                        </div>
+                    </div>
+
+                    <!-- GCash QR Card -->
+                    <div class="bg-white p-3 rounded-2xl shadow-md flex flex-col items-center border border-sage-600/20">
+                        <div class="bg-white w-full rounded-xl p-2 flex flex-col items-center">
+                            <div class="overflow-hidden rounded-lg border border-gray-200 w-full flex items-center justify-center bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/ROGaOmh.jpeg')">
+                                <img src="https://i.imgur.com/ROGaOmh.jpeg" alt="GCash QR Code" class="w-full h-auto object-contain" crossorigin="anonymous" onerror="this.onerror=null; this.src='https://placehold.co/300x350/f8fafc/2563eb?text=GCash+QR';">
+                            </div>
+                            <p class="text-xs text-gray-500 mt-3 font-medium">Tap to view QR</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="memories" class="py-12 px-4 bg-sage-100/40 pt-8">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-10">
                     <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Our Memories</h2>
-                    <p class="text-forest-800/80">A glimpse of our journey together (Click to view full photo)</p>
+                    <p class="text-forest-800/80">A glimpse of our journey together (Click photo to enlarge)</p>
                     <div class="w-16 h-0.5 bg-sage-600/40 mx-auto mt-4"></div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/rGNP2xF.png')">
-                        <img src="https://i.imgur.com/rGNP2xF.png" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+                <!-- Slideshow Container -->
+                <div class="relative bg-white rounded-3xl shadow-md border border-sage-600/25 p-4 sm:p-6">
+                    <div class="relative h-[380px] sm:h-[480px] flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50 cursor-pointer" onclick="openModal(currentSlideSrc)">
+                        <img id="slideshowImage" src="" alt="Memory Slide" class="max-h-full max-w-full object-contain transition-all duration-300">
                     </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/NlrUujf.png')">
-                        <img src="https://i.imgur.com/NlrUujf.png" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+
+                    <!-- Navigation Arrows -->
+                    <button onclick="prevSlide()" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 bg-forest-900/70 hover:bg-forest-900 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-20">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button onclick="nextSlide()" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 bg-forest-900/70 hover:bg-forest-900 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-20">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <!-- Slide Counter Indicator -->
+                    <div class="text-center mt-4 text-xs tracking-widest text-sage-700 font-semibold">
+                        <span id="slideIndex">1</span> / <span id="slideTotal">15</span>
                     </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/fTIiteB.jpeg')">
-                        <img src="https://i.imgur.com/fTIiteB.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/wP3xU3N.jpeg')">
-                        <img src="https://i.imgur.com/wP3xU3N.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/sWElC5g.jpeg')">
-                        <img src="https://i.imgur.com/sWElC5g.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/rsI36kw.jpeg')">
-                        <img src="https://i.imgur.com/rsI36kw.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/sHKT5Sw.jpeg')">
-                        <img src="https://i.imgur.com/sHKT5Sw.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/YtMYYGS.jpeg')">
-                        <img src="https://i.imgur.com/YtMYYGS.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/JgIZl6U.jpeg')">
-                        <img src="https://i.imgur.com/JgIZl6U.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/JwITDfw.jpeg')">
-                        <img src="https://i.imgur.com/JwITDfw.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/83eQ5B2.jpeg')">
-                        <img src="https://i.imgur.com/83eQ5B2.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/EhD1gAc.jpeg')">
-                        <img src="https://i.imgur.com/EhD1gAc.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/ReXffb8.jpeg')">
-                        <img src="https://i.imgur.com/ReXffb8.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/CkKDqsx.jpeg')">
-                        <img src="https://i.imgur.com/CkKDqsx.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
-                    </div>
-                    <div class="overflow-hidden rounded-2xl shadow-md border border-forest-900/10 bg-white cursor-pointer flex items-center justify-center p-2 h-64" onclick="openModal('https://i.imgur.com/GIe0suu.jpeg')">
-                        <img src="https://i.imgur.com/GIe0suu.jpeg" alt="Memory Photo" class="max-w-full max-h-full object-contain rounded-lg">
+
+                    <!-- Thumbnail Dots -->
+                    <div id="slideDots" class="flex justify-center gap-1.5 mt-3 overflow-x-auto py-2">
+                        <!-- Generated via JS -->
                     </div>
                 </div>
             </div>
@@ -332,7 +363,6 @@
         </section>
     </main>
 
-    <!-- Photo Modal Preview -->
     <div id="photoModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="relative max-w-4xl max-h-[90vh] flex items-center justify-center">
             <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-xl font-bold bg-black/50 hover:bg-black w-8 h-8 rounded-full flex items-center justify-center">&times;</button>
@@ -345,7 +375,6 @@
     </footer>
 
     <script>
-        // Interactive Falling Leaves Animation
         const canvas = document.getElementById('leaves-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -378,7 +407,6 @@
                 this.angle = Math.random() * Math.PI * 2;
                 this.spin = Math.random() * 0.03 - 0.015;
                 
-                // Sage and forest green shades with slight warm touches
                 const colors = ['#739574', '#5c7a5d', '#3b5c3e', '#9cb1a4', '#a2b86e'];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
                 this.opacity = Math.random() * 0.5 + 0.3;
@@ -389,7 +417,6 @@
                 this.x += this.speedX + Math.sin(this.angle) * 0.8;
                 this.angle += this.spin;
 
-                // Gentle mouse interaction (wind effect)
                 const dx = this.x - mouseX;
                 const dy = this.y - mouseY;
                 const dist = Math.sqrt(dx * dx + dy * dy);
@@ -411,7 +438,6 @@
                 ctx.globalAlpha = this.opacity;
                 ctx.fillStyle = this.color;
                 
-                // Draw leaf shape
                 ctx.beginPath();
                 ctx.moveTo(0, -this.size / 2);
                 ctx.bezierCurveTo(this.size / 2, -this.size / 4, this.size / 2, this.size / 2, 0, this.size);
@@ -434,7 +460,6 @@
         }
         animateLeaves();
 
-        // Mobile Menu Toggle
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         menuBtn.addEventListener('click', () => {
@@ -447,7 +472,90 @@
             });
         });
 
-        // Modal Logic
+        const memoryPhotos = [
+            'https://i.imgur.com/rGNP2xF.png',
+            'https://i.imgur.com/NlrUujf.png',
+            'https://i.imgur.com/fTIiteB.jpeg',
+            'https://i.imgur.com/wP3xU3N.jpeg',
+            'https://i.imgur.com/sWElC5g.jpeg',
+            'https://i.imgur.com/rsI36kw.jpeg',
+            'https://i.imgur.com/sHKT5Sw.jpeg',
+            'https://i.imgur.com/YtMYYGS.jpeg',
+            'https://i.imgur.com/JgIZl6U.jpeg',
+            'https://i.imgur.com/JwITDfw.jpeg',
+            'https://i.imgur.com/83eQ5B2.jpeg',
+            'https://i.imgur.com/EhD1gAc.jpeg',
+            'https://i.imgur.com/ReXffb8.jpeg',
+            'https://i.imgur.com/CkKDqsx.jpeg',
+            'https://i.imgur.com/GIe0suu.jpeg'
+        ];
+
+        let currentSlide = 0;
+        let currentSlideSrc = memoryPhotos[0];
+
+        const slideshowImage = document.getElementById('slideshowImage');
+        const slideIndexEl = document.getElementById('slideIndex');
+        const slideTotalEl = document.getElementById('slideTotal');
+        const slideDotsEl = document.getElementById('slideDots');
+
+        slideTotalEl.textContent = memoryPhotos.length;
+
+        memoryPhotos.forEach((src, idx) => {
+            const dot = document.createElement('button');
+            dot.className = `w-2.5 h-2.5 rounded-full transition-all ${idx === 0 ? 'bg-forest-900 w-6' : 'bg-sage-600/40 hover:bg-sage-600'}`;
+            dot.onclick = () => goToSlide(idx);
+            slideDotsEl.appendChild(dot);
+        });
+
+        function updateSlide() {
+            slideshowImage.style.opacity = '0';
+            setTimeout(() => {
+                currentSlideSrc = memoryPhotos[currentSlide];
+                slideshowImage.src = currentSlideSrc;
+                slideshowImage.style.opacity = '1';
+                slideIndexEl.textContent = currentSlide + 1;
+
+                Array.from(slideDotsEl.children).forEach((dot, idx) => {
+                    if (idx === currentSlide) {
+                        dot.className = 'w-6 h-2.5 rounded-full bg-forest-900 transition-all';
+                    } else {
+                        dot.className = 'w-2.5 h-2.5 rounded-full bg-sage-600/40 hover:bg-sage-600 transition-all';
+                    }
+                });
+            }, 150);
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % memoryPhotos.length;
+            updateSlide();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + memoryPhotos.length) % memoryPhotos.length;
+            updateSlide();
+        }
+
+        function goToSlide(idx) {
+            currentSlide = idx;
+            updateSlide();
+        }
+
+        updateSlide();
+
+        let slideInterval = setInterval(nextSlide, 5000);
+
+        const slideshowContainer = slideshowImage.parentElement;
+        slideshowContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        slideshowContainer.addEventListener('mouseleave', () => slideInterval = setInterval(nextSlide, 5000));
+
+        let touchStartX = 0;
+        slideshowContainer.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+        slideshowContainer.addEventListener('touchend', e => {
+            let touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX < touchStartX - 50) nextSlide();
+            if (touchEndX > touchStartX + 50) prevSlide();
+        });
+
         const photoModal = document.getElementById('photoModal');
         const modalImage = document.getElementById('modalImage');
 
@@ -467,7 +575,6 @@
             if (e.target === photoModal) closeModal();
         });
 
-        // Countdown Logic
         const weddingDate = new Date("December 30, 2026 00:00:00").getTime();
         function updateCountdown() {
             const now = new Date().getTime();
@@ -484,10 +591,8 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // RSVP Form Submission Handler
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
-        const formStatus = document.getElementById('formStatus');
 
         form.addEventListener('submit', function() {
             window.submitted = true;
