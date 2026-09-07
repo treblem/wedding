@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -36,11 +37,6 @@
             pointer-events: none;
             z-index: 40;
         }
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 40px;
-  }
 
   #music-btn {
     position: fixed;
@@ -76,7 +72,6 @@ body {
     70%  { box-shadow: 0 0 0 12px rgba(74,144,217,0); }
     100% { box-shadow: 0 0 0 0 rgba(74,144,217,0); }
   }
-        
     </style>
 </head>
    <body class="bg-sage-50 text-forest-900 font-sans antialiased selection:bg-sage-600 selection:text-white relative">
@@ -97,7 +92,9 @@ body {
 
     function toggleMusic() {
       if (music.paused) {
-        music.play();
+        music.play().catch(err => {
+          console.warn('Could not play background music:', err);
+        });
         btn.classList.add('playing');
         btn.textContent = '⏸';
       } else {
@@ -265,7 +262,7 @@ body {
                     </p>
 
                     <div class="my-6 p-6 bg-sage-50/70 rounded-2xl border border-sage-600/20 italic text-forest-900 space-y-3">
-                        <p>“Two are better than one… If either of them falls down, one can help the other up.”</p>
+                        <p>"Two are better than one… If either of them falls down, one can help the other up."</p>
                         <span class="block text-xs uppercase tracking-wider text-sage-700 not-italic font-semibold">— Ecclesiastes 4:9–10</span>
                     </div>
 
@@ -276,7 +273,7 @@ body {
                         One day, we hope to stand before God, our families, and the people we love, promising to walk together for the rest of our lives.
                     </p>
                     <p>
-                        From the place where we first met, to the day we say “I do,” and through all the years that follow—our greatest story will always be the one we write together.
+                        From the place where we first met, to the day we say "I do," and through all the years that follow—our greatest story will always be the one we write together.
                     </p>
                 </div>
                 <div class="pt-4 font-serif text-xl italic text-forest-900 font-medium">
@@ -293,9 +290,9 @@ body {
                 
                 <div class="text-forest-800/90 text-base leading-relaxed space-y-4 font-light text-left md:text-center">
                     <div class="my-4 p-8 bg-sage-50/70 rounded-2xl border border-sage-600/20 italic text-forest-900 space-y-4 leading-loose shadow-inner">
-                        <p>“Love is patient, love is kind. It does not envy, it does not boast, it is not proud. It does not dishonor others, it is not self-seeking, it is not easily angered, it keeps no record of wrongs.”</p>
-                        <p>“Love does not delight in evil but rejoices with the truth. It always protects, always trusts, always hopes, always perseveres. Love never fails.”</p>
-                        <p>“But where there are prophecies, they will cease; where there are tongues, they will be stilled; where there is knowledge, it will pass away.”</p>
+                        <p>"Love is patient, love is kind. It does not envy, it does not boast, it is not proud. It does not dishonor others, it is not self-seeking, it is not easily angered, it keeps no record of wrongs."</p>
+                        <p>"Love does not delight in evil but rejoices with the truth. It always protects, always trusts, always hopes, always perseveres. Love never fails."</p>
+                        <p>"But where there are prophecies, they will cease; where there are tongues, they will be stilled; where there is knowledge, it will pass away."</p>
                         <span class="block text-xs uppercase tracking-widest text-sage-700 not-italic font-bold pt-2">— 1 Corinthians 13:4–8</span>
                     </div>
                     <p class="pt-2">
