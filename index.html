@@ -1,11 +1,10 @@
 
-
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maribeth & Melbhert's Wedding Invitation</title>
+    <title>Maribeth &amp; Melbhert's Wedding Invitation</title>
     <meta name="description" content="Join us as we celebrate the wedding of Maribeth & Melbhert on December 30, 2026 in Bohol, Philippines.">
     <meta property="og:title" content="Maribeth & Melbhert's Wedding">
     <meta property="og:description" content="December 30, 2026 • Bohol, Philippines. We'd love for you to join us on our special day.">
@@ -82,6 +81,18 @@
     0%   { box-shadow: 0 0 0 0 rgba(74,144,217,0.5); }
     70%  { box-shadow: 0 0 0 12px rgba(74,144,217,0); }
     100% { box-shadow: 0 0 0 0 rgba(74,144,217,0); }
+  }
+
+  /* Visible keyboard focus everywhere */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid #5c7a5d;
+    outline-offset: 2px;
+    border-radius: 6px;
   }
 
   /* ---- Opening / intro seal ---- */
@@ -191,6 +202,11 @@
     height: 100vh;
   }
 
+  /* Locks page scroll while the photo modal is open */
+  body.modal-open {
+    overflow: hidden;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #intro-overlay,
     #intro-overlay.opening {
@@ -237,6 +253,16 @@
     #formStatus.pop { animation: none; }
   }
     </style>
+
+    <!-- If JavaScript fails or is blocked, the page must still be readable. -->
+    <noscript>
+      <style>
+        #intro-overlay { display: none !important; }
+        body.intro-locked { overflow: auto !important; height: auto !important; }
+        .reveal { opacity: 1 !important; transform: none !important; }
+        #music-btn { display: none !important; }
+      </style>
+    </noscript>
 </head>
    <body class="bg-sage-50 text-forest-900 font-sans antialiased selection:bg-sage-600 selection:text-white relative intro-locked">
 
@@ -250,13 +276,11 @@
         </div>
     </div>
 
-    <canvas id="leaves-canvas"></canvas>
+    <canvas id="leaves-canvas" aria-hidden="true"></canvas>
 
-  <audio id="bg-music" loop>
+  <audio id="bg-music" loop preload="none">
     <source src="music.mp3" type="audio/mpeg">
   </audio>
-  
- 
 
   <button id="music-btn" onclick="toggleMusic()" aria-label="Play background music" aria-pressed="false">🎵</button>
 
@@ -287,13 +311,35 @@
       // Safety net in case a transitionend listener is missed on some browsers.
       setTimeout(() => { introOverlay.style.display = 'none'; }, 1600);
     }
+
+    // Failsafe: if anything below throws before the overlay is wired up,
+    // don't leave guests staring at a locked screen.
+    setTimeout(() => {
+      if (introOverlay && !introOverlay.classList.contains('opening') && !window.__introReady) {
+        document.body.classList.remove('intro-locked');
+      }
+    }, 8000);
+    window.__introReady = true;
   </script>
 
   <script>
     const music = document.getElementById('bg-music');
     const btn = document.getElementById('music-btn');
+    let musicAvailable = true;
+
+    // If music.mp3 is missing from the server, hide the button instead of
+    // leaving a control that silently does nothing.
+    music.addEventListener('error', hideMusicButton);
+    const musicSource = music.querySelector('source');
+    if (musicSource) musicSource.addEventListener('error', hideMusicButton);
+
+    function hideMusicButton() {
+      musicAvailable = false;
+      btn.style.display = 'none';
+    }
 
     function toggleMusic() {
+      if (!musicAvailable) return;
       if (music.paused) {
         music.play().catch(err => {
           console.warn('Could not play background music:', err);
@@ -311,10 +357,10 @@
       }
     }
   </script>
-       
+
     <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-sage-600/20 shadow-sm">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="#" class="font-serif text-lg md:text-xl text-forest-900 font-bold tracking-wide">M & M</a>
+            <a href="#" class="font-serif text-lg md:text-xl text-forest-900 font-bold tracking-wide">M &amp; M</a>
             <div class="hidden md:flex space-x-6 text-sm font-medium text-forest-800">
                 <a href="#details" class="hover:text-sage-600 transition">Details</a>
                 <a href="#dresscode" class="hover:text-sage-600 transition">Dress Code</a>
@@ -348,10 +394,10 @@
         <div class="absolute inset-0 bg-black/40"></div>
         <div class="relative z-10 max-w-3xl mx-auto space-y-6 text-white py-12">
             <span class="text-xs md:text-sm tracking-[0.3em] uppercase text-sage-100 font-semibold drop-shadow-md">The Wedding of</span>
-            <h1 class="text-4xl sm:text-5xl md:text-7xl font-serif tracking-wide drop-shadow-lg">Maribeth & Melbhert</h1>
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-serif tracking-wide drop-shadow-lg">Maribeth &amp; Melbhert</h1>
             <div class="w-24 h-0.5 bg-white/60 mx-auto"></div>
             <p class="text-base sm:text-lg md:text-xl font-light italic drop-shadow-md">December 30, 2026 • Bohol, Philippines</p>
-            
+
             <div id="countdown" class="grid grid-cols-4 gap-2 sm:gap-3 max-w-md mx-auto pt-6">
                 <div class="bg-black/40 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/20">
                     <span id="days" class="block text-xl sm:text-2xl md:text-3xl font-bold text-white">00</span>
@@ -370,20 +416,26 @@
                     <span class="text-[10px] sm:text-xs uppercase text-sage-100 tracking-wider">Seconds</span>
                 </div>
             </div>
+
+            <div class="pt-2">
+                <button type="button" onclick="addToCalendar()" class="inline-block px-5 py-2.5 bg-white/15 hover:bg-white/25 border border-white/40 rounded-xl text-xs font-semibold tracking-wider uppercase transition backdrop-blur-md">
+                    Add to calendar
+                </button>
+            </div>
         </div>
     </header>
 
     <main class="space-y-20 py-12 relative z-10">
         <section id="details" class="max-w-4xl mx-auto px-4 text-center pt-8">
-            <h2 class="reveal text-3xl md:text-4xl font-serif text-forest-900 mb-4">When & Where</h2>
+            <h2 class="reveal text-3xl md:text-4xl font-serif text-forest-900 mb-4">When &amp; Where</h2>
             <p class="reveal text-forest-800/80 mb-10 max-w-lg mx-auto">We are overjoyed to celebrate our special day surrounded by family and friends in Bohol.</p>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
                 <div class="reveal bg-white rounded-3xl shadow-sm border border-sage-600/25 overflow-hidden flex flex-col justify-between">
                     <div>
-                        <div class="h-48 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgryCm0SDS6BRM8wt4jt7SO6iG4L5bNOHFulauAApsLPc948lLFmYvsXFI1nI3LQ6T2Vpf3oDkRU21v_bbpCOauPlq1EibAo3qQdOzckxk-XMacrr86qPPwLm2srIJdpgKY2g2igPtNMzuURCxYSQJ2_ZZAGJTkPC5SjhuoLI4YP1KhBdsKrh6OEvYf/s1024/Tagbilaran_Church_Interiors.jpg')">
+                        <button type="button" class="block w-full h-48 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgryCm0SDS6BRM8wt4jt7SO6iG4L5bNOHFulauAApsLPc948lLFmYvsXFI1nI3LQ6T2Vpf3oDkRU21v_bbpCOauPlq1EibAo3qQdOzckxk-XMacrr86qPPwLm2srIJdpgKY2g2igPtNMzuURCxYSQJ2_ZZAGJTkPC5SjhuoLI4YP1KhBdsKrh6OEvYf/s1024/Tagbilaran_Church_Interiors.jpg', 'Tagbilaran Cathedral interior')" aria-label="Enlarge photo of Tagbilaran Cathedral">
                             <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgryCm0SDS6BRM8wt4jt7SO6iG4L5bNOHFulauAApsLPc948lLFmYvsXFI1nI3LQ6T2Vpf3oDkRU21v_bbpCOauPlq1EibAo3qQdOzckxk-XMacrr86qPPwLm2srIJdpgKY2g2igPtNMzuURCxYSQJ2_ZZAGJTkPC5SjhuoLI4YP1KhBdsKrh6OEvYf/s1024/Tagbilaran_Church_Interiors.jpg" alt="Tagbilaran Cathedral interior" class="w-full h-full object-cover hover:scale-105 transition duration-300" loading="lazy">
-                        </div>
+                        </button>
                         <div class="p-6 space-y-2 text-center">
                             <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block mb-1">Ceremony</span>
                             <h3 class="text-2xl font-serif text-forest-900">Tagbilaran Cathedral</h3>
@@ -400,7 +452,7 @@
                                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"
                                 title="Map to Tagbilaran Cathedral"></iframe>
                         </div>
-                        <a href="https://maps.app.goo.gl/XMZ14Uifvnp58da77" target="_blank" class="block w-full py-2.5 bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/30 rounded-xl text-xs font-semibold tracking-wider uppercase transition shadow-sm text-center">
+                        <a href="https://maps.app.goo.gl/XMZ14Uifvnp58da77" target="_blank" rel="noopener" class="block w-full py-2.5 bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/30 rounded-xl text-xs font-semibold tracking-wider uppercase transition shadow-sm text-center">
                             Get Directions
                         </a>
                     </div>
@@ -408,9 +460,9 @@
 
                 <div class="reveal bg-white rounded-3xl shadow-sm border border-sage-600/25 overflow-hidden flex flex-col justify-between" style="transition-delay:.12s">
                     <div>
-                        <div class="h-48 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal('https://i.imgur.com/EzxrbZC.jpeg')">
+                        <button type="button" class="block w-full h-48 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal('https://i.imgur.com/EzxrbZC.jpeg', 'Bohol Tropics reception venue')" aria-label="Enlarge photo of Bohol Tropics">
                             <img src="https://i.imgur.com/EzxrbZC.jpeg" alt="Bohol Tropics reception venue" class="w-full h-full object-cover hover:scale-105 transition duration-300" loading="lazy">
-                        </div>
+                        </button>
                         <div class="p-6 space-y-2 text-center">
                             <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block mb-1">Reception</span>
                             <h3 class="text-2xl font-serif text-forest-900">Bohol Tropics</h3>
@@ -427,7 +479,7 @@
                                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"
                                 title="Map to Bohol Tropics"></iframe>
                         </div>
-                        <a href="https://maps.app.goo.gl/JUjXLG1MGmC7SGmn9" target="_blank" class="block w-full py-2.5 bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/30 rounded-xl text-xs font-semibold tracking-wider uppercase transition shadow-sm text-center">
+                        <a href="https://maps.app.goo.gl/JUjXLG1MGmC7SGmn9" target="_blank" rel="noopener" class="block w-full py-2.5 bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/30 rounded-xl text-xs font-semibold tracking-wider uppercase transition shadow-sm text-center">
                             Get Directions
                         </a>
                     </div>
@@ -438,12 +490,12 @@
         <section id="dresscode" class="max-w-4xl mx-auto px-4 text-center pt-4">
             <span class="reveal text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block mb-1">What to Wear</span>
             <h2 class="reveal text-3xl md:text-4xl font-serif text-forest-900 mb-6">Dress Code</h2>
-            
+
             <div class="reveal bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25 max-w-2xl mx-auto space-y-6">
                 <!-- Dress code image reference -->
-                <div class="overflow-hidden rounded-2xl border border-sage-600/20 bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://kokvafvtayqrczqzgftx.supabase.co/storage/v1/object/public/gallery-images/00337716-3dc5-47c8-85b1-e2cd8d24ea85/1780471107107-xq5e7tkgl7.jpg')">
+                <button type="button" class="block w-full overflow-hidden rounded-2xl border border-sage-600/20 bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://kokvafvtayqrczqzgftx.supabase.co/storage/v1/object/public/gallery-images/00337716-3dc5-47c8-85b1-e2cd8d24ea85/1780471107107-xq5e7tkgl7.jpg', 'Dress code guide')" aria-label="Enlarge the dress code guide">
                     <img src="https://kokvafvtayqrczqzgftx.supabase.co/storage/v1/object/public/gallery-images/00337716-3dc5-47c8-85b1-e2cd8d24ea85/1780471107107-xq5e7tkgl7.jpg" alt="Dress code guide showing semi-formal attire and suggested colors" class="w-full h-auto object-contain hover:scale-105 transition duration-300" loading="lazy">
-                </div>
+                </button>
                 <p class="text-xs text-sage-600">Tap photo to enlarge</p>
 
                 <div>
@@ -456,11 +508,12 @@
                 <div class="border-t border-sage-600/20 pt-6">
                     <p class="text-xs font-semibold text-sage-700 uppercase tracking-widest mb-3">Suggested Motif</p>
                     <div class="flex justify-center items-center gap-5">
-                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15 cursor-pointer hover:scale-110 transition" style="background-color: #9cb1a4;" title="Sage Gray"></div>
-                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15 cursor-pointer hover:scale-110 transition" style="background-color: #6fc38e;" title="Light Green"></div>
-                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15 cursor-pointer hover:scale-110 transition" style="background-color: #00b06f;" title="Emerald Green"></div>
-                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15 cursor-pointer hover:scale-110 transition" style="background-color: #a2b86e;" title="Olive Green"></div>
+                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15" style="background-color: #9cb1a4;" title="Sage Gray"></div>
+                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15" style="background-color: #6fc38e;" title="Light Green"></div>
+                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15" style="background-color: #00b06f;" title="Emerald Green"></div>
+                        <div class="w-10 h-10 rounded-full shadow-md border border-black/15" style="background-color: #a2b86e;" title="Olive Green"></div>
                     </div>
+                    <p class="sr-only">Suggested colors: sage gray, light green, emerald green, olive green.</p>
                 </div>
             </div>
         </section>
@@ -470,7 +523,7 @@
                 <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Our Love Story</span>
                 <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Where Our Forever Began</h2>
                 <div class="w-16 h-0.5 bg-sage-600/40 mx-auto"></div>
-                
+
                 <div class="text-forest-800/90 text-base leading-relaxed space-y-4 font-light text-left md:text-center">
                     <p>
                         Our story began in Camambugan National High School, where two hearts met in the simplest of ways. At first, we were just two people sharing the same space, unaware that God was slowly writing our story.
@@ -488,9 +541,6 @@
                     </div>
 
                     <p>
-                        Our journey began in Camambugan National High School, but we believe it was only the beginning of a much greater journey.
-                    </p>
-                    <p>
                         One day, we hope to stand before God, our families, and the people we love, promising to walk together for the rest of our lives.
                     </p>
                     <p>
@@ -498,17 +548,17 @@
                     </p>
                 </div>
                 <div class="pt-4 font-serif text-xl italic text-forest-900 font-medium">
-                    Melbhert & Maribeth
+                    Melbhert &amp; Maribeth
                 </div>
             </div>
         </section>
 
         <section id="verse" class="max-w-3xl mx-auto px-4 pt-4">
             <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
-                <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Scripture & Guidance</span>
+                <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Scripture &amp; Guidance</span>
                 <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Love is Patient, Love is Kind</h2>
                 <div class="w-16 h-0.5 bg-sage-600/40 mx-auto"></div>
-                
+
                 <div class="text-forest-800/90 text-base leading-relaxed space-y-4 font-light text-left md:text-center">
                     <div class="my-4 p-8 bg-sage-50/70 rounded-2xl border border-sage-600/20 italic text-forest-900 space-y-4 leading-loose shadow-inner">
                         <p>"Love is patient, love is kind. It does not envy, it does not boast, it is not proud. It does not dishonor others, it is not self-seeking, it is not easily angered, it keeps no record of wrongs."</p>
@@ -525,32 +575,40 @@
 
         <section id="gifts" class="max-w-4xl mx-auto px-4 pt-4">
             <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
-                <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Registry & Contributions</span>
+                <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Registry &amp; Contributions</span>
                 <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Note on Gifts</h2>
                 <div class="w-16 h-0.5 bg-sage-600/40 mx-auto"></div>
-                
+
                 <p class="text-forest-800/90 text-base leading-relaxed max-w-2xl mx-auto font-light">
                     Your presence at our wedding is the greatest gift we could ever ask for. However, if you wish to bless us further, we will gratefully accept a small contribution towards our future home as we begin our new journey together. But if you wish to purchase a gift, feel free to surprise us on your own way.
                 </p>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-6 max-w-2xl mx-auto">
+                <!-- QR codes stay hidden until a guest chooses to see them, so they
+                     aren't sitting in plain view for anyone who stumbles on the link. -->
+                <div id="qrHidden" class="pt-2">
+                    <button type="button" onclick="revealQrCodes()" class="px-6 py-3 bg-forest-900 text-white rounded-xl text-xs font-semibold tracking-wider uppercase hover:bg-forest-800 transition shadow-md">
+                        Show gift details
+                    </button>
+                </div>
+
+                <div id="qrWrap" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-8 pt-6 max-w-2xl mx-auto">
                     <!-- BPI QR Card -->
-                    <div class="reveal bg-white p-3 rounded-2xl shadow-md flex flex-col items-center border border-sage-600/20">
+                    <div class="bg-white p-3 rounded-2xl shadow-md flex flex-col items-center border border-sage-600/20">
                         <div class="bg-white w-full rounded-xl p-2 flex flex-col items-center">
-                            <div class="overflow-hidden rounded-lg border border-gray-200 w-full flex items-center justify-center bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/GaGzvjY.jpeg')">
+                            <button type="button" class="overflow-hidden rounded-lg border border-gray-200 w-full flex items-center justify-center bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/GaGzvjY.jpeg', 'BPI QR code')" aria-label="Enlarge the BPI QR code">
                                 <img src="https://i.imgur.com/GaGzvjY.jpeg" alt="BPI bank QR code for gift contributions" class="w-full h-auto object-contain" crossorigin="anonymous" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/300x350/f8fafc/dc2626?text=BPI+QR';">
-                            </div>
-                            <p class="text-xs text-gray-500 mt-3 font-medium">Tap to view QR</p>
+                            </button>
+                            <p class="text-xs text-gray-500 mt-3 font-medium">BPI — tap to enlarge</p>
                         </div>
                     </div>
 
                     <!-- GCash QR Card -->
-                    <div class="reveal bg-white p-3 rounded-2xl shadow-md flex flex-col items-center border border-sage-600/20" style="transition-delay:.12s">
+                    <div class="bg-white p-3 rounded-2xl shadow-md flex flex-col items-center border border-sage-600/20">
                         <div class="bg-white w-full rounded-xl p-2 flex flex-col items-center">
-                            <div class="overflow-hidden rounded-lg border border-gray-200 w-full flex items-center justify-center bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/ROGaOmh.jpeg')">
+                            <button type="button" class="overflow-hidden rounded-lg border border-gray-200 w-full flex items-center justify-center bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/ROGaOmh.jpeg', 'GCash QR code')" aria-label="Enlarge the GCash QR code">
                                 <img src="https://i.imgur.com/ROGaOmh.jpeg" alt="GCash QR code for gift contributions" class="w-full h-auto object-contain" crossorigin="anonymous" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/300x350/f8fafc/2563eb?text=GCash+QR';">
-                            </div>
-                            <p class="text-xs text-gray-500 mt-3 font-medium">Tap to view QR</p>
+                            </button>
+                            <p class="text-xs text-gray-500 mt-3 font-medium">GCash — tap to enlarge</p>
                         </div>
                     </div>
                 </div>
@@ -561,27 +619,27 @@
             <div class="max-w-4xl mx-auto">
                 <div class="reveal text-center mb-10">
                     <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Our Memories</h2>
-                    <p class="text-forest-800/80">A glimpse of our journey together (Click photo to enlarge)</p>
+                    <p class="text-forest-800/80">A glimpse of our journey together (tap a photo to enlarge)</p>
                     <div class="w-16 h-0.5 bg-sage-600/40 mx-auto mt-4"></div>
                 </div>
 
                 <!-- Slideshow Container -->
-                <div class="reveal relative bg-white rounded-3xl shadow-md border border-sage-600/25 p-4 sm:p-6" style="transition-delay:.12s">
-                    <div class="relative h-[380px] sm:h-[480px] flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50 cursor-pointer" onclick="openModal(currentSlideSrc)">
-                        <img id="slideshowImage" src="" alt="Memory Slide" class="max-h-full max-w-full object-contain transition-all duration-300">
-                    </div>
+                <div id="slideshowOuter" class="reveal relative bg-white rounded-3xl shadow-md border border-sage-600/25 p-4 sm:p-6" style="transition-delay:.12s">
+                    <button type="button" id="slideshowStage" class="relative w-full h-[380px] sm:h-[480px] flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50 cursor-pointer" onclick="openModal(currentSlideSrc, 'Memory photo')" aria-label="Enlarge this memory photo">
+                        <img id="slideshowImage" src="" alt="Memory photo" class="max-h-full max-w-full object-contain transition-all duration-300">
+                    </button>
 
                     <!-- Navigation Arrows -->
-                    <button onclick="prevSlide()" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 bg-forest-900/70 hover:bg-forest-900 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-20">
+                    <button type="button" onclick="prevSlide()" aria-label="Previous photo" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 bg-forest-900/70 hover:bg-forest-900 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-20">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                     </button>
-                    <button onclick="nextSlide()" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 bg-forest-900/70 hover:bg-forest-900 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-20">
+                    <button type="button" onclick="nextSlide()" aria-label="Next photo" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 bg-forest-900/70 hover:bg-forest-900 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-20">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </button>
 
                     <!-- Slide Counter Indicator -->
                     <div class="text-center mt-4 text-xs tracking-widest text-sage-700 font-semibold">
-                        <span id="slideIndex">1</span> / <span id="slideTotal">25</span>
+                        <span id="slideIndex">1</span> / <span id="slideTotal">1</span>
                     </div>
 
                     <!-- Thumbnail Dots -->
@@ -599,69 +657,67 @@
                     <p class="text-forest-800/80 text-sm">Please respond by November 30, 2026</p>
                 </div>
 
-                <script>
-                    let submitted = false;
-                    function formSubmittedSuccess() {
-                        const formStatus = document.getElementById('formStatus');
-                        const form = document.getElementById('rsvpForm');
-                        const submitBtn = document.getElementById('submitBtn');
-                        if (formStatus && form && submitBtn) {
-                            formStatus.textContent = 'Thank you! Your RSVP has been recorded.';
-                            formStatus.classList.remove('hidden', 'text-red-600');
-                            formStatus.classList.add('text-green-700', 'pop');
-                            formStatus.addEventListener('animationend', () => formStatus.classList.remove('pop'), { once: true });
-                            form.reset();
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = 'Send RSVP';
-                            if (typeof fireConfetti === 'function') fireConfetti();
-                        }
-                        submitted = false;
-                    }
-                </script>
-
-                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(window.submitted) { formSubmittedSuccess(); }"></iframe>
-                <form id="rsvpForm" 
-                      action="https://script.google.com/macros/s/AKfycbzAojikwlWBTv6QH101AjiWPWCFGcuYArgo1UWYR9T2ZSF6ic2bTr3Owzdr5i47tHlS/exec" 
-                      method="POST" 
-                      target="hidden_iframe" 
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" title="RSVP submission target"></iframe>
+                <form id="rsvpForm"
+                      action="https://script.google.com/macros/s/AKfycbzAojikwlWBTv6QH101AjiWPWCFGcuYArgo1UWYR9T2ZSF6ic2bTr3Owzdr5i47tHlS/exec"
+                      method="POST"
+                      target="hidden_iframe"
                       class="space-y-4">
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Full Name</label>
-                        <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
+                        <label for="rsvpName" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Full name</label>
+                        <input id="rsvpName" type="text" name="name" required autocomplete="name" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
                     </div>
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Attendance Status</label>
-                        <select name="status" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
+                        <label for="rsvpContact" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Mobile number</label>
+                        <input id="rsvpContact" type="tel" name="contact" inputmode="tel" autocomplete="tel" placeholder="09XX XXX XXXX" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
+                        <p class="text-xs text-forest-800/60 mt-1">So we can reach you about any changes.</p>
+                    </div>
+                    <div>
+                        <label for="rsvpStatus" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Can you join us?</label>
+                        <select id="rsvpStatus" name="status" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
                             <option value="Yes, I'll be there!">Yes, I'll be there!</option>
                             <option value="I can't make it.">I can't make it</option>
                         </select>
                     </div>
+                    <div id="guestCountWrap">
+                        <label for="rsvpGuests" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Number of guests</label>
+                        <input id="rsvpGuests" type="number" name="participants" min="1" max="5" value="1" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
+                        <p class="text-xs text-forest-800/60 mt-1">Including yourself.</p>
+                    </div>
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Number of 
-                            Guest</label>
-                        <input type="number" name="participants" min="1" max="5" value="1" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
+                        <label for="rsvpMessage" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Message (optional)</label>
+                        <textarea id="rsvpMessage" name="message" rows="3" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30" placeholder="A note for the couple, or anything we should know"></textarea>
                     </div>
                     <button type="submit" id="submitBtn" class="w-full py-3.5 bg-forest-900 text-white rounded-xl font-medium tracking-wide hover:bg-forest-800 transition shadow-md">
                         Send RSVP
                     </button>
-                    <p id="formStatus" class="text-center text-sm mt-3 hidden"></p>
+                    <p id="formStatus" class="text-center text-sm mt-3 hidden" role="status" aria-live="polite"></p>
                 </form>
             </div>
         </section>
     </main>
 
-    <div id="photoModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div id="photoModal" class="fixed inset-0 z-[9998] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Enlarged photo">
         <div class="relative max-w-4xl max-h-[90vh] flex items-center justify-center">
-            <button onclick="closeModal()" aria-label="Close enlarged photo" class="absolute -top-10 right-0 text-white text-xl font-bold bg-black/50 hover:bg-black w-8 h-8 rounded-full flex items-center justify-center">&times;</button>
-            <img id="modalImage" src="" alt="Enlarged Memory Photo" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl">
+            <button type="button" id="modalCloseBtn" onclick="closeModal()" aria-label="Close enlarged photo" class="absolute -top-10 right-0 text-white text-xl font-bold bg-black/50 hover:bg-black w-8 h-8 rounded-full flex items-center justify-center">&times;</button>
+            <img id="modalImage" src="" alt="Enlarged photo" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl">
         </div>
     </div>
 
     <footer class="text-center py-8 text-xs text-sage-700 border-t border-sage-600/20 relative z-10">
-        <p>&copy; 2026 Maribeth & Melbhert. All Rights Reserved.</p>
+        <p>&copy; 2026 Maribeth &amp; Melbhert. All Rights Reserved.</p>
     </footer>
 
     <script>
+        // ---------------------------------------------------------------
+        // Motion preference — checked once and respected everywhere.
+        // ---------------------------------------------------------------
+        const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let prefersReducedMotion = motionQuery.matches;
+
+        // ---------------------------------------------------------------
+        // Falling leaves
+        // ---------------------------------------------------------------
         const canvas = document.getElementById('leaves-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -693,7 +749,7 @@
                 this.speedX = Math.random() * 2 - 1;
                 this.angle = Math.random() * Math.PI * 2;
                 this.spin = Math.random() * 0.03 - 0.015;
-                
+
                 const colors = ['#739574', '#5c7a5d', '#3b5c3e', '#9cb1a4', '#a2b86e'];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
                 this.opacity = Math.random() * 0.5 + 0.3;
@@ -707,7 +763,7 @@
                 const dx = this.x - mouseX;
                 const dy = this.y - mouseY;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 120) {
+                if (dist < 120 && dist > 0) {
                     const force = (120 - dist) / 120;
                     this.x += (dx / dist) * force * 3;
                     this.y += (dy / dist) * force * 3;
@@ -724,7 +780,7 @@
                 ctx.rotate(this.angle);
                 ctx.globalAlpha = this.opacity;
                 ctx.fillStyle = this.color;
-                
+
                 ctx.beginPath();
                 ctx.moveTo(0, -this.size / 2);
                 ctx.bezierCurveTo(this.size / 2, -this.size / 4, this.size / 2, this.size / 2, 0, this.size);
@@ -795,10 +851,9 @@
         }
 
         let burstParticles = [];
-        const prefersReducedMotionForBursts = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         function spawnLeafBurst(x, y) {
-            if (prefersReducedMotionForBursts) return;
+            if (prefersReducedMotion) return;
             for (let i = 0; i < 14; i++) {
                 burstParticles.push(new BurstParticle(x, y, {
                     shape: 'leaf',
@@ -810,7 +865,7 @@
         }
 
         function fireConfetti() {
-            if (prefersReducedMotionForBursts) return;
+            if (prefersReducedMotion) return;
             const originX = window.innerWidth / 2;
             const originY = Math.min(window.innerHeight * 0.4, 380);
             const confettiColors = ['#d4af37', '#f7f4ef', '#739574', '#a2b86e', '#9cb1a4'];
@@ -830,18 +885,23 @@
             if (burstParticles.length > 300) burstParticles.splice(0, burstParticles.length - 300);
         }
 
+        // Only scatter leaves on "empty" clicks — not on links, buttons or form fields.
         window.addEventListener('click', (e) => {
-            if (prefersReducedMotionForBursts) return;
+            if (prefersReducedMotion) return;
+            if (e.target.closest('a, button, input, select, textarea, label, iframe, #photoModal, #intro-overlay')) return;
             spawnLeafBurst(e.clientX, e.clientY);
         });
 
         let leavesAnimationId = null;
         function animateLeaves() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            leaves.forEach(leaf => {
-                leaf.update();
-                leaf.draw();
-            });
+
+            if (!prefersReducedMotion) {
+                leaves.forEach(leaf => {
+                    leaf.update();
+                    leaf.draw();
+                });
+            }
 
             if (burstParticles.length) {
                 burstParticles.forEach(p => {
@@ -853,17 +913,42 @@
 
             leavesAnimationId = requestAnimationFrame(animateLeaves);
         }
-        animateLeaves();
+
+        function startLeaves() {
+            if (prefersReducedMotion) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if (leavesAnimationId) cancelAnimationFrame(leavesAnimationId);
+                leavesAnimationId = null;
+                return;
+            }
+            if (!leavesAnimationId) animateLeaves();
+        }
+        startLeaves();
+
+        // React live if someone flips the OS setting while the page is open.
+        const onMotionChange = (e) => {
+            prefersReducedMotion = e.matches;
+            burstParticles = [];
+            startLeaves();
+        };
+        if (motionQuery.addEventListener) {
+            motionQuery.addEventListener('change', onMotionChange);
+        } else if (motionQuery.addListener) {
+            motionQuery.addListener(onMotionChange);
+        }
 
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 if (leavesAnimationId) cancelAnimationFrame(leavesAnimationId);
                 leavesAnimationId = null;
-            } else if (!leavesAnimationId) {
-                animateLeaves();
+            } else {
+                startLeaves();
             }
         });
 
+        // ---------------------------------------------------------------
+        // Mobile nav
+        // ---------------------------------------------------------------
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         menuBtn.addEventListener('click', () => {
@@ -881,6 +966,21 @@
             });
         });
 
+        // ---------------------------------------------------------------
+        // Gift QR reveal
+        // ---------------------------------------------------------------
+        function revealQrCodes() {
+            const wrap = document.getElementById('qrWrap');
+            const hidden = document.getElementById('qrHidden');
+            if (!wrap || !hidden) return;
+            wrap.classList.remove('hidden');
+            wrap.classList.add('grid');
+            hidden.classList.add('hidden');
+        }
+
+        // ---------------------------------------------------------------
+        // Memories slideshow
+        // ---------------------------------------------------------------
         const memoryPhotos = [
             'https://i.imgur.com/rGNP2xF.png',
             'https://i.imgur.com/NlrUujf.png',
@@ -919,28 +1019,41 @@
 
         memoryPhotos.forEach((src, idx) => {
             const dot = document.createElement('button');
-            dot.className = `w-2.5 h-2.5 rounded-full transition-all ${idx === 0 ? 'bg-forest-900 w-6' : 'bg-sage-600/40 hover:bg-sage-600'}`;
+            dot.type = 'button';
+            dot.setAttribute('aria-label', 'Go to photo ' + (idx + 1));
+            dot.className = idx === 0
+                ? 'w-6 h-2.5 rounded-full bg-forest-900 transition-all shrink-0'
+                : 'w-2.5 h-2.5 rounded-full bg-sage-600/40 hover:bg-sage-600 transition-all shrink-0';
             dot.onclick = () => goToSlide(idx);
             slideDotsEl.appendChild(dot);
         });
+
+        // Warm the next image so slow connections don't flash an empty frame.
+        function preloadNeighbours() {
+            [currentSlide + 1, currentSlide - 1].forEach(i => {
+                const idx = (i + memoryPhotos.length) % memoryPhotos.length;
+                const img = new Image();
+                img.src = memoryPhotos[idx];
+            });
+        }
 
         function updateSlide() {
             slideshowImage.style.opacity = '0';
             setTimeout(() => {
                 currentSlideSrc = memoryPhotos[currentSlide];
                 slideshowImage.src = currentSlideSrc;
-                slideshowImage.alt = `Wedding memory photo ${currentSlide + 1} of ${memoryPhotos.length}`;
+                slideshowImage.alt = 'Wedding memory photo ' + (currentSlide + 1) + ' of ' + memoryPhotos.length;
                 slideshowImage.style.opacity = '1';
                 slideIndexEl.textContent = currentSlide + 1;
 
                 Array.from(slideDotsEl.children).forEach((dot, idx) => {
-                    if (idx === currentSlide) {
-                        dot.className = 'w-6 h-2.5 rounded-full bg-forest-900 transition-all';
-                    } else {
-                        dot.className = 'w-2.5 h-2.5 rounded-full bg-sage-600/40 hover:bg-sage-600 transition-all';
-                    }
+                    dot.className = idx === currentSlide
+                        ? 'w-6 h-2.5 rounded-full bg-forest-900 transition-all shrink-0'
+                        : 'w-2.5 h-2.5 rounded-full bg-sage-600/40 hover:bg-sage-600 transition-all shrink-0';
                 });
-            }, 150);
+
+                preloadNeighbours();
+            }, prefersReducedMotion ? 0 : 150);
         }
 
         function nextSlide() {
@@ -956,50 +1069,132 @@
         function goToSlide(idx) {
             currentSlide = idx;
             updateSlide();
+            restartAutoplay();
         }
 
         updateSlide();
 
-        let slideInterval = setInterval(nextSlide, 5000);
+        let slideInterval = null;
+        function startAutoplay() {
+            if (slideInterval || prefersReducedMotion) return;
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+        function stopAutoplay() {
+            if (slideInterval) clearInterval(slideInterval);
+            slideInterval = null;
+        }
+        function restartAutoplay() {
+            stopAutoplay();
+            startAutoplay();
+        }
+        startAutoplay();
 
-        const slideshowContainer = slideshowImage.parentElement;
-        slideshowContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        slideshowContainer.addEventListener('mouseleave', () => slideInterval = setInterval(nextSlide, 5000));
+        const slideshowOuter = document.getElementById('slideshowOuter');
+        const slideshowStage = document.getElementById('slideshowStage');
 
+        slideshowOuter.addEventListener('mouseenter', stopAutoplay);
+        slideshowOuter.addEventListener('mouseleave', startAutoplay);
+        slideshowOuter.addEventListener('focusin', stopAutoplay);
+        slideshowOuter.addEventListener('focusout', startAutoplay);
+
+        // Touch: pause while the guest is interacting, resume a little after.
         let touchStartX = 0;
-        slideshowContainer.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
-        slideshowContainer.addEventListener('touchend', e => {
-            let touchEndX = e.changedTouches[0].screenX;
-            if (touchEndX < touchStartX - 50) nextSlide();
-            if (touchEndX > touchStartX + 50) prevSlide();
+        let touchStartY = 0;
+        let touchMoved = false;
+        let resumeTimer = null;
+
+        slideshowStage.addEventListener('touchstart', e => {
+            stopAutoplay();
+            touchMoved = false;
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        slideshowStage.addEventListener('touchmove', () => { touchMoved = true; }, { passive: true });
+
+        slideshowStage.addEventListener('touchend', e => {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            const dy = e.changedTouches[0].screenY - touchStartY;
+
+            // Only treat it as a swipe if it's clearly horizontal.
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+                if (dx < 0) nextSlide(); else prevSlide();
+            }
+
+            clearTimeout(resumeTimer);
+            resumeTimer = setTimeout(startAutoplay, 8000);
+        }, { passive: true });
+
+        // Arrow keys when the slideshow has focus.
+        slideshowOuter.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); restartAutoplay(); }
+            if (e.key === 'ArrowLeft')  { e.preventDefault(); prevSlide(); restartAutoplay(); }
         });
 
+        // ---------------------------------------------------------------
+        // Photo modal — Escape to close, scroll lock, focus returned
+        // ---------------------------------------------------------------
         const photoModal = document.getElementById('photoModal');
         const modalImage = document.getElementById('modalImage');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        let lastFocusedBeforeModal = null;
 
-        function openModal(src) {
+        function openModal(src, label) {
+            lastFocusedBeforeModal = document.activeElement;
             modalImage.src = src;
+            modalImage.alt = label || 'Enlarged photo';
             photoModal.classList.remove('hidden');
             photoModal.classList.add('flex');
+            document.body.classList.add('modal-open');
+            modalCloseBtn.focus();
         }
 
         function closeModal() {
             photoModal.classList.remove('flex');
             photoModal.classList.add('hidden');
+            document.body.classList.remove('modal-open');
             modalImage.src = '';
+            if (lastFocusedBeforeModal && typeof lastFocusedBeforeModal.focus === 'function') {
+                lastFocusedBeforeModal.focus();
+            }
+        }
+
+        function modalIsOpen() {
+            return !photoModal.classList.contains('hidden');
         }
 
         photoModal.addEventListener('click', (e) => {
             if (e.target === photoModal) closeModal();
         });
 
-        const weddingDate = new Date("December 30, 2026 00:00:00").getTime();
-        const countdownEl = document.getElementById('countdown');
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = weddingDate - now;
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalIsOpen()) {
+                e.preventDefault();
+                closeModal();
+            }
+            // Keep tabbing inside the dialog while it's open.
+            if (e.key === 'Tab' && modalIsOpen()) {
+                e.preventDefault();
+                modalCloseBtn.focus();
+            }
+        });
 
-            if (distance < 0) {
+        // ---------------------------------------------------------------
+        // Countdown — ISO 8601 with the Philippine offset so every browser
+        // (Safari included) parses it identically, aimed at the ceremony.
+        // ---------------------------------------------------------------
+        const WEDDING_ISO = '2026-12-30T10:00:00+08:00';
+        const weddingDate = new Date(WEDDING_ISO).getTime();
+        const countdownEl = document.getElementById('countdown');
+
+        function pad(n) { return String(n).padStart(2, '0'); }
+
+        function updateCountdown() {
+            if (isNaN(weddingDate)) return;
+
+            const distance = weddingDate - Date.now();
+
+            if (distance <= 0) {
                 if (countdownEl && !countdownEl.dataset.married) {
                     countdownEl.dataset.married = 'true';
                     countdownEl.innerHTML = '<div class="col-span-4 bg-black/40 backdrop-blur-md px-4 py-3 rounded-xl shadow-lg border border-white/20"><span class="block text-lg sm:text-xl font-serif text-white">We&rsquo;re married! 💍</span></div>';
@@ -1007,28 +1202,129 @@
                 return;
             }
 
-            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById('days').textContent = Math.floor(distance / 86400000);
+            document.getElementById('hours').textContent = pad(Math.floor((distance % 86400000) / 3600000));
+            document.getElementById('minutes').textContent = pad(Math.floor((distance % 3600000) / 60000));
+            document.getElementById('seconds').textContent = pad(Math.floor((distance % 60000) / 1000));
         }
 
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
+        // ---------------------------------------------------------------
+        // Add to calendar (.ics)
+        // ---------------------------------------------------------------
+        function addToCalendar() {
+            const lines = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Maribeth and Melbhert//Wedding//EN',
+                'CALSCALE:GREGORIAN',
+                'BEGIN:VEVENT',
+                'UID:maribeth-melbhert-wedding-2026@invitation',
+                'DTSTAMP:20260101T000000Z',
+                'DTSTART:20261230T020000Z',
+                'DTEND:20261230T080000Z',
+                'SUMMARY:Wedding of Maribeth and Melbhert',
+                'LOCATION:Tagbilaran Cathedral\\, Tagbilaran City\\, Bohol\\, Philippines',
+                'DESCRIPTION:Ceremony 10:00 AM at Tagbilaran Cathedral. Reception 12:00 PM at Bohol Tropics.',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ];
+            const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'maribeth-melbhert-wedding.ics';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 2000);
+        }
+
+        // ---------------------------------------------------------------
+        // RSVP
+        //
+        // NOTE: posting into a hidden iframe means the browser can't read
+        // the Apps Script response, so "it loaded" is the only signal we
+        // get. The timeout below at least catches the case where nothing
+        // comes back at all, instead of always claiming success.
+        //
+        // The sturdier upgrade: have the Apps Script return
+        //   ContentService.createTextOutput(JSON.stringify({ok:true}))
+        //     .setMimeType(ContentService.MimeType.JSON)
+        // and replace this with a normal fetch() so a real failure is
+        // visible to the guest.
+        // ---------------------------------------------------------------
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
+        const formStatus = document.getElementById('formStatus');
+        const hiddenIframe = document.getElementById('hidden_iframe');
+        const statusSelect = document.getElementById('rsvpStatus');
+        const guestCountWrap = document.getElementById('guestCountWrap');
+        const guestCountInput = document.getElementById('rsvpGuests');
 
-        form.addEventListener('submit', function() {
-            window.submitted = true;
-            submitted = true;
+        let pendingSubmit = false;
+        let rsvpTimeout = null;
+
+        // Guest count only makes sense if they're coming.
+        function syncGuestField() {
+            const attending = statusSelect.value.toLowerCase().startsWith('yes');
+            guestCountWrap.classList.toggle('hidden', !attending);
+            guestCountInput.required = attending;
+            if (!attending) guestCountInput.value = 0;
+            else if (Number(guestCountInput.value) < 1) guestCountInput.value = 1;
+        }
+        statusSelect.addEventListener('change', syncGuestField);
+        syncGuestField();
+
+        function showStatus(message, ok) {
+            formStatus.textContent = message;
+            formStatus.classList.remove('hidden', 'text-red-600', 'text-green-700');
+            formStatus.classList.add(ok ? 'text-green-700' : 'text-red-600');
+            if (!prefersReducedMotion) {
+                formStatus.classList.add('pop');
+                formStatus.addEventListener('animationend', () => formStatus.classList.remove('pop'), { once: true });
+            }
+        }
+
+        function resetSubmitButton() {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send RSVP';
+        }
+
+        function rsvpSucceeded() {
+            if (!pendingSubmit) return;
+            pendingSubmit = false;
+            clearTimeout(rsvpTimeout);
+            showStatus('Thank you! Your RSVP has been recorded. If you don\u2019t hear from us in a few days, please message us directly.', true);
+            form.reset();
+            syncGuestField();
+            resetSubmitButton();
+            fireConfetti();
+        }
+
+        function rsvpFailed() {
+            if (!pendingSubmit) return;
+            pendingSubmit = false;
+            showStatus('We couldn\u2019t save your RSVP. Please check your connection and try again, or message us directly.', false);
+            resetSubmitButton();
+        }
+
+        hiddenIframe.addEventListener('load', rsvpSucceeded);
+
+        form.addEventListener('submit', function () {
+            pendingSubmit = true;
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
+            submitBtn.textContent = 'Submitting…';
+            clearTimeout(rsvpTimeout);
+            rsvpTimeout = setTimeout(rsvpFailed, 15000);
         });
 
-        // ---- Scroll reveal ----
+        // ---------------------------------------------------------------
+        // Scroll reveal
+        // ---------------------------------------------------------------
         const revealEls = document.querySelectorAll('.reveal');
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         if (prefersReducedMotion || !('IntersectionObserver' in window)) {
             revealEls.forEach(el => el.classList.add('is-visible'));
