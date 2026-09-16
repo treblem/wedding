@@ -200,6 +200,41 @@
     .intro-seal { animation: none; }
     .intro-content { animation: none; }
   }
+
+  /* ---- Scroll reveal ---- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1);
+    will-change: opacity, transform;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      transition: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes status-pop {
+    0%   { transform: scale(.85); opacity: 0; }
+    60%  { transform: scale(1.04); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+
+  #formStatus.pop {
+    animation: status-pop .5s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #formStatus.pop { animation: none; }
+  }
     </style>
 </head>
    <body class="bg-sage-50 text-forest-900 font-sans antialiased selection:bg-sage-600 selection:text-white relative intro-locked">
@@ -333,11 +368,11 @@
 
     <main class="space-y-20 py-12 relative z-10">
         <section id="details" class="max-w-4xl mx-auto px-4 text-center pt-8">
-            <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-4">When & Where</h2>
-            <p class="text-forest-800/80 mb-10 max-w-lg mx-auto">We are overjoyed to celebrate our special day surrounded by family and friends in Bohol.</p>
+            <h2 class="reveal text-3xl md:text-4xl font-serif text-forest-900 mb-4">When & Where</h2>
+            <p class="reveal text-forest-800/80 mb-10 max-w-lg mx-auto">We are overjoyed to celebrate our special day surrounded by family and friends in Bohol.</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                <div class="bg-white rounded-3xl shadow-sm border border-sage-600/25 overflow-hidden flex flex-col justify-between">
+                <div class="reveal bg-white rounded-3xl shadow-sm border border-sage-600/25 overflow-hidden flex flex-col justify-between">
                     <div>
                         <div class="h-48 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgryCm0SDS6BRM8wt4jt7SO6iG4L5bNOHFulauAApsLPc948lLFmYvsXFI1nI3LQ6T2Vpf3oDkRU21v_bbpCOauPlq1EibAo3qQdOzckxk-XMacrr86qPPwLm2srIJdpgKY2g2igPtNMzuURCxYSQJ2_ZZAGJTkPC5SjhuoLI4YP1KhBdsKrh6OEvYf/s1024/Tagbilaran_Church_Interiors.jpg')">
                             <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgryCm0SDS6BRM8wt4jt7SO6iG4L5bNOHFulauAApsLPc948lLFmYvsXFI1nI3LQ6T2Vpf3oDkRU21v_bbpCOauPlq1EibAo3qQdOzckxk-XMacrr86qPPwLm2srIJdpgKY2g2igPtNMzuURCxYSQJ2_ZZAGJTkPC5SjhuoLI4YP1KhBdsKrh6OEvYf/s1024/Tagbilaran_Church_Interiors.jpg" alt="Tagbilaran Cathedral interior" class="w-full h-full object-cover hover:scale-105 transition duration-300" loading="lazy">
@@ -357,7 +392,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-sage-600/25 overflow-hidden flex flex-col justify-between">
+                <div class="reveal bg-white rounded-3xl shadow-sm border border-sage-600/25 overflow-hidden flex flex-col justify-between" style="transition-delay:.12s">
                     <div>
                         <div class="h-48 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal('https://i.imgur.com/EzxrbZC.jpeg')">
                             <img src="https://i.imgur.com/EzxrbZC.jpeg" alt="Bohol Tropics reception venue" class="w-full h-full object-cover hover:scale-105 transition duration-300" loading="lazy">
@@ -380,10 +415,10 @@
         </section>
 
         <section id="dresscode" class="max-w-4xl mx-auto px-4 text-center pt-4">
-            <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block mb-1">What to Wear</span>
-            <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-6">Dress Code</h2>
+            <span class="reveal text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block mb-1">What to Wear</span>
+            <h2 class="reveal text-3xl md:text-4xl font-serif text-forest-900 mb-6">Dress Code</h2>
             
-            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25 max-w-2xl mx-auto space-y-6">
+            <div class="reveal bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25 max-w-2xl mx-auto space-y-6">
                 <!-- Dress code image reference -->
                 <div class="overflow-hidden rounded-2xl border border-sage-600/20 bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://kokvafvtayqrczqzgftx.supabase.co/storage/v1/object/public/gallery-images/00337716-3dc5-47c8-85b1-e2cd8d24ea85/1780471107107-xq5e7tkgl7.jpg')">
                     <img src="https://kokvafvtayqrczqzgftx.supabase.co/storage/v1/object/public/gallery-images/00337716-3dc5-47c8-85b1-e2cd8d24ea85/1780471107107-xq5e7tkgl7.jpg" alt="Dress code guide showing semi-formal attire and suggested colors" class="w-full h-auto object-contain hover:scale-105 transition duration-300" loading="lazy">
@@ -410,7 +445,7 @@
         </section>
 
         <section id="story" class="max-w-3xl mx-auto px-4 pt-4">
-            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
+            <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
                 <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Our Love Story</span>
                 <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Where Our Forever Began</h2>
                 <div class="w-16 h-0.5 bg-sage-600/40 mx-auto"></div>
@@ -448,7 +483,7 @@
         </section>
 
         <section id="verse" class="max-w-3xl mx-auto px-4 pt-4">
-            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
+            <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
                 <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Scripture & Guidance</span>
                 <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Love is Patient, Love is Kind</h2>
                 <div class="w-16 h-0.5 bg-sage-600/40 mx-auto"></div>
@@ -468,7 +503,7 @@
         </section>
 
         <section id="gifts" class="max-w-4xl mx-auto px-4 pt-4">
-            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
+            <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
                 <span class="text-xs uppercase tracking-[0.2em] text-sage-700 font-semibold block">Registry & Contributions</span>
                 <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Note on Gifts</h2>
                 <div class="w-16 h-0.5 bg-sage-600/40 mx-auto"></div>
@@ -479,7 +514,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-6 max-w-2xl mx-auto">
                     <!-- BPI QR Card -->
-                    <div class="bg-white p-3 rounded-2xl shadow-md flex flex-col items-center border border-sage-600/20">
+                    <div class="reveal bg-white p-3 rounded-2xl shadow-md flex flex-col items-center border border-sage-600/20">
                         <div class="bg-white w-full rounded-xl p-2 flex flex-col items-center">
                             <div class="overflow-hidden rounded-lg border border-gray-200 w-full flex items-center justify-center bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/GaGzvjY.jpeg')">
                                 <img src="https://i.imgur.com/GaGzvjY.jpeg" alt="BPI bank QR code for gift contributions" class="w-full h-auto object-contain" crossorigin="anonymous" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/300x350/f8fafc/dc2626?text=BPI+QR';">
@@ -489,7 +524,7 @@
                     </div>
 
                     <!-- GCash QR Card -->
-                    <div class="bg-white p-3 rounded-2xl shadow-md flex flex-col items-center border border-sage-600/20">
+                    <div class="reveal bg-white p-3 rounded-2xl shadow-md flex flex-col items-center border border-sage-600/20" style="transition-delay:.12s">
                         <div class="bg-white w-full rounded-xl p-2 flex flex-col items-center">
                             <div class="overflow-hidden rounded-lg border border-gray-200 w-full flex items-center justify-center bg-gray-50 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/ROGaOmh.jpeg')">
                                 <img src="https://i.imgur.com/ROGaOmh.jpeg" alt="GCash QR code for gift contributions" class="w-full h-auto object-contain" crossorigin="anonymous" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/300x350/f8fafc/2563eb?text=GCash+QR';">
@@ -503,14 +538,14 @@
 
         <section id="memories" class="py-12 px-4 bg-sage-100/40 pt-8">
             <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-10">
+                <div class="reveal text-center mb-10">
                     <h2 class="text-3xl md:text-4xl font-serif text-forest-900 mb-2">Our Memories</h2>
                     <p class="text-forest-800/80">A glimpse of our journey together (Click photo to enlarge)</p>
                     <div class="w-16 h-0.5 bg-sage-600/40 mx-auto mt-4"></div>
                 </div>
 
                 <!-- Slideshow Container -->
-                <div class="relative bg-white rounded-3xl shadow-md border border-sage-600/25 p-4 sm:p-6">
+                <div class="reveal relative bg-white rounded-3xl shadow-md border border-sage-600/25 p-4 sm:p-6" style="transition-delay:.12s">
                     <div class="relative h-[380px] sm:h-[480px] flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50 cursor-pointer" onclick="openModal(currentSlideSrc)">
                         <img id="slideshowImage" src="" alt="Memory Slide" class="max-h-full max-w-full object-contain transition-all duration-300">
                     </div>
@@ -537,7 +572,7 @@
         </section>
 
         <section id="rsvp" class="max-w-xl mx-auto px-4 pt-8">
-            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25">
+            <div class="reveal bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-serif text-forest-900 mb-2">RSVP</h2>
                     <p class="text-forest-800/80 text-sm">Please respond by November 30, 2026</p>
@@ -552,10 +587,12 @@
                         if (formStatus && form && submitBtn) {
                             formStatus.textContent = 'Thank you! Your RSVP has been recorded.';
                             formStatus.classList.remove('hidden', 'text-red-600');
-                            formStatus.classList.add('text-green-700');
+                            formStatus.classList.add('text-green-700', 'pop');
+                            formStatus.addEventListener('animationend', () => formStatus.classList.remove('pop'), { once: true });
                             form.reset();
                             submitBtn.disabled = false;
                             submitBtn.textContent = 'Send RSVP';
+                            if (typeof fireConfetti === 'function') fireConfetti();
                         }
                         submitted = false;
                     }
@@ -679,6 +716,104 @@
 
         const leaves = Array.from({ length: 25 }, () => new Leaf());
 
+        // ---- Burst particles: click-to-scatter leaves + RSVP confetti ----
+        class BurstParticle {
+            constructor(x, y, opts = {}) {
+                this.x = x;
+                this.y = y;
+                this.shape = opts.shape || 'leaf';
+                this.size = opts.size || (Math.random() * 10 + 8);
+
+                const angle = opts.angle !== undefined ? opts.angle : Math.random() * Math.PI * 2;
+                const speed = opts.speed !== undefined ? opts.speed : Math.random() * 3 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.gravity = opts.gravity !== undefined ? opts.gravity : 0.12;
+
+                this.rotation = Math.random() * Math.PI * 2;
+                this.spin = Math.random() * 0.24 - 0.12;
+                this.life = 1;
+                this.decay = opts.decay || (Math.random() * 0.01 + 0.007);
+
+                const colors = opts.colors || ['#739574', '#5c7a5d', '#3b5c3e', '#9cb1a4', '#a2b86e'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.rotation += this.spin;
+                this.life -= this.decay;
+            }
+
+            draw() {
+                if (this.life <= 0) return;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.globalAlpha = Math.max(this.life, 0);
+                ctx.fillStyle = this.color;
+
+                if (this.shape === 'rect') {
+                    ctx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2);
+                } else {
+                    ctx.beginPath();
+                    ctx.moveTo(0, -this.size / 2);
+                    ctx.bezierCurveTo(this.size / 2, -this.size / 4, this.size / 2, this.size / 2, 0, this.size);
+                    ctx.bezierCurveTo(-this.size / 2, this.size / 2, -this.size / 2, -this.size / 4, 0, -this.size / 2);
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            }
+
+            isDead() {
+                return this.life <= 0 || this.y > canvas.height + 80;
+            }
+        }
+
+        let burstParticles = [];
+        const prefersReducedMotionForBursts = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function spawnLeafBurst(x, y) {
+            if (prefersReducedMotionForBursts) return;
+            for (let i = 0; i < 14; i++) {
+                burstParticles.push(new BurstParticle(x, y, {
+                    shape: 'leaf',
+                    speed: Math.random() * 3 + 1.5,
+                    gravity: 0.1
+                }));
+            }
+            if (burstParticles.length > 220) burstParticles.splice(0, burstParticles.length - 220);
+        }
+
+        function fireConfetti() {
+            if (prefersReducedMotionForBursts) return;
+            const originX = window.innerWidth / 2;
+            const originY = Math.min(window.innerHeight * 0.4, 380);
+            const confettiColors = ['#d4af37', '#f7f4ef', '#739574', '#a2b86e', '#9cb1a4'];
+
+            for (let i = 0; i < 70; i++) {
+                const angle = -Math.PI / 2 + (Math.random() * 1.4 - 0.7);
+                burstParticles.push(new BurstParticle(originX, originY, {
+                    shape: 'rect',
+                    size: Math.random() * 8 + 6,
+                    angle: angle,
+                    speed: Math.random() * 7 + 4,
+                    gravity: 0.18,
+                    decay: Math.random() * 0.006 + 0.004,
+                    colors: confettiColors
+                }));
+            }
+            if (burstParticles.length > 300) burstParticles.splice(0, burstParticles.length - 300);
+        }
+
+        window.addEventListener('click', (e) => {
+            if (prefersReducedMotionForBursts) return;
+            spawnLeafBurst(e.clientX, e.clientY);
+        });
+
         let leavesAnimationId = null;
         function animateLeaves() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -686,6 +821,15 @@
                 leaf.update();
                 leaf.draw();
             });
+
+            if (burstParticles.length) {
+                burstParticles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                burstParticles = burstParticles.filter(p => !p.isDead());
+            }
+
             leavesAnimationId = requestAnimationFrame(animateLeaves);
         }
         animateLeaves();
@@ -848,6 +992,25 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
         });
+
+        // ---- Scroll reveal ----
+        const revealEls = document.querySelectorAll('.reveal');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+            revealEls.forEach(el => el.classList.add('is-visible'));
+        } else {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
+            revealEls.forEach(el => revealObserver.observe(el));
+        }
     </script>
 </body>
 </html>
