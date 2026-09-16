@@ -416,12 +416,6 @@
                     <span class="text-[10px] sm:text-xs uppercase text-sage-100 tracking-wider">Seconds</span>
                 </div>
             </div>
-
-            <div class="pt-2">
-                <button type="button" onclick="addToCalendar()" class="inline-block px-5 py-2.5 bg-white/15 hover:bg-white/25 border border-white/40 rounded-xl text-xs font-semibold tracking-wider uppercase transition backdrop-blur-md">
-                    Add to calendar
-                </button>
-            </div>
         </div>
     </header>
 
@@ -657,41 +651,52 @@
                     <p class="text-forest-800/80 text-sm">Please respond by November 30, 2026</p>
                 </div>
 
-                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" title="RSVP submission target"></iframe>
-                <form id="rsvpForm"
-                      action="https://script.google.com/macros/s/AKfycbzAojikwlWBTv6QH101AjiWPWCFGcuYArgo1UWYR9T2ZSF6ic2bTr3Owzdr5i47tHlS/exec"
-                      method="POST"
-                      target="hidden_iframe"
+                <script>
+                    let submitted = false;
+                    function formSubmittedSuccess() {
+                        const formStatus = document.getElementById('formStatus');
+                        const form = document.getElementById('rsvpForm');
+                        const submitBtn = document.getElementById('submitBtn');
+                        if (formStatus && form && submitBtn) {
+                            formStatus.textContent = 'Thank you! Your RSVP has been recorded.';
+                            formStatus.classList.remove('hidden', 'text-red-600');
+                            formStatus.classList.add('text-green-700', 'pop');
+                            formStatus.addEventListener('animationend', () => formStatus.classList.remove('pop'), { once: true });
+                            form.reset();
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Send RSVP';
+                            if (typeof fireConfetti === 'function') fireConfetti();
+                        }
+                        submitted = false;
+                    }
+                </script>
+
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(window.submitted) { formSubmittedSuccess(); }"></iframe>
+                <form id="rsvpForm" 
+                      action="https://script.google.com/macros/s/AKfycbzAojikwlWBTv6QH101AjiWPWCFGcuYArgo1UWYR9T2ZSF6ic2bTr3Owzdr5i47tHlS/exec" 
+                      method="POST" 
+                      target="hidden_iframe" 
                       class="space-y-4">
                     <div>
-                        <label for="rsvpName" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Full name</label>
-                        <input id="rsvpName" type="text" name="name" required autocomplete="name" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
+                        <label class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Full Name</label>
+                        <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
                     </div>
                     <div>
-                        <label for="rsvpContact" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Mobile number</label>
-                        <input id="rsvpContact" type="tel" name="contact" inputmode="tel" autocomplete="tel" placeholder="09XX XXX XXXX" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
-                        <p class="text-xs text-forest-800/60 mt-1">So we can reach you about any changes.</p>
-                    </div>
-                    <div>
-                        <label for="rsvpStatus" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Can you join us?</label>
-                        <select id="rsvpStatus" name="status" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
+                        <label class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Attendance Status</label>
+                        <select name="status" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
                             <option value="Yes, I'll be there!">Yes, I'll be there!</option>
                             <option value="I can't make it.">I can't make it</option>
                         </select>
                     </div>
-                    <div id="guestCountWrap">
-                        <label for="rsvpGuests" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Number of guests</label>
-                        <input id="rsvpGuests" type="number" name="participants" min="1" max="5" value="1" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
-                        <p class="text-xs text-forest-800/60 mt-1">Including yourself.</p>
-                    </div>
                     <div>
-                        <label for="rsvpMessage" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Message (optional)</label>
-                        <textarea id="rsvpMessage" name="message" rows="3" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30" placeholder="A note for the couple, or anything we should know"></textarea>
+                        <label class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Number of 
+                            Guest</label>
+                        <input type="number" name="participants" min="1" max="5" value="1" required class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/30">
                     </div>
                     <button type="submit" id="submitBtn" class="w-full py-3.5 bg-forest-900 text-white rounded-xl font-medium tracking-wide hover:bg-forest-800 transition shadow-md">
                         Send RSVP
                     </button>
-                    <p id="formStatus" class="text-center text-sm mt-3 hidden" role="status" aria-live="polite"></p>
+                    <p id="formStatus" class="text-center text-sm mt-3 hidden"></p>
                 </form>
             </div>
         </section>
@@ -1212,113 +1217,16 @@
         updateCountdown();
 
         // ---------------------------------------------------------------
-        // Add to calendar (.ics)
-        // ---------------------------------------------------------------
-        function addToCalendar() {
-            const lines = [
-                'BEGIN:VCALENDAR',
-                'VERSION:2.0',
-                'PRODID:-//Maribeth and Melbhert//Wedding//EN',
-                'CALSCALE:GREGORIAN',
-                'BEGIN:VEVENT',
-                'UID:maribeth-melbhert-wedding-2026@invitation',
-                'DTSTAMP:20260101T000000Z',
-                'DTSTART:20261230T020000Z',
-                'DTEND:20261230T080000Z',
-                'SUMMARY:Wedding of Maribeth and Melbhert',
-                'LOCATION:Tagbilaran Cathedral\\, Tagbilaran City\\, Bohol\\, Philippines',
-                'DESCRIPTION:Ceremony 10:00 AM at Tagbilaran Cathedral. Reception 12:00 PM at Bohol Tropics.',
-                'END:VEVENT',
-                'END:VCALENDAR'
-            ];
-            const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'maribeth-melbhert-wedding.ics';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            setTimeout(() => URL.revokeObjectURL(url), 2000);
-        }
-
-        // ---------------------------------------------------------------
         // RSVP
-        //
-        // NOTE: posting into a hidden iframe means the browser can't read
-        // the Apps Script response, so "it loaded" is the only signal we
-        // get. The timeout below at least catches the case where nothing
-        // comes back at all, instead of always claiming success.
-        //
-        // The sturdier upgrade: have the Apps Script return
-        //   ContentService.createTextOutput(JSON.stringify({ok:true}))
-        //     .setMimeType(ContentService.MimeType.JSON)
-        // and replace this with a normal fetch() so a real failure is
-        // visible to the guest.
         // ---------------------------------------------------------------
         const form = document.getElementById('rsvpForm');
         const submitBtn = document.getElementById('submitBtn');
-        const formStatus = document.getElementById('formStatus');
-        const hiddenIframe = document.getElementById('hidden_iframe');
-        const statusSelect = document.getElementById('rsvpStatus');
-        const guestCountWrap = document.getElementById('guestCountWrap');
-        const guestCountInput = document.getElementById('rsvpGuests');
 
-        let pendingSubmit = false;
-        let rsvpTimeout = null;
-
-        // Guest count only makes sense if they're coming.
-        function syncGuestField() {
-            const attending = statusSelect.value.toLowerCase().startsWith('yes');
-            guestCountWrap.classList.toggle('hidden', !attending);
-            guestCountInput.required = attending;
-            if (!attending) guestCountInput.value = 0;
-            else if (Number(guestCountInput.value) < 1) guestCountInput.value = 1;
-        }
-        statusSelect.addEventListener('change', syncGuestField);
-        syncGuestField();
-
-        function showStatus(message, ok) {
-            formStatus.textContent = message;
-            formStatus.classList.remove('hidden', 'text-red-600', 'text-green-700');
-            formStatus.classList.add(ok ? 'text-green-700' : 'text-red-600');
-            if (!prefersReducedMotion) {
-                formStatus.classList.add('pop');
-                formStatus.addEventListener('animationend', () => formStatus.classList.remove('pop'), { once: true });
-            }
-        }
-
-        function resetSubmitButton() {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Send RSVP';
-        }
-
-        function rsvpSucceeded() {
-            if (!pendingSubmit) return;
-            pendingSubmit = false;
-            clearTimeout(rsvpTimeout);
-            showStatus('Thank you! Your RSVP has been recorded. If you don\u2019t hear from us in a few days, please message us directly.', true);
-            form.reset();
-            syncGuestField();
-            resetSubmitButton();
-            fireConfetti();
-        }
-
-        function rsvpFailed() {
-            if (!pendingSubmit) return;
-            pendingSubmit = false;
-            showStatus('We couldn\u2019t save your RSVP. Please check your connection and try again, or message us directly.', false);
-            resetSubmitButton();
-        }
-
-        hiddenIframe.addEventListener('load', rsvpSucceeded);
-
-        form.addEventListener('submit', function () {
-            pendingSubmit = true;
+        form.addEventListener('submit', function() {
+            window.submitted = true;
+            submitted = true;
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting…';
-            clearTimeout(rsvpTimeout);
-            rsvpTimeout = setTimeout(rsvpFailed, 15000);
+            submitBtn.textContent = 'Submitting...';
         });
 
         // ---------------------------------------------------------------
