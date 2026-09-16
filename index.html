@@ -15,6 +15,7 @@
     <meta name="twitter:title" content="Maribeth & Melbhert's Wedding">
     <meta name="twitter:description" content="December 30, 2026 • Bohol, Philippines. We'd love for you to join us on our special day.">
     <meta name="twitter:image" content="https://i.imgur.com/0kkZR9Z.png">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%23142b15'/%3E%3Ctext x='32' y='40' font-family='Georgia, serif' font-size='24' fill='%23f7f4ef' text-anchor='middle'%3EM%26M%3C/text%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -257,7 +258,7 @@
   
  
 
-  <button id="music-btn" onclick="toggleMusic()">🎵</button>
+  <button id="music-btn" onclick="toggleMusic()" aria-label="Play background music" aria-pressed="false">🎵</button>
 
   <script>
     const introOverlay = document.getElementById('intro-overlay');
@@ -274,6 +275,8 @@
         bg.play().then(() => {
           musicBtn.classList.add('playing');
           musicBtn.textContent = '⏸';
+          musicBtn.setAttribute('aria-label', 'Pause background music');
+          musicBtn.setAttribute('aria-pressed', 'true');
         }).catch(() => { /* user can still tap the music button manually */ });
       }
 
@@ -297,10 +300,14 @@
         });
         btn.classList.add('playing');
         btn.textContent = '⏸';
+        btn.setAttribute('aria-label', 'Pause background music');
+        btn.setAttribute('aria-pressed', 'true');
       } else {
         music.pause();
         btn.classList.remove('playing');
         btn.textContent = '🎵';
+        btn.setAttribute('aria-label', 'Play background music');
+        btn.setAttribute('aria-pressed', 'false');
       }
     }
   </script>
@@ -318,7 +325,7 @@
                 <a href="#rsvp" class="hover:text-sage-600 transition">RSVP</a>
             </div>
             <div class="flex md:hidden">
-                <button id="menu-btn" class="text-forest-900 focus:outline-none">
+                <button id="menu-btn" class="text-forest-900 focus:outline-none" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
                 </button>
             </div>
@@ -631,7 +638,7 @@
 
     <div id="photoModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="relative max-w-4xl max-h-[90vh] flex items-center justify-center">
-            <button onclick="closeModal()" class="absolute -top-10 right-0 text-white text-xl font-bold bg-black/50 hover:bg-black w-8 h-8 rounded-full flex items-center justify-center">&times;</button>
+            <button onclick="closeModal()" aria-label="Close enlarged photo" class="absolute -top-10 right-0 text-white text-xl font-bold bg-black/50 hover:bg-black w-8 h-8 rounded-full flex items-center justify-center">&times;</button>
             <img id="modalImage" src="" alt="Enlarged Memory Photo" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl">
         </div>
     </div>
@@ -847,11 +854,16 @@
         const mobileMenu = document.getElementById('mobile-menu');
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
+            const isOpen = !mobileMenu.classList.contains('hidden');
+            menuBtn.setAttribute('aria-expanded', String(isOpen));
+            menuBtn.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
         });
 
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
+                menuBtn.setAttribute('aria-expanded', 'false');
+                menuBtn.setAttribute('aria-label', 'Open navigation menu');
             });
         });
 
@@ -968,11 +980,18 @@
         });
 
         const weddingDate = new Date("December 30, 2026 00:00:00").getTime();
+        const countdownEl = document.getElementById('countdown');
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = weddingDate - now;
 
-            if (distance < 0) return;
+            if (distance < 0) {
+                if (countdownEl && !countdownEl.dataset.married) {
+                    countdownEl.dataset.married = 'true';
+                    countdownEl.innerHTML = '<div class="col-span-4 bg-black/40 backdrop-blur-md px-4 py-3 rounded-xl shadow-lg border border-white/20"><span class="block text-lg sm:text-xl font-serif text-white">We&rsquo;re married! 💍</span></div>';
+                }
+                return;
+            }
 
             document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
             document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
