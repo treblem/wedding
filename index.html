@@ -555,29 +555,104 @@
 </div>
 
 <!-- Couple's Invite Link Generator Modal (Open via ?admin=1 or Ctrl+Shift+L) -->
-<div id="linkGenModal" class="fixed inset-0 z-[9997] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="linkGenTitle">
-  <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-sage-600/30 space-y-5 relative">
-    <button type="button" onclick="closeLinkGenerator()" aria-label="Close Link Generator" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 flex items-center justify-center font-bold">&times;</button>
-    <div>
-      <span class="text-[11px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Couple's Tool</span>
-      <h3 id="linkGenTitle" class="font-serif text-3xl text-forest-900 font-semibold">Personalized Invite Link Builder</h3>
-      <p class="text-xs text-forest-800/75 mt-1">Generate custom links that greet your guests by name on the seal and lock in their reserved seat count.</p>
+<div id="linkGenModal" class="fixed inset-0 z-[9997] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="linkGenTitle">
+  <div class="bg-white rounded-3xl max-w-4xl w-full p-5 sm:p-8 shadow-2xl border border-sage-600/30 space-y-5 relative my-auto max-h-[92vh] flex flex-col">
+    <button type="button" onclick="closeLinkGenerator()" aria-label="Close Link Generator" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 flex items-center justify-center font-bold text-lg">&times;</button>
+
+    <div class="shrink-0">
+      <span class="text-[11px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Couple's Tool • Maribeth &amp; Melbhert</span>
+      <h3 id="linkGenTitle" class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Personalized Invite Link Builder</h3>
+      <p class="text-xs text-forest-800/75 mt-1">Create custom links that greet guests on the seal and lock in their reserved seat count.</p>
+
+      <!-- Mode Switch Tabs -->
+      <div class="inline-flex rounded-xl bg-sage-50 p-1 border border-sage-600/20 mt-4">
+        <button type="button" id="tabSingleBtn" onclick="switchBuilderTab('single')" class="px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition bg-forest-900 text-champagne shadow-sm">Single Guest</button>
+        <button type="button" id="tabBatchBtn" onclick="switchBuilderTab('batch')" class="px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900">Batch Paste (Excel / Sheets)</button>
+      </div>
     </div>
-    <div class="space-y-4">
-      <div>
-        <label for="gen-guest-name" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Guest / Family Name</label>
-        <input id="gen-guest-name" type="text" placeholder="e.g., Mr. & Mrs. Juan Dela Cruz" oninput="updateGeneratedLink()" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-sm text-forest-900">
+
+    <!-- TAB 1: Single Guest -->
+    <div id="builderSinglePane" class="space-y-4 overflow-y-auto pr-1">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="sm:col-span-2">
+          <label for="gen-guest-name" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Guest / Family Name</label>
+          <input id="gen-guest-name" type="text" placeholder="e.g., Mr. & Mrs. Juan Dela Cruz" oninput="updateGeneratedLink()" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-sm text-forest-900">
+        </div>
+        <div>
+          <label for="gen-guest-seats" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Reserved Seats (1–15)</label>
+          <input id="gen-guest-seats" type="number" min="1" max="15" value="2" oninput="updateGeneratedLink()" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-sm text-forest-900">
+        </div>
       </div>
-      <div>
-        <label for="gen-guest-seats" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Reserved Seats (1–10)</label>
-        <input id="gen-guest-seats" type="number" min="1" max="10" value="2" oninput="updateGeneratedLink()" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-sm text-forest-900">
-      </div>
-      <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 space-y-2">
-        <span class="block text-[10px] uppercase tracking-widest text-sage-700 font-semibold">Generated URL</span>
+      <div class="p-4 rounded-2xl bg-sage-50 border border-sage-600/20 space-y-2.5">
+        <span class="block text-[10px] uppercase tracking-widest text-sage-700 font-semibold">Generated Personalized URL</span>
         <input id="gen-result-url" type="text" readonly class="w-full bg-white px-3 py-2 rounded-lg border border-sage-600/20 text-xs text-forest-900 font-mono select-all">
         <div class="flex flex-wrap gap-2 pt-1">
           <button type="button" id="copyUrlBtn" onclick="copyInviteLink(false)" class="flex-1 py-2.5 px-4 bg-forest-900 hover:bg-forest-800 text-champagne rounded-xl text-xs uppercase tracking-widest font-semibold transition">Copy Link</button>
           <button type="button" id="copyMsgBtn" onclick="copyInviteLink(true)" class="flex-1 py-2.5 px-4 bg-gold-500 hover:bg-gold-600 text-forest-950 rounded-xl text-xs uppercase tracking-widest font-semibold transition">Copy Messenger Invite</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Batch Paste from Excel / Google Sheets -->
+    <div id="builderBatchPane" class="hidden flex-col space-y-4 overflow-y-auto pr-1">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
+        <div class="md:col-span-2">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+            <label for="batch-paste-input" class="text-xs uppercase tracking-wider text-sage-700 font-semibold">Paste 2 Columns from Excel / Google Sheets (Name &amp; Seats)</label>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="loadSampleSponsors()" class="text-[11px] font-semibold text-gold-600 hover:underline">Load Principal Sponsors Sample</button>
+              <span class="text-sage-600/40">•</span>
+              <button type="button" onclick="clearBatchList()" class="text-[11px] font-semibold text-sage-700 hover:underline">Clear</button>
+            </div>
+          </div>
+          <textarea id="batch-paste-input" rows="4" oninput="parseBatchInput()" placeholder="Mr. Alex Y. Ranoco & Mrs. Zotica U. Ranoco&#9;2&#10;Mr. German T. Palapar & Mrs. Emilia J. Palapar&#9;2&#10;Ms. Maria Santos, 1" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-xs font-mono text-forest-900 focus:outline-none focus:ring-2 focus:ring-sage-600"></textarea>
+        </div>
+        <div class="bg-sage-50/80 border border-sage-600/20 rounded-2xl p-3.5 space-y-2.5">
+          <div>
+            <label for="batch-default-seats" class="block text-[11px] uppercase tracking-wider text-sage-700 font-semibold mb-1">Default Seats (if column 2 is blank)</label>
+            <input id="batch-default-seats" type="number" min="1" max="15" value="2" oninput="parseBatchInput()" class="w-full px-3 py-1.5 rounded-lg border border-sage-600/30 bg-white text-xs text-forest-900">
+          </div>
+          <div class="grid grid-cols-2 gap-2 pt-1 text-center">
+            <div class="bg-white p-2 rounded-xl border border-sage-600/15">
+              <span id="batchStatParties" class="block font-serif text-xl font-bold text-forest-900">0</span>
+              <span class="text-[10px] uppercase tracking-wider text-sage-700">Parties</span>
+            </div>
+            <div class="bg-white p-2 rounded-xl border border-sage-600/15">
+              <span id="batchStatSeats" class="block font-serif text-xl font-bold text-gold-600">0</span>
+              <span class="text-[10px] uppercase tracking-wider text-sage-700">Total Seats</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Export Actions Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-2 bg-sage-100/70 px-4 py-2.5 rounded-2xl border border-sage-600/20">
+        <span class="text-xs font-medium text-forest-900">Export or copy individual guest invitations below:</span>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="copyTsvBtn" onclick="exportBatchTSV()" class="px-3.5 py-1.5 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-[11px] uppercase tracking-wider font-semibold transition">Copy Table for Excel / Sheets</button>
+          <button type="button" onclick="downloadBatchCSV()" class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-sage-50 text-forest-900 border border-sage-600/30 text-[11px] uppercase tracking-wider font-semibold transition">Download .CSV</button>
+        </div>
+      </div>
+
+      <!-- Generated Table -->
+      <div class="border border-sage-600/25 rounded-2xl overflow-hidden bg-white">
+        <div class="max-h-[300px] overflow-y-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="bg-sage-50 border-b border-sage-600/20 sticky top-0 z-10 text-[10px] uppercase tracking-wider text-sage-700 font-semibold">
+              <tr>
+                <th class="py-2.5 px-3 w-10 text-center">#</th>
+                <th class="py-2.5 px-3">Guest / Party Name</th>
+                <th class="py-2.5 px-3 w-20 text-center">Seats</th>
+                <th class="py-2.5 px-3 hidden sm:table-cell">Personalized Link</th>
+                <th class="py-2.5 px-3 text-right w-44">Quick Copy</th>
+              </tr>
+            </thead>
+            <tbody id="batchTableBody" class="divide-y divide-sage-600/15">
+              <tr>
+                <td colspan="5" class="py-8 text-center text-sage-600 italic">Paste your guest list above or click "Load Principal Sponsors Sample" to generate links.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -666,55 +741,274 @@ function applyGuestPersonalization() {
   }
 }
 
-/* ---------- Couple's Link Generator Tool (?admin=1 or Ctrl+Shift+L) ---------- */
+/* ---------- Couple's Link Generator Tool (Single & Batch Excel Mode) ---------- */
 const linkGenModal = document.getElementById('linkGenModal');
-function openLinkGenerator() {
+let batchParsedRows = [];
+
+function getBaseInviteUrl() {
+  return window.location.origin + window.location.pathname;
+}
+
+function buildGuestUrl(name, seats) {
+  const baseUrl = getBaseInviteUrl();
+  const p = new URLSearchParams();
+  if (name) p.set('guest', name);
+  if (!isNaN(seats) && seats >= 1) p.set('seats', String(seats));
+  return p.toString() ? `${baseUrl}?${p.toString()}` : baseUrl;
+}
+
+function buildGuestMessage(name, seats, url) {
+  const gName = name || 'our dear guest';
+  const gSeats = seats || 1;
+  return `Dear ${gName},\n\nWith joyful hearts, we invite you to celebrate our wedding on Wednesday, December 30, 2026 in Bohol! We have reserved ${gSeats} ${gSeats === 1 ? 'seat' : 'seats'} in your honor.\n\nView your personalized invitation & RSVP here:\n${url}\n\nWith love,\nMaribeth & Melbhert`;
+}
+
+function switchBuilderTab(mode) {
+  const isBatch = mode === 'batch';
+  document.getElementById('builderSinglePane').classList.toggle('hidden', isBatch);
+  const batchPane = document.getElementById('builderBatchPane');
+  batchPane.classList.toggle('hidden', !isBatch);
+  batchPane.classList.toggle('flex', isBatch);
+
+  const singleBtn = document.getElementById('tabSingleBtn');
+  const batchBtn = document.getElementById('tabBatchBtn');
+  singleBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition ' + (!isBatch ? 'bg-forest-900 text-champagne shadow-sm' : 'text-forest-800 hover:text-forest-900');
+  batchBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition ' + (isBatch ? 'bg-forest-900 text-champagne shadow-sm' : 'text-forest-800 hover:text-forest-900');
+}
+
+function openLinkGenerator(defaultMode) {
   linkGenModal.classList.remove('hidden');
   linkGenModal.classList.add('flex');
+  if (defaultMode) switchBuilderTab(defaultMode);
   updateGeneratedLink();
-  document.getElementById('gen-guest-name').focus();
 }
+
 function closeLinkGenerator() {
   linkGenModal.classList.remove('flex');
   linkGenModal.classList.add('hidden');
 }
+
 function updateGeneratedLink() {
   const gName = document.getElementById('gen-guest-name').value.trim();
   const gSeats = parseInt(document.getElementById('gen-guest-seats').value, 10);
-  const baseUrl = window.location.origin + window.location.pathname;
-  const p = new URLSearchParams();
-  if (gName) p.set('guest', gName);
-  if (!isNaN(gSeats) && gSeats >= 1) p.set('seats', String(gSeats));
-  const finalUrl = p.toString() ? `${baseUrl}?${p.toString()}` : baseUrl;
-  document.getElementById('gen-result-url').value = finalUrl;
+  document.getElementById('gen-result-url').value = buildGuestUrl(gName, gSeats);
 }
+
 function copyInviteLink(withMessage) {
   updateGeneratedLink();
   const url = document.getElementById('gen-result-url').value;
-  const gName = document.getElementById('gen-guest-name').value.trim() || 'our dear guest';
+  const gName = document.getElementById('gen-guest-name').value.trim();
   const gSeats = parseInt(document.getElementById('gen-guest-seats').value, 10) || 1;
-  const payload = withMessage
-    ? `Dear ${gName},\n\nWith joyful hearts, we invite you to celebrate our wedding on Wednesday, December 30, 2026 in St. Joseph the Worker Cathedral-Shrine Tagbilaran, Bohol! We have reserved ${gSeats} ${gSeats === 1 ? 'seat' : 'seats'} in your honor.\n\nView your personalized invitation & RSVP here:\n${url}\n\nWith love,\nMaribeth & Melbhert`
-    : url;
+  const payload = withMessage ? buildGuestMessage(gName, gSeats, url) : url;
   const targetBtn = document.getElementById(withMessage ? 'copyMsgBtn' : 'copyUrlBtn');
   const origText = targetBtn.textContent;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(payload).then(() => {
       targetBtn.textContent = 'Copied! ✓';
-      setTimeout(() => { targetBtn.textContent = origText; }, 2000);
+      setTimeout(() => { targetBtn.textContent = origText; }, 1800);
     });
   }
 }
+
+function parseBatchInput() {
+  const raw = document.getElementById('batch-paste-input').value || '';
+  const fallbackSeats = Math.max(1, Math.min(15, parseInt(document.getElementById('batch-default-seats').value, 10) || 2));
+  const lines = raw.split(/\r?\n/);
+  const rows = [];
+
+  lines.forEach(line => {
+    const trimmed = line.trim();
+    if (!trimmed) return;
+
+    let name = trimmed;
+    let seats = fallbackSeats;
+
+    // 1. Tab-separated (direct copy from Excel / Google Sheets)
+    if (trimmed.includes('\t')) {
+      const parts = trimmed.split('\t').map(s => s.trim()).filter(Boolean);
+      if (parts.length >= 2 && /^\d+$/.test(parts[parts.length - 1])) {
+        seats = parseInt(parts.pop(), 10);
+        name = parts.join(' ');
+      } else if (parts.length >= 1) {
+        name = parts[0];
+      }
+    } else {
+      // 2. Comma, pipe, or semicolon separated with trailing number (e.g., "Mr. & Mrs. Cruz, 2")
+      const match = trimmed.match(/^(.*?)\s*[\|,;]\s*(\d+)\s*$/);
+      if (match) {
+        name = match[1].trim();
+        seats = parseInt(match[2], 10);
+      }
+    }
+
+    name = name.replace(/^["']|["']$/g, '').trim();
+    // Skip accidental spreadsheet header row
+    if (!name || (/^(guest|name|party|full\s*name|sponsor)/i.test(name) && rows.length === 0 && trimmed.toLowerCase().includes('seat'))) {
+      return;
+    }
+
+    seats = Math.max(1, Math.min(15, isNaN(seats) ? fallbackSeats : seats));
+    const url = buildGuestUrl(name, seats);
+    rows.push({ name, seats, url, message: buildGuestMessage(name, seats, url) });
+  });
+
+  batchParsedRows = rows;
+  renderBatchTable();
+}
+
+function renderBatchTable() {
+  const tbody = document.getElementById('batchTableBody');
+  const partiesEl = document.getElementById('batchStatParties');
+  const seatsEl = document.getElementById('batchStatSeats');
+
+  partiesEl.textContent = String(batchParsedRows.length);
+  const totalSeats = batchParsedRows.reduce((acc, r) => acc + r.seats, 0);
+  seatsEl.textContent = String(totalSeats);
+
+  tbody.innerHTML = '';
+  if (!batchParsedRows.length) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td colspan="5" class="py-8 text-center text-sage-600 italic">Paste your guest list above or click "Load Principal Sponsors Sample" to generate links.</td>';
+    tbody.appendChild(tr);
+    return;
+  }
+
+  batchParsedRows.forEach((row, idx) => {
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-sage-50/70 transition';
+
+    const tdNum = document.createElement('td');
+    tdNum.className = 'py-2.5 px-3 text-center text-sage-600 font-medium';
+    tdNum.textContent = String(idx + 1);
+
+    const tdName = document.createElement('td');
+    tdName.className = 'py-2.5 px-3 font-medium text-forest-900';
+    tdName.textContent = row.name;
+
+    const tdSeats = document.createElement('td');
+    tdSeats.className = 'py-2.5 px-3 text-center';
+    const seatBadge = document.createElement('span');
+    seatBadge.className = 'inline-block px-2 py-0.5 rounded-full bg-sage-100 text-forest-900 font-semibold text-[11px]';
+    seatBadge.textContent = String(row.seats);
+    tdSeats.appendChild(seatBadge);
+
+    const tdUrl = document.createElement('td');
+    tdUrl.className = 'py-2.5 px-3 hidden sm:table-cell max-w-[220px]';
+    const urlInput = document.createElement('input');
+    urlInput.type = 'text';
+    urlInput.readOnly = true;
+    urlInput.value = row.url;
+    urlInput.className = 'w-full bg-sage-50/70 px-2 py-1 rounded border border-sage-600/20 text-[11px] font-mono text-forest-800 select-all';
+    tdUrl.appendChild(urlInput);
+
+    const tdActions = document.createElement('td');
+    tdActions.className = 'py-2.5 px-3 text-right whitespace-nowrap space-x-1.5';
+
+    const btnLink = document.createElement('button');
+    btnLink.type = 'button';
+    btnLink.className = 'px-2.5 py-1 rounded-lg bg-forest-900 hover:bg-forest-800 text-champagne text-[10px] uppercase tracking-wider font-semibold transition';
+    btnLink.textContent = 'Copy Link';
+    btnLink.onclick = () => copyBatchItem(idx, false, btnLink);
+
+    const btnMsg = document.createElement('button');
+    btnMsg.type = 'button';
+    btnMsg.className = 'px-2.5 py-1 rounded-lg bg-gold-500 hover:bg-gold-600 text-forest-950 text-[10px] uppercase tracking-wider font-semibold transition';
+    btnMsg.textContent = 'Copy Msg';
+    btnMsg.onclick = () => copyBatchItem(idx, true, btnMsg);
+
+    tdActions.append(btnLink, btnMsg);
+    tr.append(tdNum, tdName, tdSeats, tdUrl, tdActions);
+    tbody.appendChild(tr);
+  });
+}
+
+function copyBatchItem(idx, withMsg, btnEl) {
+  const item = batchParsedRows[idx];
+  if (!item || !navigator.clipboard) return;
+  const text = withMsg ? item.message : item.url;
+  const orig = btnEl.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btnEl.textContent = 'Copied ✓';
+    btnEl.classList.add('ring-2', 'ring-sage-600');
+    setTimeout(() => {
+      btnEl.textContent = orig;
+      btnEl.classList.remove('ring-2', 'ring-sage-600');
+    }, 1800);
+  });
+}
+
+function exportBatchTSV() {
+  if (!batchParsedRows.length || !navigator.clipboard) return;
+  const header = ['Guest / Party Name', 'Reserved Seats', 'Personalized Link', 'Messenger Invite Text'].join('\t');
+  const lines = batchParsedRows.map(r => [
+    r.name,
+    r.seats,
+    r.url,
+    r.message.replace(/\n/g, ' ')
+  ].join('\t'));
+  const btn = document.getElementById('copyTsvBtn');
+  const orig = btn.textContent;
+  navigator.clipboard.writeText([header, ...lines].join('\r\n')).then(() => {
+    btn.textContent = 'Copied Table! Paste in Excel/Sheets ✓';
+    setTimeout(() => { btn.textContent = orig; }, 2200);
+  });
+}
+
+function downloadBatchCSV() {
+  if (!batchParsedRows.length) return;
+  const esc = v => `"${String(v).replace(/"/g, '""')}"`;
+  const header = ['Guest / Party Name', 'Reserved Seats', 'Personalized Link', 'Invitation Message'].map(esc).join(',');
+  const lines = batchParsedRows.map(r => [r.name, r.seats, r.url, r.message].map(esc).join(','));
+  const blob = new Blob([[header, ...lines].join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Maribeth-Melbhert-Guest-Links.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function loadSampleSponsors() {
+  const sample = [
+    'Mr. Alex Y. Ranoco & Mrs. Zotica U. Ranoco\t2',
+    'Mr. German T. Palapar & Mrs. Emilia J. Palapar\t2',
+    'Mr. Avito S. Andoy & Mrs. Cleopatra P. Andoy\t2',
+    'Mr. Manuel G. Jayectin & Mrs. Julieta P. Hilot\t2',
+    'Mr. Wilfredo L. Miano & Dr. Zenaida L. Miano\t2',
+    'Hon. Galicano E. Atup & Mrs. Ma. Delilah C. Atup\t2',
+    'Engr. Fredegelbert A. Flor & Dr. Wilfreda O. Flor\t2',
+    'Engr. Eutiqio A. Bernales Jr. & Mrs. Mafay D. Bernales\t2',
+    'Mr. Sary I. Lim & Mrs. Rosario F. Lim\t2',
+    'Mr. Ponce M. Mandabon & Mrs. Diema A. Mandabon\t2',
+    'Dr. Edilberto Avenido & Mrs. Ma. Lolette L. Avenido\t2',
+    'Dr. Jupiter I. Maboloc & Dr. Ma. Maya V. Tumalon\t2',
+    'Mr. Yehudi L. Santillan & Mrs. Zenaida Boyonas\t2',
+    'Mr. Didoy P. Salmasan & Mrs. Joelita C. Salmasan\t2',
+    'Atty. Teodoro M. Lagang & Mrs. Cherry Belle G. Lagang\t2',
+    'Atty. Generoso G. Esmero & Dr. Arceli M. Hernando\t2',
+    'Mr. Antonio L. Boyles & Dr. Zenaida Boyles\t2'
+  ].join('\n');
+  document.getElementById('batch-paste-input').value = sample;
+  parseBatchInput();
+}
+
+function clearBatchList() {
+  document.getElementById('batch-paste-input').value = '';
+  parseBatchInput();
+}
+
 if (urlParams.get('admin') === '1' || urlParams.get('builder') === '1') {
   window.addEventListener('DOMContentLoaded', () => {
     openInvitation();
-    openLinkGenerator();
+    openLinkGenerator('batch');
   });
 }
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'l') {
     e.preventDefault();
-    openLinkGenerator();
+    openLinkGenerator('batch');
   }
 });
 
