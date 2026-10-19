@@ -1,81 +1,112 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maribeth &amp; Melbhert's Wedding Invitation</title>
-<meta name="description" content="Join us as we celebrate the wedding of Maribeth Poncia Palapar & Melbhert Boiser on December 30, 2026 in Bohol, Philippines.">
-<meta property="og:title" content="Maribeth & Melbhert's Wedding">
-<meta property="og:description" content="December 30, 2026 • Bohol, Philippines. We'd love for you to join us on our special day.">
-<meta property="og:image" content="https://i.imgur.com/0kkZR9Z.png">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Maribeth & Melbhert's Wedding">
-<meta name="twitter:description" content="December 30, 2026 • Bohol, Philippines. We'd love for you to join us on our special day.">
-<meta name="twitter:image" content="https://i.imgur.com/0kkZR9Z.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%23142b15' stroke='%23c5a059' stroke-width='2'/%3E%3Ctext x='32' y='40' font-family='Georgia, serif' font-size='22' fill='%23f7f4ef' text-anchor='middle'%3EM%26M%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config={theme:{extend:{fontFamily:{serif:['"Cormorant Garamond"','Georgia','serif'],sans:['"Plus Jakarta Sans"','system-ui','sans-serif']},colors:{forest:{800:'#1e3f20',900:'#142b15',950:'#0b190c'},sage:{50:'#f5f8f5',100:'#e3ece3',200:'#c7dac8',600:'#739574',700:'#5c7a5d'},gold:{300:'#e2c78d',400:'#d4b26f',500:'#c5a059',600:'#a8843e'},champagne:'#f7f4ef'}}}}
-</script>
-<style>
-#leaves-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40}
-#music-btn{position:fixed;bottom:24px;right:24px;width:54px;height:54px;border-radius:9999px;background:rgba(20,43,21,.92);backdrop-filter:blur(8px);color:#f7f4ef;border:1px solid rgba(197,160,89,.55);cursor:pointer;box-shadow:0 10px 25px -5px rgba(20,43,21,.45);display:flex;align-items:center;justify-content:center;transition:transform .25s,background .25s,border-color .25s;z-index:1000}
-#music-btn:hover{background:#1e3f20;border-color:#c5a059;transform:translateY(-2px) scale(1.05)}
-#music-btn.playing{animation:gold-pulse 2s infinite}
-@keyframes gold-pulse{0%{box-shadow:0 0 0 0 rgba(197,160,89,.55)}70%{box-shadow:0 0 0 14px rgba(197,160,89,0)}100%{box-shadow:0 0 0 0 rgba(197,160,89,0)}}
-.eq-bars{display:none;align-items:flex-end;gap:2.5px;height:16px}
-#music-btn.playing .eq-bars{display:flex}
-#music-btn.playing .music-icon-paused{display:none}
-.eq-bar{width:3px;background:#e2c78d;border-radius:2px;animation:eq-bounce 1s ease-in-out infinite}
-.eq-bar:nth-child(1){height:8px}.eq-bar:nth-child(2){height:15px;animation-delay:.2s}.eq-bar:nth-child(3){height:10px;animation-delay:.4s}.eq-bar:nth-child(4){height:13px;animation-delay:.15s}
-@keyframes eq-bounce{0%,100%{transform:scaleY(.45)}50%{transform:scaleY(1)}}
-a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid #c5a059;outline-offset:3px;border-radius:6px}
-#intro-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,#1e3f20 0%,#0b190c 100%);cursor:pointer;transition:transform 1.15s cubic-bezier(.65,0,.35,1),opacity .7s ease .45s}
-#intro-overlay::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(226,199,141,.28) 1px,transparent 1px);background-size:28px 28px;opacity:.3;pointer-events:none}
-.intro-frame{position:relative;border:1px solid rgba(197,160,89,.3);border-radius:2rem;padding:3rem 2.25rem;max-width:400px;width:90%;text-align:center;background:rgba(11,25,12,.35);backdrop-filter:blur(6px);box-shadow:0 25px 50px -12px rgba(0,0,0,.6);display:flex;flex-direction:column;align-items:center;gap:1.5rem;animation:intro-rise 1.1s ease both}
-@keyframes intro-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.intro-eyebrow{font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:#d4b26f}
-.intro-seal{position:relative;width:144px;height:144px;border-radius:9999px;border:1.5px solid rgba(197,160,89,.65);display:flex;align-items:center;justify-content:center;animation:intro-breathe 3.4s ease-in-out infinite;transition:transform .6s cubic-bezier(.65,0,.35,1),opacity .5s;box-shadow:0 0 35px rgba(197,160,89,.2)}
-.intro-seal::before{content:'';position:absolute;inset:8px;border-radius:9999px;border:1px dashed rgba(226,199,141,.4)}
-@keyframes intro-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-.intro-seal-img{width:118px;height:118px;border-radius:9999px;object-fit:cover;object-position:center 20%}
-.intro-cta{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.4rem;border-radius:9999px;background:rgba(197,160,89,.15);border:1px solid rgba(197,160,89,.5);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#f7f4ef;transition:background .25s,transform .25s}
-#intro-overlay:hover .intro-cta{background:rgba(197,160,89,.3);transform:scale(1.03)}
-#intro-overlay.opening{transform:translateY(-100%);opacity:0}
-#intro-overlay.opening .intro-seal{transform:scale(1.18) rotate(6deg);opacity:0}
-body.intro-locked{overflow:hidden;height:100vh}
-body.modal-open{overflow:hidden}
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1);will-change:opacity,transform}
-.reveal.is-visible{opacity:1;transform:none}
-.nav-link{position:relative}
-.nav-link::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:1.5px;background:#c5a059;transition:width .3s}
-.nav-link:hover::after,.nav-link.active::after{width:100%}
-.nav-link.active{color:#142b15;font-weight:600}
-.entourage-frame{position:relative}
-.entourage-frame::before{content:'';position:absolute;inset:12px;border:1px solid rgba(197,160,89,.28);border-radius:1.25rem;pointer-events:none}
-/* Sponsor rows */
-.sp{display:grid;grid-template-columns:1fr;gap:.25rem;padding:.75rem;text-align:center;border-top:1px solid rgba(115,149,116,.1);border-radius:.75rem;transition:background .2s}
-.sps>.sp:first-child{border-top:0}
-.sp:hover{background:rgba(245,248,245,.6)}
-.sp b{font-weight:500;font-size:.95rem;color:#142b15}
-.sp i{display:none;color:#c5a059;font-style:normal;font-size:.75rem;text-align:center}
-@media(min-width:768px){.sp{grid-template-columns:5fr 1fr 5fr;align-items:center}.sp b:first-child{text-align:right}.sp b:last-child{text-align:left}.sp i{display:block}}
-#thumbStrip::-webkit-scrollbar{height:5px}
-#thumbStrip::-webkit-scrollbar-track{background:#f5f8f5;border-radius:9999px}
-#thumbStrip::-webkit-scrollbar-thumb{background:#c7dac8;border-radius:9999px}
-@keyframes status-pop{0%{transform:scale(.9);opacity:0}60%{transform:scale(1.02);opacity:1}100%{transform:scale(1)}}
-.pop{animation:status-pop .45s ease}
-@media(prefers-reduced-motion:reduce){
-#intro-overlay,#intro-overlay.opening{transition:opacity .5s;transform:none}
-#intro-overlay.opening{opacity:0}
-.intro-seal,.intro-frame,#music-btn.playing,.eq-bar,.pop{animation:none}
-.reveal{transition:none;opacity:1;transform:none}}
-</style>
-<noscript><style>#intro-overlay{display:none!important}body.intro-locked{overflow:auto!important;height:auto!important}.reveal{opacity:1!important;transform:none!important}#music-btn{display:none!important}</style></noscript>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maribeth &amp; Melbhert's Wedding Invitation</title>
+  <meta name="description" content="Join us as we celebrate the wedding of Maribeth Poncia Palapar & Melbhert Boiser on December 30, 2026 in Bohol, Philippines.">
+  <meta property="og:title" content="Maribeth & Melbhert's Wedding">
+  <meta property="og:description" content="December 30, 2026 • Bohol, Philippines. We'd love for you to join us on our special day.">
+  <meta property="og:image" content="https://i.imgur.com/0kkZR9Z.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Maribeth & Melbhert's Wedding">
+  <meta name="twitter:description" content="December 30, 2026 • Bohol, Philippines. We'd love for you to join us on our special day.">
+  <meta name="twitter:image" content="https://i.imgur.com/0kkZR9Z.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%23142b15' stroke='%23c5a059' stroke-width='2'/%3E%3Ctext x='32' y='40' font-family='Georgia, serif' font-size='22' fill='%23f7f4ef' text-anchor='middle'%3EM%26M%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+          },
+          colors: {
+            forest: { 800: '#1e3f20', 900: '#142b15', 950: '#0b190c' },
+            sage: { 50: '#f5f8f5', 100: '#e3ece3', 200: '#c7dac8', 600: '#739574', 700: '#5c7a5d' },
+            gold: { 300: '#e2c78d', 400: '#d4b26f', 500: '#c5a059', 600: '#a8843e' },
+            champagne: '#f7f4ef'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    #leaves-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 40; }
+    #music-btn { position: fixed; bottom: 24px; right: 24px; width: 54px; height: 54px; border-radius: 9999px; background: rgba(20,43,21,.92); backdrop-filter: blur(8px); color: #f7f4ef; border: 1px solid rgba(197,160,89,.55); cursor: pointer; box-shadow: 0 10px 25px -5px rgba(20,43,21,.45); display: flex; align-items: center; justify-content: center; transition: transform .25s, background .25s, border-color .25s; z-index: 1000; }
+    #music-btn:hover { background: #1e3f20; border-color: #c5a059; transform: translateY(-2px) scale(1.05); }
+    #music-btn.playing { animation: gold-pulse 2s infinite; }
+    @keyframes gold-pulse { 0% { box-shadow: 0 0 0 0 rgba(197,160,89,.55); } 70% { box-shadow: 0 0 0 14px rgba(197,160,89,0); } 100% { box-shadow: 0 0 0 0 rgba(197,160,89,0); } }
+    .eq-bars { display: none; align-items: flex-end; gap: 2.5px; height: 16px; }
+    #music-btn.playing .eq-bars { display: flex; }
+    #music-btn.playing .music-icon-paused { display: none; }
+    .eq-bar { width: 3px; background: #e2c78d; border-radius: 2px; animation: eq-bounce 1s ease-in-out infinite; }
+    .eq-bar:nth-child(1) { height: 8px; }
+    .eq-bar:nth-child(2) { height: 15px; animation-delay: .2s; }
+    .eq-bar:nth-child(3) { height: 10px; animation-delay: .4s; }
+    .eq-bar:nth-child(4) { height: 13px; animation-delay: .15s; }
+    @keyframes eq-bounce { 0%, 100% { transform: scaleY(.45); } 50% { transform: scaleY(1); } }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 2px solid #c5a059; outline-offset: 3px; border-radius: 6px; }
+    #intro-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 40%, #1e3f20 0%, #0b190c 100%); cursor: pointer; transition: transform 1.15s cubic-bezier(.65,0,.35,1), opacity .7s ease .45s; padding: 1rem; }
+    #intro-overlay::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(226,199,141,.28) 1px, transparent 1px); background-size: 28px 28px; opacity: .3; pointer-events: none; }
+    .intro-frame { position: relative; border: 1px solid rgba(197,160,89,.3); border-radius: 2rem; padding: 2.5rem 2rem; max-width: 420px; width: 100%; text-align: center; background: rgba(11,25,12,.4); backdrop-filter: blur(8px); box-shadow: 0 25px 50px -12px rgba(0,0,0,.6); display: flex; flex-direction: column; align-items: center; gap: 1.25rem; animation: intro-rise 1.1s ease both; }
+    @keyframes intro-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    .intro-eyebrow { font-size: .7rem; letter-spacing: .32em; text-transform: uppercase; color: #d4b26f; }
+    .intro-seal { position: relative; width: 136px; height: 136px; border-radius: 9999px; border: 1.5px solid rgba(197,160,89,.65); display: flex; align-items: center; justify-content: center; animation: intro-breathe 3.4s ease-in-out infinite; transition: transform .6s cubic-bezier(.65,0,.35,1), opacity .5s; box-shadow: 0 0 35px rgba(197,160,89,.2); }
+    .intro-seal::before { content: ''; position: absolute; inset: 8px; border-radius: 9999px; border: 1px dashed rgba(226,199,141,.4); }
+    @keyframes intro-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+    .intro-seal-img { width: 112px; height: 112px; border-radius: 9999px; object-fit: cover; object-position: center 20%; }
+    .intro-cta { display: inline-flex; align-items: center; gap: .5rem; padding: .65rem 1.4rem; border-radius: 9999px; background: rgba(197,160,89,.15); border: 1px solid rgba(197,160,89,.5); font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #f7f4ef; transition: background .25s, transform .25s; }
+    #intro-overlay:hover .intro-cta { background: rgba(197,160,89,.3); transform: scale(1.03); }
+    #intro-overlay.opening { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+    #intro-overlay.opening .intro-seal { transform: scale(1.18) rotate(6deg); opacity: 0; }
+    body.intro-locked { overflow: hidden; height: 100vh; }
+    body.modal-open { overflow: hidden; }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); will-change: opacity, transform; }
+    .reveal.is-visible { opacity: 1; transform: none; }
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 1.5px; background: #c5a059; transition: width .3s; }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .nav-link.active { color: #142b15; font-weight: 600; }
+    .entourage-frame { position: relative; }
+    .entourage-frame::before { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(197,160,89,.28); border-radius: 1.25rem; pointer-events: none; }
+    /* Sponsor rows */
+    .sp { display: grid; grid-template-columns: 1fr; gap: .25rem; padding: .75rem; text-align: center; border-top: 1px solid rgba(115,149,116,.12); border-radius: .75rem; transition: background .2s; }
+    .sps > .sp:first-child { border-top: 0; }
+    .sp:hover { background: rgba(245,248,245,.6); }
+    .sp b { font-weight: 500; font-size: .95rem; color: #142b15; }
+    .sp i { display: none; color: #c5a059; font-style: normal; font-size: .75rem; text-align: center; }
+    @media (min-width: 768px) {
+      .sp { grid-template-columns: 5fr 1fr 5fr; align-items: center; }
+      .sp b:first-child { text-align: right; }
+      .sp b:last-child { text-align: left; }
+      .sp i { display: block; }
+    }
+    #thumbStrip::-webkit-scrollbar { height: 5px; }
+    #thumbStrip::-webkit-scrollbar-track { background: #f5f8f5; border-radius: 9999px; }
+    #thumbStrip::-webkit-scrollbar-thumb { background: #c7dac8; border-radius: 9999px; }
+    @keyframes status-pop { 0% { transform: scale(.9); opacity: 0; } 60% { transform: scale(1.02); opacity: 1; } 100% { transform: scale(1); } }
+    .pop { animation: status-pop .45s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      #intro-overlay, #intro-overlay.opening { transition: opacity .5s; transform: none; }
+      #intro-overlay.opening { opacity: 0; }
+      .intro-seal, .intro-frame, #music-btn.playing, .eq-bar, .pop { animation: none; }
+      .reveal { transition: none; opacity: 1; transform: none; }
+    }
+  </style>
+  <noscript>
+    <style>
+      #intro-overlay { display: none !important; }
+      body.intro-locked { overflow: auto !important; height: auto !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      #music-btn { display: none !important; }
+    </style>
+  </noscript>
 </head>
 <body class="bg-sage-50 text-forest-900 font-sans antialiased selection:bg-sage-600 selection:text-white relative intro-locked">
 
@@ -83,18 +114,30 @@ body.modal-open{overflow:hidden}
 <div id="intro-overlay" onclick="openInvitation()" role="button" tabindex="0" aria-label="Open the wedding invitation of Maribeth and Melbhert" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openInvitation();}">
   <div class="intro-frame">
     <span class="intro-eyebrow">Together with their families</span>
-    <div class="intro-seal"><img src="https://i.imgur.com/NlrUujf.png" alt="Maribeth & Melbhert" class="intro-seal-img"></div>
+    <div class="intro-seal">
+      <img src="https://i.imgur.com/NlrUujf.png" alt="Maribeth & Melbhert" class="intro-seal-img">
+    </div>
     <div class="space-y-1">
       <p class="font-serif text-3xl text-champagne tracking-wide">Maribeth &amp; Melbhert</p>
       <p class="text-xs text-sage-200/80 tracking-widest uppercase">December 30, 2026 • Bohol</p>
     </div>
+
+    <!-- Dynamic Guest Personalization Badge on Intro Seal -->
+    <div id="intro-guest-card" class="hidden w-full pt-3.5 pb-1 border-t border-gold-400/25 space-y-1">
+      <span id="intro-guest-label" class="block text-[10px] uppercase tracking-[0.25em] text-gold-300/90">Exclusively Invited</span>
+      <p id="intro-guest-name" class="font-serif text-2xl text-white font-medium tracking-wide leading-snug break-words"></p>
+      <p id="intro-guest-seats" class="hidden text-[11px] text-sage-200/90 tracking-wider pt-0.5"></p>
+    </div>
+
     <span class="intro-cta">Tap to Open Invitation</span>
   </div>
 </div>
 
 <canvas id="leaves-canvas" aria-hidden="true"></canvas>
 
-<audio id="bg-music" loop preload="none"><source src="music.mp3" type="audio/mpeg"></audio>
+<audio id="bg-music" loop preload="metadata">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 <button id="music-btn" onclick="toggleMusic()" aria-label="Play background music" aria-pressed="false" title="Toggle Background Music">
   <svg class="music-icon-paused w-5 h-5 text-gold-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
   <div class="eq-bars" aria-hidden="true"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></div>
@@ -107,7 +150,7 @@ body.modal-open{overflow:hidden}
     <div class="hidden lg:flex items-center space-x-6 text-xs uppercase tracking-widest font-medium text-forest-800/80">
       <a href="#details" class="nav-link hover:text-forest-900 transition">Details</a>
       <a href="#schedule" class="nav-link hover:text-forest-900 transition">Timeline</a>
-      <a href="#goodtoknow" class="nav-link hover:text-forest-900 transition">Info</a>
+      <a href="#goodtoknow" data-nav-gtk class="nav-link hover:text-forest-900 transition">Info</a>
       <a href="#entourage" class="nav-link hover:text-forest-900 transition">Sponsors</a>
       <a href="#dresscode" class="nav-link hover:text-forest-900 transition">Dress Code</a>
       <a href="#story" class="nav-link hover:text-forest-900 transition">Our Story</a>
@@ -123,22 +166,31 @@ body.modal-open{overflow:hidden}
   <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-b border-sage-600/20 px-4 pt-2 pb-5 space-y-2.5 text-center">
     <a href="#details" class="block py-1.5 text-sm font-medium text-forest-800 hover:text-sage-600">When &amp; Where</a>
     <a href="#schedule" class="block py-1.5 text-sm font-medium text-forest-800 hover:text-sage-600">Wedding Timeline</a>
-    <a href="#goodtoknow" class="block py-1.5 text-sm font-medium text-forest-800 hover:text-sage-600">Good to Know</a>
+    <a href="#goodtoknow" data-nav-gtk class="block py-1.5 text-sm font-medium text-forest-800 hover:text-sage-600">Good to Know</a>
     <a href="#entourage" class="block py-1.5 text-sm font-medium text-forest-800 hover:text-sage-600">Principal Sponsors</a>
     <a href="#dresscode" class="block py-1.5 text-sm font-medium text-forest-800 hover:text-sage-600">Dress Code</a>
     <a href="#story" class="block py-1.5 text-sm font-medium text-forest-800 hover:text-sage-600">Our Story</a>
     <a href="#verse" class="block py-1.5 text-sm font-medium text-forest-800 hover:text-sage-600">1 Corinthians 13</a>
     <a href="#gifts" class="block py-1.5 text-sm font-medium text-forest-800 hover:text-sage-600">Note on Gifts</a>
     <a href="#memories" class="block py-1.5 text-sm font-medium text-forest-800 hover:text-sage-600">Memories</a>
-    <div class="pt-2"><a href="#rsvp" class="inline-block w-full max-w-xs py-2.5 rounded-xl bg-forest-900 text-champagne text-xs uppercase tracking-widest font-semibold">RSVP Now</a></div>
+    <div class="pt-2">
+      <a href="#rsvp" class="inline-block w-full max-w-xs py-2.5 rounded-xl bg-forest-900 text-champagne text-xs uppercase tracking-widest font-semibold">RSVP Now</a>
+    </div>
   </div>
 </nav>
 
 <!-- Hero -->
 <header class="relative min-h-[92vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
-  <div class="absolute inset-0 bg-cover bg-center filter blur-[3px]" style="background-image:url('https://i.imgur.com/0kkZR9Z.png')"></div>
+  <div class="absolute inset-0 bg-cover bg-center filter blur-[3px] scale-105" style="background-image:url('https://i.imgur.com/0kkZR9Z.png')"></div>
   <div class="absolute inset-0 bg-gradient-to-b from-forest-950/55 via-black/40 to-forest-950/70"></div>
   <div class="relative z-10 max-w-3xl mx-auto space-y-6 text-white py-14">
+    <!-- Dynamic Hero Guest Greeting -->
+    <div id="hero-guest-greeting" class="hidden">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-500/20 backdrop-blur-md border border-gold-300/40 text-xs sm:text-sm font-serif italic text-gold-300 tracking-wide shadow-sm">
+        Warmest welcome, <strong id="hero-guest-name" class="font-semibold not-italic text-champagne"></strong>
+      </span>
+    </div>
+
     <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
       <span class="w-1.5 h-1.5 rounded-full bg-gold-300"></span>
       <span class="text-[11px] md:text-xs tracking-[0.3em] uppercase text-champagne font-medium">The Nuptial Celebration of</span>
@@ -155,298 +207,380 @@ body.modal-open{overflow:hidden}
     </div>
     <div class="pt-6 flex flex-wrap items-center justify-center gap-3">
       <a href="#rsvp" class="px-7 py-3.5 rounded-full bg-gold-500 hover:bg-gold-600 text-forest-950 font-semibold text-xs uppercase tracking-widest transition shadow-lg">Confirm Attendance</a>
-      <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Maribeth+%26+Melbhert%27s+Wedding&dates=20261230T020000Z/20261230T080000Z&details=We+can%27t+wait+to+celebrate+our+special+day+with+you+in+Bohol%21+Ceremony+at+Tagbilaran+Cathedral+%2810%3A00+AM%29+followed+by+Reception+at+Bohol+Tropics+%2812%3A00+PM%29.&location=Tagbilaran+Cathedral,+Tagbilaran+City,+Bohol,+Philippines" target="_blank" rel="noopener" class="px-5 py-3.5 rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-md border border-white/30 text-xs uppercase tracking-widest font-medium transition">Google Calendar</a>
-      <button type="button" onclick="downloadICS()" class="px-5 py-3.5 rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-md border border-white/30 text-xs uppercase tracking-widest font-medium transition">Apple / Outlook (.ics)</button>
+      <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Maribeth+%26+Melbhert%27s+Wedding&dates=20261230T020000Z/20261230T080000Z&details=We+can%27t+wait+to+celebrate+our+special+day+with+you+in+Bohol%21+Ceremony+at+Tagbilaran+Cathedral+%2810%3A00+AM%29+followed+by+Reception+at+Bohol+Tropics+%2812%3A00+PM%29.&location=Tagbilaran+Cathedral,+Tagbilaran+City,+Bohol,+Philippines" target="_blank" rel="noopener" class="px-5 py-3.5 rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-md border border-white/30 text-xs uppercase tracking-widest font-medium transition">Add to Google Calendar</a>
     </div>
   </div>
 </header>
 
 <main class="space-y-24 py-16 relative z-10">
 
-<!-- When & Where -->
-<section id="details" class="max-w-5xl mx-auto px-4 text-center pt-6">
-  <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">Celebration Venues</span>
-  <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">When &amp; Where</h2>
-  <div class="reveal flex items-center justify-center gap-3 mb-4"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
-  <p class="reveal text-forest-800/80 mb-12 max-w-lg mx-auto text-sm sm:text-base">We are overjoyed to celebrate our sacred covenant surrounded by family and friends in Bohol.</p>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-    <div class="reveal bg-white rounded-3xl shadow-sm hover:shadow-md transition border border-sage-600/25 overflow-hidden flex flex-col justify-between">
-      <div>
-        <button type="button" class="group relative block w-full h-56 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal(this.querySelector('img').src,'Tagbilaran Cathedral interior')" aria-label="Enlarge photo of Tagbilaran Cathedral">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgryCm0SDS6BRM8wt4jt7SO6iG4L5bNOHFulauAApsLPc948lLFmYvsXFI1nI3LQ6T2Vpf3oDkRU21v_bbpCOauPlq1EibAo3qQdOzckxk-XMacrr86qPPwLm2srIJdpgKY2g2igPtNMzuURCxYSQJ2_ZZAGJTkPC5SjhuoLI4YP1KhBdsKrh6OEvYf/s1024/Tagbilaran_Church_Interiors.jpg" alt="Tagbilaran Cathedral interior" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
-          <span class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-1 rounded-full">Enlarge</span>
-        </button>
-        <div class="p-6 space-y-2 text-center">
-          <span class="inline-block px-3 py-0.5 rounded-full bg-sage-50 border border-sage-600/20 text-[11px] uppercase tracking-[0.2em] text-sage-700 font-semibold">The Ceremony</span>
-          <h3 class="text-3xl font-serif text-forest-900 pt-1">Tagbilaran Cathedral</h3>
-          <p class="text-forest-800/70 text-xs uppercase tracking-wider">St. Joseph the Worker Cathedral-Shrine</p>
-          <p class="text-forest-900 font-medium text-sm pt-1">December 30, 2026 • 10:00 AM</p>
-          <p class="text-forest-800/60 text-xs">Tagbilaran City, Bohol</p>
+  <!-- When & Where -->
+  <section id="details" class="scroll-mt-20 max-w-5xl mx-auto px-4 text-center pt-6">
+    <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">Celebration Venues</span>
+    <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">When &amp; Where</h2>
+    <div class="reveal flex items-center justify-center gap-3 mb-4"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
+    <p class="reveal text-forest-800/80 mb-12 max-w-lg mx-auto text-sm sm:text-base">We are overjoyed to celebrate our sacred covenant surrounded by family and friends in Bohol.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div class="reveal bg-white rounded-3xl shadow-sm hover:shadow-md transition border border-sage-600/25 overflow-hidden flex flex-col justify-between">
+        <div>
+          <button type="button" class="group relative block w-full h-56 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal(this.querySelector('img').src,'Tagbilaran Cathedral interior')" aria-label="Enlarge photo of Tagbilaran Cathedral">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgryCm0SDS6BRM8wt4jt7SO6iG4L5bNOHFulauAApsLPc948lLFmYvsXFI1nI3LQ6T2Vpf3oDkRU21v_bbpCOauPlq1EibAo3qQdOzckxk-XMacrr86qPPwLm2srIJdpgKY2g2igPtNMzuURCxYSQJ2_ZZAGJTkPC5SjhuoLI4YP1KhBdsKrh6OEvYf/s1024/Tagbilaran_Church_Interiors.jpg" alt="Tagbilaran Cathedral interior" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+            <span class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-1 rounded-full">Enlarge</span>
+          </button>
+          <div class="p-6 space-y-2 text-center">
+            <span class="inline-block px-3 py-0.5 rounded-full bg-sage-50 border border-sage-600/20 text-[11px] uppercase tracking-[0.2em] text-sage-700 font-semibold">The Ceremony</span>
+            <h3 class="text-3xl font-serif text-forest-900 pt-1">Tagbilaran Cathedral</h3>
+            <p class="text-forest-800/70 text-xs uppercase tracking-wider">St. Joseph the Worker Cathedral-Shrine</p>
+            <p class="text-forest-900 font-medium text-sm pt-1">December 30, 2026 • 10:00 AM</p>
+            <p class="text-forest-800/60 text-xs">Tagbilaran City, Bohol</p>
+          </div>
+        </div>
+        <div class="p-6 pt-0 space-y-3">
+          <div class="rounded-2xl overflow-hidden border border-sage-600/20">
+            <iframe src="https://www.google.com/maps?q=Tagbilaran+Cathedral,+Tagbilaran+City,+Bohol,+Philippines&output=embed" width="100%" height="180" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map to Tagbilaran Cathedral"></iframe>
+          </div>
+          <a href="https://maps.app.goo.gl/XMZ14Uifvnp58da77" target="_blank" rel="noopener" class="flex items-center justify-center w-full py-3 bg-forest-900 hover:bg-forest-800 text-champagne rounded-xl text-xs font-semibold tracking-wider uppercase transition shadow-sm">Open in Google Maps</a>
         </div>
       </div>
-      <div class="p-6 pt-0 space-y-3">
-        <div class="rounded-2xl overflow-hidden border border-sage-600/20"><iframe src="https://www.google.com/maps?q=Tagbilaran+Cathedral,+Tagbilaran+City,+Bohol,+Philippines&output=embed" width="100%" height="180" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map to Tagbilaran Cathedral"></iframe></div>
-        <a href="https://maps.app.goo.gl/XMZ14Uifvnp58da77" target="_blank" rel="noopener" class="flex items-center justify-center w-full py-3 bg-forest-900 hover:bg-forest-800 text-champagne rounded-xl text-xs font-semibold tracking-wider uppercase transition shadow-sm">Open in Google Maps</a>
-      </div>
-    </div>
-    <div class="reveal bg-white rounded-3xl shadow-sm hover:shadow-md transition border border-sage-600/25 overflow-hidden flex flex-col justify-between" style="transition-delay:.12s">
-      <div>
-        <button type="button" class="group relative block w-full h-56 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal('https://i.imgur.com/EzxrbZC.jpeg','Bohol Tropics reception venue')" aria-label="Enlarge photo of Bohol Tropics">
-          <img src="https://i.imgur.com/EzxrbZC.jpeg" alt="Bohol Tropics reception venue" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
-          <span class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-1 rounded-full">Enlarge</span>
-        </button>
-        <div class="p-6 space-y-2 text-center">
-          <span class="inline-block px-3 py-0.5 rounded-full bg-sage-50 border border-sage-600/20 text-[11px] uppercase tracking-[0.2em] text-sage-700 font-semibold">The Reception</span>
-          <h3 class="text-3xl font-serif text-forest-900 pt-1">Bohol Tropics Resort</h3>
-          <p class="text-forest-800/70 text-xs uppercase tracking-wider">Banquet &amp; Celebration</p>
-          <p class="text-forest-900 font-medium text-sm pt-1">December 30, 2026 • 12:00 PM</p>
-          <p class="text-forest-800/60 text-xs">Graham Ave, Tagbilaran City, Bohol</p>
+
+      <div class="reveal bg-white rounded-3xl shadow-sm hover:shadow-md transition border border-sage-600/25 overflow-hidden flex flex-col justify-between" style="transition-delay:.12s">
+        <div>
+          <button type="button" class="group relative block w-full h-56 overflow-hidden bg-gray-100 cursor-pointer" onclick="openModal('https://i.imgur.com/EzxrbZC.jpeg','Bohol Tropics reception venue')" aria-label="Enlarge photo of Bohol Tropics">
+            <img src="https://i.imgur.com/EzxrbZC.jpeg" alt="Bohol Tropics reception venue" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
+            <span class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-1 rounded-full">Enlarge</span>
+          </button>
+          <div class="p-6 space-y-2 text-center">
+            <span class="inline-block px-3 py-0.5 rounded-full bg-sage-50 border border-sage-600/20 text-[11px] uppercase tracking-[0.2em] text-sage-700 font-semibold">The Reception</span>
+            <h3 class="text-3xl font-serif text-forest-900 pt-1">Bohol Tropics Resort</h3>
+            <p class="text-forest-800/70 text-xs uppercase tracking-wider">Banquet &amp; Celebration</p>
+            <p class="text-forest-900 font-medium text-sm pt-1">December 30, 2026 • 12:00 PM</p>
+            <p class="text-forest-800/60 text-xs">Graham Ave, Tagbilaran City, Bohol</p>
+          </div>
+        </div>
+        <div class="p-6 pt-0 space-y-3">
+          <div class="rounded-2xl overflow-hidden border border-sage-600/20">
+            <iframe src="https://www.google.com/maps?q=Bohol+Tropics,+Tagbilaran+City,+Bohol,+Philippines&output=embed" width="100%" height="180" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map to Bohol Tropics"></iframe>
+          </div>
+          <a href="https://maps.app.goo.gl/JUjXLG1MGmC7SGmn9" target="_blank" rel="noopener" class="flex items-center justify-center w-full py-3 bg-forest-900 hover:bg-forest-800 text-champagne rounded-xl text-xs font-semibold tracking-wider uppercase transition shadow-sm">Open in Google Maps</a>
         </div>
       </div>
-      <div class="p-6 pt-0 space-y-3">
-        <div class="rounded-2xl overflow-hidden border border-sage-600/20"><iframe src="https://www.google.com/maps?q=Bohol+Tropics,+Tagbilaran+City,+Bohol,+Philippines&output=embed" width="100%" height="180" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map to Bohol Tropics"></iframe></div>
-        <a href="https://maps.app.goo.gl/JUjXLG1MGmC7SGmn9" target="_blank" rel="noopener" class="flex items-center justify-center w-full py-3 bg-forest-900 hover:bg-forest-800 text-champagne rounded-xl text-xs font-semibold tracking-wider uppercase transition shadow-sm">Open in Google Maps</a>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section id="schedule" class="scroll-mt-20 max-w-4xl mx-auto px-4 text-center pt-4">
+    <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">Order of Events</span>
+    <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">Wedding Day Timeline</h2>
+    <div class="reveal flex items-center justify-center gap-3 mb-10"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
+    <div class="reveal bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 flex flex-col items-center text-center space-y-2">
+          <span class="text-xs font-bold tracking-widest uppercase text-gold-600 bg-white px-3 py-1 rounded-full shadow-sm border border-gold-400/30">9:30 AM</span>
+          <h3 class="font-serif text-2xl text-forest-900 font-semibold">Guest Arrival</h3>
+          <p class="text-xs text-forest-800/75 leading-relaxed">Guests take their seats inside Tagbilaran Cathedral prior to the processional.</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 flex flex-col items-center text-center space-y-2">
+          <span class="text-xs font-bold tracking-widest uppercase text-gold-600 bg-white px-3 py-1 rounded-full shadow-sm border border-gold-400/30">10:00 AM</span>
+          <h3 class="font-serif text-2xl text-forest-900 font-semibold">Holy Matrimony</h3>
+          <p class="text-xs text-forest-800/75 leading-relaxed">Exchange of sacred vows, marriage rites, and nuptial blessing.</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 flex flex-col items-center text-center space-y-2">
+          <span class="text-xs font-bold tracking-widest uppercase text-gold-600 bg-white px-3 py-1 rounded-full shadow-sm border border-gold-400/30">11:15 AM</span>
+          <h3 class="font-serif text-2xl text-forest-900 font-semibold">Portraits &amp; Travel</h3>
+          <p class="text-xs text-forest-800/75 leading-relaxed">Group photos at the cathedral steps followed by a short drive to Bohol Tropics.</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 flex flex-col items-center text-center space-y-2">
+          <span class="text-xs font-bold tracking-widest uppercase text-gold-600 bg-white px-3 py-1 rounded-full shadow-sm border border-gold-400/30">12:00 PM</span>
+          <h3 class="font-serif text-2xl text-forest-900 font-semibold">Lunch Reception</h3>
+          <p class="text-xs text-forest-800/75 leading-relaxed">Grand entrance, celebratory banquet, toasts, and music at Bohol Tropics.</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Timeline -->
-<section id="schedule" class="max-w-4xl mx-auto px-4 text-center pt-4">
-  <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">Order of Events</span>
-  <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">Wedding Day Timeline</h2>
-  <div class="reveal flex items-center justify-center gap-3 mb-10"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
-  <div class="reveal bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 flex flex-col items-center text-center space-y-2"><span class="text-xs font-bold tracking-widest uppercase text-gold-600 bg-white px-3 py-1 rounded-full shadow-sm border border-gold-400/30">9:30 AM</span><h3 class="font-serif text-2xl text-forest-900 font-semibold">Guest Arrival</h3><p class="text-xs text-forest-800/75 leading-relaxed">Guests take their seats inside Tagbilaran Cathedral prior to the processional.</p></div>
-      <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 flex flex-col items-center text-center space-y-2"><span class="text-xs font-bold tracking-widest uppercase text-gold-600 bg-white px-3 py-1 rounded-full shadow-sm border border-gold-400/30">10:00 AM</span><h3 class="font-serif text-2xl text-forest-900 font-semibold">Holy Matrimony</h3><p class="text-xs text-forest-800/75 leading-relaxed">Exchange of sacred vows, marriage rites, and nuptial blessing.</p></div>
-      <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 flex flex-col items-center text-center space-y-2"><span class="text-xs font-bold tracking-widest uppercase text-gold-600 bg-white px-3 py-1 rounded-full shadow-sm border border-gold-400/30">11:15 AM</span><h3 class="font-serif text-2xl text-forest-900 font-semibold">Portraits &amp; Travel</h3><p class="text-xs text-forest-800/75 leading-relaxed">Group photos at the cathedral steps followed by a short drive to Bohol Tropics.</p></div>
-      <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 flex flex-col items-center text-center space-y-2"><span class="text-xs font-bold tracking-widest uppercase text-gold-600 bg-white px-3 py-1 rounded-full shadow-sm border border-gold-400/30">12:00 PM</span><h3 class="font-serif text-2xl text-forest-900 font-semibold">Lunch Reception</h3><p class="text-xs text-forest-800/75 leading-relaxed">Grand entrance, celebratory banquet, toasts, and music at Bohol Tropics.</p></div>
-    </div>
-  </div>
-</section>
+  <!-- Good to Know -->
+  <section id="goodtoknow" class="scroll-mt-20 max-w-5xl mx-auto px-4 text-center pt-4 hidden">
+    <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">For Our Guests</span>
+    <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">Good to Know</h2>
+    <div class="reveal flex items-center justify-center gap-3 mb-10"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
+    <div id="gtkGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-5 text-left"></div>
+    <div id="gtkContact" class="reveal hidden mt-8 bg-sage-100/60 border border-gold-400/30 rounded-3xl p-6 max-w-2xl mx-auto"></div>
+  </section>
 
-<!-- Good to Know (cards with empty text are skipped; fill in GOOD_TO_KNOW in the script) -->
-<section id="goodtoknow" class="max-w-5xl mx-auto px-4 text-center pt-4 hidden">
-  <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">For Our Guests</span>
-  <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">Good to Know</h2>
-  <div class="reveal flex items-center justify-center gap-3 mb-10"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
-  <div id="gtkGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-5 text-left"></div>
-  <div id="gtkContact" class="reveal hidden mt-8 bg-sage-100/60 border border-gold-400/30 rounded-3xl p-6 max-w-2xl mx-auto"></div>
-</section>
-
-<!-- Entourage -->
-<section id="entourage" class="max-w-5xl mx-auto px-4 text-center pt-4">
-  <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">To Witness Our Sacred Vows</span>
-  <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">Nuptial Entourage</h2>
-  <div class="reveal flex items-center justify-center gap-3 mb-4"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
-  <p class="reveal text-forest-800/80 mb-10 max-w-xl mx-auto text-sm sm:text-base">Standing beside us as godparents, mentors, and witnesses as we enter the covenant of marriage.</p>
-  <div class="reveal entourage-frame bg-white p-7 sm:p-12 md:p-14 rounded-3xl shadow-sm border border-sage-600/25 space-y-10">
-    <div class="space-y-2 pb-6 border-b border-sage-600/15">
-      <span class="text-[11px] uppercase tracking-[0.3em] text-gold-600 font-semibold block">The Bride &amp; Groom</span>
-      <div class="font-serif text-2xl sm:text-4xl text-forest-900 font-semibold tracking-wide flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-4"><span>Maribeth Poncia Palapar</span><span class="text-gold-500 italic font-normal text-2xl sm:text-3xl">&amp;</span><span>Melbhert Boiser</span></div>
-      <p class="text-xs uppercase tracking-[0.2em] text-sage-700 pt-1">December 30, 2026 • Wednesday • 10:00 AM</p>
-    </div>
-    <div class="space-y-1.5">
-      <span class="text-[11px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Godparents in Marriage</span>
-      <h3 class="font-serif text-3xl sm:text-4xl text-forest-900 font-semibold">Principal Sponsors</h3>
-      <p class="text-xs italic text-forest-800/70 font-serif">Ninongs &amp; Ninangs</p>
-    </div>
-    <div class="hidden md:grid md:grid-cols-11 max-w-3xl mx-auto pb-2 border-b border-gold-400/30 text-xs uppercase tracking-[0.22em] text-sage-700 font-semibold">
-      <div class="col-span-5 text-right pr-4">Male Principal Sponsors</div><div class="col-span-1 text-center text-gold-500">✦</div><div class="col-span-5 text-left pl-4">Female Principal Sponsors</div>
-    </div>
-    <div class="sps max-w-3xl mx-auto">
-      <div class="sp"><b>Mr. Alex Y. Ranoco</b><i>•</i><b>Mrs. Zotica U. Ranoco</b></div>
-      <div class="sp"><b>Mr. German T. Palapar</b><i>•</i><b>Mrs. Emilia J. Palapar</b></div>
-      <div class="sp"><b>Mr. Avito S. Andoy</b><i>•</i><b>Mrs. Cleopatra P. Andoy</b></div>
-      <div class="sp"><b>Mr. Manuel G. Jayectin</b><i>•</i><b>Mrs. Julieta P. Hilot</b></div>
-      <div class="sp"><b>Mr. Wilfredo L. Miano</b><i>•</i><b>Dr. Zenaida L. Miano</b></div>
-      <div class="sp"><b>Hon. Galicano E. Atup</b><i>•</i><b>Mrs. Ma. Delilah C. Atup</b></div>
-      <div class="sp"><b>Engr. Fredegelbert A. Flor</b><i>•</i><b>Dr. Wilfreda O. Flor</b></div>
-      <div class="sp"><b>Engr. Eutiqio A. Bernales Jr.</b><i>•</i><b>Mrs. Mafay D. Bernales</b></div>
-      <div id="moreSponsors">
-        <div class="sp"><b>Mr. Sary I. Lim</b><i>•</i><b>Mrs. Rosario F. Lim</b></div>
-        <div class="sp"><b>Mr. Ponce M. Mandabon</b><i>•</i><b>Mrs. Diema A. Mandabon</b></div>
-        <div class="sp"><b>Dr. Edilberto Avenido</b><i>•</i><b>Mrs. Ma. Lolette L. Avenido</b></div>
-        <div class="sp"><b>Dr. Jupiter I. Maboloc</b><i>•</i><b>Dr. Ma. Maya V. Tumalon</b></div>
-        <div class="sp"><b>Mr. Yehudi L. Santillan</b><i>•</i><b>Mrs. Zenaida Boyonas</b></div>
-        <div class="sp"><b>Mr. Didoy P. Salmasan</b><i>•</i><b>Mrs. Joelita C. Salmasan</b></div>
-        <div class="sp"><b>Atty. Teodoro M. Lagang</b><i>•</i><b>Mrs. Cherry Belle G. Lagang</b></div>
-        <div class="sp"><b>Atty. Generoso G. Esmero</b><i>•</i><b>Dr. Arceli M. Hernando</b></div>
-        <div class="sp"><b>Mr. Antonio L. Boyles</b><i>•</i><b>Dr. Zenaida Boyles</b></div>
+  <!-- Entourage -->
+  <section id="entourage" class="scroll-mt-20 max-w-5xl mx-auto px-4 text-center pt-4">
+    <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">To Witness Our Sacred Vows</span>
+    <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">Nuptial Entourage</h2>
+    <div class="reveal flex items-center justify-center gap-3 mb-4"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
+    <p class="reveal text-forest-800/80 mb-10 max-w-xl mx-auto text-sm sm:text-base">Standing beside us as godparents, mentors, and witnesses as we enter the covenant of marriage.</p>
+    <div class="reveal entourage-frame bg-white p-7 sm:p-12 md:p-14 rounded-3xl shadow-sm border border-sage-600/25 space-y-10">
+      <div class="space-y-2 pb-6 border-b border-sage-600/15">
+        <span class="text-[11px] uppercase tracking-[0.3em] text-gold-600 font-semibold block">The Bride &amp; Groom</span>
+        <div class="font-serif text-2xl sm:text-4xl text-forest-900 font-semibold tracking-wide flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-4">
+          <span>Maribeth Poncia Palapar</span>
+          <span class="text-gold-500 italic font-normal text-2xl sm:text-3xl">&amp;</span>
+          <span>Melbhert Boiser</span>
+        </div>
+        <p class="text-xs uppercase tracking-[0.2em] text-sage-700 pt-1">December 30, 2026 • Wednesday • 10:00 AM</p>
+      </div>
+      <div class="space-y-1.5">
+        <span class="text-[11px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Godparents in Marriage</span>
+        <h3 class="font-serif text-3xl sm:text-4xl text-forest-900 font-semibold">Principal Sponsors</h3>
+        <p class="text-xs italic text-forest-800/70 font-serif">Ninongs &amp; Ninangs</p>
+      </div>
+      <div class="hidden md:grid md:grid-cols-11 max-w-3xl mx-auto pb-2 border-b border-gold-400/30 text-xs uppercase tracking-[0.22em] text-sage-700 font-semibold">
+        <div class="col-span-5 text-right pr-4">Male Principal Sponsors</div>
+        <div class="col-span-1 text-center text-gold-500">✦</div>
+        <div class="col-span-5 text-left pl-4">Female Principal Sponsors</div>
+      </div>
+      <div class="sps max-w-3xl mx-auto">
+        <div class="sp"><b>Mr. Alex Y. Ranoco</b><i>•</i><b>Mrs. Zotica U. Ranoco</b></div>
+        <div class="sp"><b>Mr. German T. Palapar</b><i>•</i><b>Mrs. Emilia J. Palapar</b></div>
+        <div class="sp"><b>Mr. Avito S. Andoy</b><i>•</i><b>Mrs. Cleopatra P. Andoy</b></div>
+        <div class="sp"><b>Mr. Manuel G. Jayectin</b><i>•</i><b>Mrs. Julieta P. Hilot</b></div>
+        <div class="sp"><b>Mr. Wilfredo L. Miano</b><i>•</i><b>Dr. Zenaida L. Miano</b></div>
+        <div class="sp"><b>Hon. Galicano E. Atup</b><i>•</i><b>Mrs. Ma. Delilah C. Atup</b></div>
+        <div class="sp"><b>Engr. Fredegelbert A. Flor</b><i>•</i><b>Dr. Wilfreda O. Flor</b></div>
+        <div class="sp"><b>Engr. Eutiqio A. Bernales Jr.</b><i>•</i><b>Mrs. Mafay D. Bernales</b></div>
+        <div id="moreSponsors">
+          <div class="sp"><b>Mr. Sary I. Lim</b><i>•</i><b>Mrs. Rosario F. Lim</b></div>
+          <div class="sp"><b>Mr. Ponce M. Mandabon</b><i>•</i><b>Mrs. Diema A. Mandabon</b></div>
+          <div class="sp"><b>Dr. Edilberto Avenido</b><i>•</i><b>Mrs. Ma. Lolette L. Avenido</b></div>
+          <div class="sp"><b>Dr. Jupiter I. Maboloc</b><i>•</i><b>Dr. Ma. Maya V. Tumalon</b></div>
+          <div class="sp"><b>Mr. Yehudi L. Santillan</b><i>•</i><b>Mrs. Zenaida Boyonas</b></div>
+          <div class="sp"><b>Mr. Didoy P. Salmasan</b><i>•</i><b>Mrs. Joelita C. Salmasan</b></div>
+          <div class="sp"><b>Atty. Teodoro M. Lagang</b><i>•</i><b>Mrs. Cherry Belle G. Lagang</b></div>
+          <div class="sp"><b>Atty. Generoso G. Esmero</b><i>•</i><b>Dr. Arceli M. Hernando</b></div>
+          <div class="sp"><b>Mr. Antonio L. Boyles</b><i>•</i><b>Dr. Zenaida Boyles</b></div>
+        </div>
+      </div>
+      <div class="pt-2">
+        <button type="button" id="entourageToggleBtn" onclick="toggleEntourage()" aria-expanded="true" aria-controls="moreSponsors" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/30 text-xs uppercase tracking-widest font-semibold transition">
+          <span id="entourageToggleText">Show Compact List</span>
+          <svg id="entourageToggleIcon" class="w-4 h-4 text-gold-600 transition-transform duration-300 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
       </div>
     </div>
-    <div class="pt-2">
-      <button type="button" id="entourageToggleBtn" onclick="toggleEntourage()" aria-expanded="true" aria-controls="moreSponsors" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/30 text-xs uppercase tracking-widest font-semibold transition">
-        <span id="entourageToggleText">Show Compact List</span>
-        <svg id="entourageToggleIcon" class="w-4 h-4 text-gold-600 transition-transform duration-300 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+  </section>
+
+  <!-- Dress Code -->
+  <section id="dresscode" class="scroll-mt-20 max-w-4xl mx-auto px-4 text-center pt-4">
+    <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">What to Wear</span>
+    <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">Dress Code</h2>
+    <div class="reveal flex items-center justify-center gap-3 mb-8"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
+    <div class="reveal bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25 max-w-2xl mx-auto space-y-6">
+      <button type="button" class="group relative block w-full overflow-hidden rounded-2xl border border-sage-600/20 bg-gray-50 cursor-pointer shadow-sm" onclick="openModal(this.querySelector('img').src,'Dress code guide')" aria-label="Enlarge the dress code guide">
+        <img src="https://kokvafvtayqrczqzgftx.supabase.co/storage/v1/object/public/gallery-images/00337716-3dc5-47c8-85b1-e2cd8d24ea85/1780471107107-xq5e7tkgl7.jpg" alt="Dress code guide showing semi-formal attire and suggested colors" class="w-full h-auto object-contain group-hover:scale-[1.02] transition duration-300" loading="lazy">
       </button>
-    </div>
-  </div>
-</section>
-
-<!-- Dress Code -->
-<section id="dresscode" class="max-w-4xl mx-auto px-4 text-center pt-4">
-  <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">What to Wear</span>
-  <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">Dress Code</h2>
-  <div class="reveal flex items-center justify-center gap-3 mb-8"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
-  <div class="reveal bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25 max-w-2xl mx-auto space-y-6">
-    <button type="button" class="group relative block w-full overflow-hidden rounded-2xl border border-sage-600/20 bg-gray-50 cursor-pointer shadow-sm" onclick="openModal(this.querySelector('img').src,'Dress code guide')" aria-label="Enlarge the dress code guide">
-      <img src="https://kokvafvtayqrczqzgftx.supabase.co/storage/v1/object/public/gallery-images/00337716-3dc5-47c8-85b1-e2cd8d24ea85/1780471107107-xq5e7tkgl7.jpg" alt="Dress code guide showing semi-formal attire and suggested colors" class="w-full h-auto object-contain group-hover:scale-[1.02] transition duration-300" loading="lazy">
-    </button>
-    <p class="text-xs text-sage-600">Tap guide to enlarge</p>
-    <div>
-      <h3 class="text-3xl font-serif text-forest-900 mb-2">Semi-Formal Attire</h3>
-      <p class="text-forest-800/80 text-sm leading-relaxed max-w-md mx-auto"><strong>Gentlemen:</strong> A suit, blazer, Barong, or long-sleeved button-down with slacks (tie optional).<br><strong>Ladies:</strong> A midi/maxi dress or smart semi-formal separates.</p>
-    </div>
-    <div class="border-t border-sage-600/20 pt-6">
-      <p class="text-xs font-semibold text-sage-700 uppercase tracking-widest mb-4">Suggested Color Palette</p>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-md mx-auto">
-        <div class="flex flex-col items-center gap-1.5"><div class="w-12 h-12 rounded-full shadow-md border border-black/15" style="background:#9cb1a4"></div><span class="text-xs font-medium text-forest-900">Sage Gray</span></div>
-        <div class="flex flex-col items-center gap-1.5"><div class="w-12 h-12 rounded-full shadow-md border border-black/15" style="background:#6fc38e"></div><span class="text-xs font-medium text-forest-900">Mint Leaf</span></div>
-        <div class="flex flex-col items-center gap-1.5"><div class="w-12 h-12 rounded-full shadow-md border border-black/15" style="background:#2e7d5b"></div><span class="text-xs font-medium text-forest-900">Emerald</span></div>
-        <div class="flex flex-col items-center gap-1.5"><div class="w-12 h-12 rounded-full shadow-md border border-black/15" style="background:#a2b86e"></div><span class="text-xs font-medium text-forest-900">Olive Green</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Story -->
-<section id="story" class="max-w-3xl mx-auto px-4 pt-4">
-  <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
-    <span class="text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block">Our Love Story</span>
-    <h2 class="text-4xl md:text-5xl font-serif text-forest-900">Where Our Forever Began</h2>
-    <div class="flex items-center justify-center gap-3"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
-    <div class="text-forest-800/90 text-base leading-relaxed space-y-4 font-light text-left md:text-center">
-      <p>Our story began in Camambugan National High School, where two hearts met in the simplest of ways. At first, we were just two people sharing the same space, unaware that God was slowly writing our story.</p>
-      <p>Through ordinary days, shared smiles, conversations, and countless little moments, we grew closer. What started as a simple friendship slowly became a love that neither of us could ignore.</p>
-      <p>As our relationship grew, we learned that true love is not only about happiness, but also about choosing each other through every challenge and every season of life.</p>
-      <blockquote class="my-6 p-6 bg-sage-50/80 rounded-2xl border border-gold-400/30 font-serif text-xl italic text-forest-900 space-y-2 shadow-inner">
-        <p>"Two are better than one… If either of them falls down, one can help the other up."</p>
-        <cite class="block text-xs font-sans uppercase tracking-widest text-sage-700 not-italic font-semibold">— Ecclesiastes 4:9–10</cite>
-      </blockquote>
-      <p>One day, we hope to stand before God, our families, and the people we love, promising to walk together for the rest of our lives.</p>
-      <p>From the place where we first met, to the day we say "I do," and through all the years that follow—our greatest story will always be the one we write together.</p>
-    </div>
-    <div class="pt-4 font-serif text-3xl italic text-forest-900 font-semibold">Maribeth <span class="text-gold-500">&amp;</span> Melbhert</div>
-  </div>
-</section>
-
-<!-- Scripture -->
-<section id="verse" class="max-w-3xl mx-auto px-4 pt-4">
-  <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
-    <span class="text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block">Scripture &amp; Guidance</span>
-    <h2 class="text-4xl md:text-5xl font-serif text-forest-900">Love is Patient, Love is Kind</h2>
-    <div class="flex items-center justify-center gap-3"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
-    <div class="text-forest-800/90 text-base leading-relaxed space-y-4 font-light text-left md:text-center">
-      <div class="my-4 p-8 bg-sage-50/70 rounded-2xl border border-gold-400/30 font-serif text-xl italic text-forest-900 space-y-4 leading-relaxed shadow-inner">
-        <p>"Love is patient, love is kind. It does not envy, it does not boast, it is not proud. It does not dishonor others, it is not self-seeking, it is not easily angered, it keeps no record of wrongs."</p>
-        <p>"Love does not delight in evil but rejoices with the truth. It always protects, always trusts, always hopes, always perseveres. Love never fails."</p>
-        <p>"But where there are prophecies, they will cease; where there are tongues, they will be stilled; where there is knowledge, it will pass away."</p>
-        <span class="block text-xs font-sans uppercase tracking-widest text-sage-700 not-italic font-bold pt-2">— 1 Corinthians 13:4–8</span>
-      </div>
-      <p class="pt-2 text-sm sm:text-base">This scripture serves as the cornerstone of our faith and our commitment to each other as we step into this lifelong covenant of marriage.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Gifts -->
-<section id="gifts" class="max-w-4xl mx-auto px-4 pt-4">
-  <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
-    <span class="text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block">Registry &amp; Contributions</span>
-    <h2 class="text-4xl md:text-5xl font-serif text-forest-900">Note on Gifts</h2>
-    <div class="flex items-center justify-center gap-3"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
-    <p class="text-forest-800/90 text-base leading-relaxed max-w-2xl mx-auto font-light">Your presence at our wedding is the greatest gift we could ever ask for. However, if you wish to bless us further, we will gratefully accept a small contribution towards our future home as we begin our new journey together. If you prefer a physical gift, feel free to surprise us in your own special way.</p>
-    <div class="pt-2">
-      <button type="button" id="qrToggleBtn" onclick="toggleQrCodes()" aria-expanded="false" aria-controls="qrWrap" class="px-7 py-3.5 bg-forest-900 text-champagne rounded-xl text-xs font-semibold tracking-wider uppercase hover:bg-forest-800 transition shadow-md"><span id="qrToggleText">Show Digital Gift QR Codes</span></button>
-    </div>
-    <div id="qrWrap" class="hidden grid-cols-1 sm:grid-cols-2 gap-8 pt-6 max-w-2xl mx-auto">
-      <div class="bg-sage-50/50 p-4 rounded-2xl shadow-sm flex flex-col items-center border border-sage-600/20">
-        <span class="text-xs font-bold uppercase tracking-widest text-forest-900 mb-2">BPI Bank Transfer</span>
-        <button type="button" class="overflow-hidden rounded-xl border border-gray-200 w-full flex items-center justify-center bg-white p-2 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/GaGzvjY.jpeg','BPI QR code')" aria-label="Enlarge the BPI QR code">
-          <img src="https://i.imgur.com/GaGzvjY.jpeg" alt="BPI bank QR code for gift contributions" class="w-full h-auto object-contain" loading="lazy" onerror="qrFailed(this)">
-        </button>
-        <p class="text-xs text-sage-700 mt-3 font-medium">Tap QR code to enlarge</p>
-        <div id="giftBpi" class="mt-3 text-sm text-forest-900"></div>
-      </div>
-      <div class="bg-sage-50/50 p-4 rounded-2xl shadow-sm flex flex-col items-center border border-sage-600/20">
-        <span class="text-xs font-bold uppercase tracking-widest text-forest-900 mb-2">GCash Express Send</span>
-        <button type="button" class="overflow-hidden rounded-xl border border-gray-200 w-full flex items-center justify-center bg-white p-2 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/ROGaOmh.jpeg','GCash QR code')" aria-label="Enlarge the GCash QR code">
-          <img src="https://i.imgur.com/ROGaOmh.jpeg" alt="GCash QR code for gift contributions" class="w-full h-auto object-contain" loading="lazy" onerror="qrFailed(this)">
-        </button>
-        <p class="text-xs text-sage-700 mt-3 font-medium">Tap QR code to enlarge</p>
-        <div id="giftGcash" class="mt-3 text-sm text-forest-900"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Memories -->
-<section id="memories" class="py-14 px-4 bg-sage-100/50">
-  <div class="max-w-4xl mx-auto">
-    <div class="reveal text-center mb-10">
-      <span class="text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">Captured Moments</span>
-      <h2 class="text-4xl md:text-5xl font-serif text-forest-900 mb-2">Our Memories</h2>
-      <p class="text-forest-800/80 text-sm">A glimpse of our journey together — tap any photo to view full screen</p>
-      <div class="flex items-center justify-center gap-3 mt-3"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
-    </div>
-    <div id="slideshowOuter" class="reveal relative bg-white rounded-3xl shadow-md border border-sage-600/25 p-4 sm:p-6" style="transition-delay:.12s">
-      <div class="relative w-full h-[380px] sm:h-[500px] rounded-2xl overflow-hidden bg-forest-950 flex items-center justify-center">
-        <div id="slideshowBackdrop" class="absolute inset-0 bg-cover bg-center blur-2xl scale-110 opacity-50 transition-all duration-500" aria-hidden="true"></div>
-        <button type="button" id="slideshowStage" class="relative z-10 w-full h-full flex items-center justify-center cursor-pointer p-2" onclick="openModal(currentSlideSrc,'Memory photo '+(currentSlide+1))" aria-label="Enlarge this memory photo">
-          <img id="slideshowImage" src="" alt="Memory photo" class="max-h-full max-w-full object-contain rounded-lg shadow-xl transition-opacity duration-300">
-        </button>
-        <button type="button" onclick="prevSlide();restartAutoplay()" aria-label="Previous photo" class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 bg-forest-950/75 hover:bg-forest-900 text-white border border-white/20 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-20"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
-        <button type="button" onclick="nextSlide();restartAutoplay()" aria-label="Next photo" class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 bg-forest-950/75 hover:bg-forest-900 text-white border border-white/20 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-20"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
-        <div class="absolute bottom-3 right-3 z-20 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs tracking-widest font-medium border border-white/15"><span id="slideIndex">1</span> / <span id="slideTotal">32</span></div>
-      </div>
-      <div id="thumbStrip" class="flex items-center gap-2 mt-4 overflow-x-auto py-2 px-1"></div>
-    </div>
-  </div>
-</section>
-
-<!-- RSVP -->
-<section id="rsvp" class="max-w-xl mx-auto px-4 pt-6">
-  <div class="reveal bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25">
-    <div class="text-center mb-8">
-      <span class="text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">Be Our Guest</span>
-      <h2 class="text-4xl font-serif text-forest-900 mb-2">RSVP</h2>
-      <p class="text-forest-800/80 text-sm">Kindly respond on or before <strong>November 30, 2026</strong></p>
-    </div>
-    <form id="rsvpForm" class="space-y-5" novalidate>
+      <p class="text-xs text-sage-600">Tap guide to enlarge</p>
       <div>
-        <label for="rsvp-name" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1.5">Full Name</label>
-        <input id="rsvp-name" type="text" name="name" placeholder="e.g., Juan Dela Cruz" required autocomplete="name" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900">
+        <h3 class="text-3xl font-serif text-forest-900 mb-2">Semi-Formal Attire</h3>
+        <p class="text-forest-800/80 text-sm leading-relaxed max-w-md mx-auto"><strong>Gentlemen:</strong> A suit, blazer, Barong, or long-sleeved button-down with slacks (tie optional).<br><strong>Ladies:</strong> A midi/maxi dress or smart semi-formal separates.</p>
       </div>
-      <div>
-        <label for="rsvp-status" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1.5">Attendance Status</label>
-        <select id="rsvp-status" name="status" required onchange="handleAttendanceChange(this.value)" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900">
-          <option value="Yes, I'll be there!">Yes, I'll joyfully attend!</option>
-          <option value="I can't make it.">Regretfully, I can't make it</option>
-        </select>
+      <div class="border-t border-sage-600/20 pt-6">
+        <p class="text-xs font-semibold text-sage-700 uppercase tracking-widest mb-4">Suggested Color Palette</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-md mx-auto">
+          <div class="flex flex-col items-center gap-1.5"><div class="w-12 h-12 rounded-full shadow-md border border-black/15" style="background:#9cb1a4"></div><span class="text-xs font-medium text-forest-900">Sage Gray</span></div>
+          <div class="flex flex-col items-center gap-1.5"><div class="w-12 h-12 rounded-full shadow-md border border-black/15" style="background:#6fc38e"></div><span class="text-xs font-medium text-forest-900">Mint Leaf</span></div>
+          <div class="flex flex-col items-center gap-1.5"><div class="w-12 h-12 rounded-full shadow-md border border-black/15" style="background:#2e7d5b"></div><span class="text-xs font-medium text-forest-900">Emerald</span></div>
+          <div class="flex flex-col items-center gap-1.5"><div class="w-12 h-12 rounded-full shadow-md border border-black/15" style="background:#a2b86e"></div><span class="text-xs font-medium text-forest-900">Olive Green</span></div>
+        </div>
       </div>
-      <div id="guestCountWrapper">
-        <label for="rsvp-guests" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1.5">Number of Guests (Including Yourself)</label>
-        <input id="rsvp-guests" type="number" name="participants" min="0" max="5" value="1" required inputmode="numeric" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900">
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section id="story" class="scroll-mt-20 max-w-3xl mx-auto px-4 pt-4">
+    <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
+      <span class="text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block">Our Love Story</span>
+      <h2 class="text-4xl md:text-5xl font-serif text-forest-900">Where Our Forever Began</h2>
+      <div class="flex items-center justify-center gap-3"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
+      <div class="text-forest-800/90 text-base leading-relaxed space-y-4 font-light text-left md:text-center">
+        <p>Our story began in Camambugan National High School, where two hearts met in the simplest of ways. At first, we were just two people sharing the same space, unaware that God was slowly writing our story.</p>
+        <p>Through ordinary days, shared smiles, conversations, and countless little moments, we grew closer. What started as a simple friendship slowly became a love that neither of us could ignore.</p>
+        <p>As our relationship grew, we learned that true love is not only about happiness, but also about choosing each other through every challenge and every season of life.</p>
+        <blockquote class="my-6 p-6 bg-sage-50/80 rounded-2xl border border-gold-400/30 font-serif text-xl italic text-forest-900 space-y-2 shadow-inner">
+          <p>"Two are better than one… If either of them falls down, one can help the other up."</p>
+          <cite class="block text-xs font-sans uppercase tracking-widest text-sage-700 not-italic font-semibold">— Ecclesiastes 4:9–10</cite>
+        </blockquote>
+        <p>One day, we hope to stand before God, our families, and the people we love, promising to walk together for the rest of our lives.</p>
+        <p>From the place where we first met, to the day we say "I do," and through all the years that follow—our greatest story will always be the one we write together.</p>
       </div>
-      <div>
-        <label for="rsvp-message" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1.5">Message for the Couple <span class="normal-case tracking-normal font-normal text-sage-600">(optional)</span></label>
-        <textarea id="rsvp-message" name="message" rows="3" maxlength="500" placeholder="Well wishes, dietary needs, or anything we should know" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900"></textarea>
+      <div class="pt-4 font-serif text-3xl italic text-forest-900 font-semibold">Maribeth <span class="text-gold-500">&amp;</span> Melbhert</div>
+    </div>
+  </section>
+
+  <!-- Scripture -->
+  <section id="verse" class="scroll-mt-20 max-w-3xl mx-auto px-4 pt-4">
+    <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
+      <span class="text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block">Scripture &amp; Guidance</span>
+      <h2 class="text-4xl md:text-5xl font-serif text-forest-900">Love is Patient, Love is Kind</h2>
+      <div class="flex items-center justify-center gap-3"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
+      <div class="text-forest-800/90 text-base leading-relaxed space-y-4 font-light text-left md:text-center">
+        <div class="my-4 p-8 bg-sage-50/70 rounded-2xl border border-gold-400/30 font-serif text-xl italic text-forest-900 space-y-4 leading-relaxed shadow-inner">
+          <p>"Love is patient, love is kind. It does not envy, it does not boast, it is not proud. It does not dishonor others, it is not self-seeking, it is not easily angered, it keeps no record of wrongs."</p>
+          <p>"Love does not delight in evil but rejoices with the truth. It always protects, always trusts, always hopes, always perseveres. Love never fails."</p>
+          <p>"But where there are prophecies, they will cease; where there are tongues, they will be stilled; where there is knowledge, it will pass away."</p>
+          <span class="block text-xs font-sans uppercase tracking-widest text-sage-700 not-italic font-bold pt-2">— 1 Corinthians 13:4–8</span>
+        </div>
+        <p class="pt-2 text-sm sm:text-base">This scripture serves as the cornerstone of our faith and our commitment to each other as we step into this lifelong covenant of marriage.</p>
       </div>
-      <div style="position:absolute;left:-9999px" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
-      <button type="submit" id="submitBtn" class="w-full py-3.5 bg-forest-900 text-champagne rounded-xl font-semibold text-xs uppercase tracking-widest hover:bg-forest-800 transition shadow-md disabled:opacity-60 disabled:cursor-not-allowed">Send RSVP</button>
-      <div id="formStatus" class="text-center text-sm mt-3 hidden" role="status" aria-live="polite"></div>
-    </form>
-  </div>
-</section>
+    </div>
+  </section>
+
+  <!-- Gifts -->
+  <section id="gifts" class="scroll-mt-20 max-w-4xl mx-auto px-4 pt-4">
+    <div class="reveal bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-sage-600/25 text-center space-y-6">
+      <span class="text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block">Registry &amp; Contributions</span>
+      <h2 class="text-4xl md:text-5xl font-serif text-forest-900">Note on Gifts</h2>
+      <div class="flex items-center justify-center gap-3"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
+      <p class="text-forest-800/90 text-base leading-relaxed max-w-2xl mx-auto font-light">Your presence at our wedding is the greatest gift we could ever ask for. However, if you wish to bless us further, we will gratefully accept a small contribution towards our future home as we begin our new journey together. If you prefer a physical gift, feel free to surprise us in your own special way.</p>
+      <div class="pt-2">
+        <button type="button" id="qrToggleBtn" onclick="toggleQrCodes()" aria-expanded="false" aria-controls="qrWrap" class="px-7 py-3.5 bg-forest-900 text-champagne rounded-xl text-xs font-semibold tracking-wider uppercase hover:bg-forest-800 transition shadow-md">
+          <span id="qrToggleText">Show Digital Gift QR Codes</span>
+        </button>
+      </div>
+      <div id="qrWrap" class="hidden grid-cols-1 sm:grid-cols-2 gap-8 pt-6 max-w-2xl mx-auto">
+        <div class="bg-sage-50/50 p-4 rounded-2xl shadow-sm flex flex-col items-center border border-sage-600/20">
+          <span class="text-xs font-bold uppercase tracking-widest text-forest-900 mb-2">BPI Bank Transfer</span>
+          <button type="button" class="overflow-hidden rounded-xl border border-gray-200 w-full flex items-center justify-center bg-white p-2 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/GaGzvjY.jpeg','BPI QR code')" aria-label="Enlarge the BPI QR code">
+            <img src="https://i.imgur.com/GaGzvjY.jpeg" alt="BPI bank QR code for gift contributions" class="w-full h-auto object-contain" loading="lazy" onerror="qrFailed(this)">
+          </button>
+          <p class="text-xs text-sage-700 mt-3 font-medium">Tap QR code to enlarge</p>
+          <div id="giftBpi" class="mt-3 text-sm text-forest-900"></div>
+        </div>
+        <div class="bg-sage-50/50 p-4 rounded-2xl shadow-sm flex flex-col items-center border border-sage-600/20">
+          <span class="text-xs font-bold uppercase tracking-widest text-forest-900 mb-2">GCash Express Send</span>
+          <button type="button" class="overflow-hidden rounded-xl border border-gray-200 w-full flex items-center justify-center bg-white p-2 cursor-pointer shadow-sm" onclick="openModal('https://i.imgur.com/ROGaOmh.jpeg','GCash QR code')" aria-label="Enlarge the GCash QR code">
+            <img src="https://i.imgur.com/ROGaOmh.jpeg" alt="GCash QR code for gift contributions" class="w-full h-auto object-contain" loading="lazy" onerror="qrFailed(this)">
+          </button>
+          <p class="text-xs text-sage-700 mt-3 font-medium">Tap QR code to enlarge</p>
+          <div id="giftGcash" class="mt-3 text-sm text-forest-900"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Memories -->
+  <section id="memories" class="scroll-mt-20 py-14 px-4 bg-sage-100/50">
+    <div class="max-w-4xl mx-auto">
+      <div class="reveal text-center mb-10">
+        <span class="text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">Captured Moments</span>
+        <h2 class="text-4xl md:text-5xl font-serif text-forest-900 mb-2">Our Memories</h2>
+        <p class="text-forest-800/80 text-sm">A glimpse of our journey together — tap any photo to view full screen</p>
+        <div class="flex items-center justify-center gap-3 mt-3"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
+      </div>
+      <div id="slideshowOuter" class="reveal relative bg-white rounded-3xl shadow-md border border-sage-600/25 p-4 sm:p-6" style="transition-delay:.12s">
+        <div class="relative w-full h-[380px] sm:h-[500px] rounded-2xl overflow-hidden bg-forest-950 flex items-center justify-center">
+          <div id="slideshowBackdrop" class="absolute inset-0 bg-cover bg-center blur-2xl scale-110 opacity-50 transition-all duration-500" aria-hidden="true"></div>
+          <button type="button" id="slideshowStage" class="relative z-10 w-full h-full flex items-center justify-center cursor-pointer p-2" onclick="openModal(currentSlideSrc, 'Memory photo ' + (currentSlide + 1) + ' of ' + memoryPhotos.length, true)" aria-label="Enlarge this memory photo">
+            <img id="slideshowImage" src="" alt="Memory photo" class="max-h-full max-w-full object-contain rounded-lg shadow-xl transition-opacity duration-300">
+          </button>
+          <button type="button" onclick="prevSlide();restartAutoplay()" aria-label="Previous photo" class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 bg-forest-950/75 hover:bg-forest-900 text-white border border-white/20 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button type="button" onclick="nextSlide();restartAutoplay()" aria-label="Next photo" class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 bg-forest-950/75 hover:bg-forest-900 text-white border border-white/20 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+          <div class="absolute bottom-3 right-3 z-20 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs tracking-widest font-medium border border-white/15">
+            <span id="slideIndex">1</span> / <span id="slideTotal">32</span>
+          </div>
+        </div>
+        <div id="thumbStrip" class="flex items-center gap-2 mt-4 overflow-x-auto py-2 px-1"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section id="rsvp" class="scroll-mt-20 max-w-xl mx-auto px-4 pt-6">
+    <div class="reveal bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-sage-600/25">
+      <div class="text-center mb-6">
+        <span class="text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">Be Our Guest</span>
+        <h2 class="text-4xl font-serif text-forest-900 mb-2">RSVP</h2>
+        <p class="text-forest-800/80 text-sm">Kindly respond on or before <strong>November 30, 2026</strong></p>
+
+        <!-- Dynamic Reserved Seats Banner inside RSVP Card -->
+        <div id="rsvp-personalized-banner" class="hidden mt-4 p-3.5 rounded-2xl bg-sage-50 border border-gold-400/40 text-forest-900 text-xs space-y-0.5 shadow-inner">
+          <p id="rsvp-banner-greeting" class="font-serif text-base font-semibold text-forest-900"></p>
+          <p id="rsvp-banner-seats" class="text-sage-700 font-medium"></p>
+        </div>
+      </div>
+      <form id="rsvpForm" class="space-y-5" novalidate>
+        <div>
+          <label for="rsvp-name" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1.5">Full Name / Party Name</label>
+          <input id="rsvp-name" type="text" name="name" placeholder="e.g., Juan Dela Cruz" required autocomplete="name" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900">
+        </div>
+        <div>
+          <label for="rsvp-status" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1.5">Attendance Status</label>
+          <select id="rsvp-status" name="status" required onchange="handleAttendanceChange(this.value)" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900">
+            <option value="Yes, I'll be there!">Yes, I'll joyfully attend!</option>
+            <option value="I can't make it.">Regretfully, I can't make it</option>
+          </select>
+        </div>
+        <div id="guestCountWrapper">
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="rsvp-guests" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold">Number of Guests (Including Yourself)</label>
+            <span id="rsvp-seats-hint" class="hidden text-[11px] font-semibold text-gold-600 bg-gold-300/20 px-2 py-0.5 rounded-full"></span>
+          </div>
+          <input id="rsvp-guests" type="number" name="participants" min="1" max="5" value="1" required inputmode="numeric" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900">
+        </div>
+        <div>
+          <label for="rsvp-message" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1.5">Message for the Couple <span class="normal-case tracking-normal font-normal text-sage-600">(optional)</span></label>
+          <textarea id="rsvp-message" name="message" rows="3" maxlength="500" placeholder="Well wishes, dietary needs, or names of accompanying guests" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900"></textarea>
+        </div>
+        <div style="position:absolute;left:-9999px" aria-hidden="true">
+          <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <button type="submit" id="submitBtn" class="w-full py-3.5 bg-forest-900 text-champagne rounded-xl font-semibold text-xs uppercase tracking-widest hover:bg-forest-800 transition shadow-md disabled:opacity-60 disabled:cursor-not-allowed">Send RSVP</button>
+        <div id="formStatus" class="text-center text-sm mt-3 hidden" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+
 </main>
 
 <!-- Lightbox -->
 <div id="photoModal" class="fixed inset-0 z-[9998] bg-black/85 backdrop-blur-md hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Enlarged photo">
   <div class="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center justify-center">
     <button type="button" id="modalCloseBtn" onclick="closeModal()" aria-label="Close enlarged photo" class="absolute -top-11 right-0 text-white text-xl font-bold bg-white/15 hover:bg-white/30 border border-white/25 w-9 h-9 rounded-full flex items-center justify-center transition">&times;</button>
+    <button type="button" id="modalPrevBtn" onclick="modalStep(-1)" aria-label="Previous photo" class="hidden absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white border border-white/25 w-10 h-10 rounded-full items-center justify-center transition z-20">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    </button>
     <img id="modalImage" src="" alt="Enlarged photo" class="max-w-full max-h-[82vh] object-contain rounded-2xl shadow-2xl">
+    <button type="button" id="modalNextBtn" onclick="modalStep(1)" aria-label="Next photo" class="hidden absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white border border-white/25 w-10 h-10 rounded-full items-center justify-center transition z-20">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </button>
     <p id="modalCaption" class="text-champagne/90 text-xs tracking-wider uppercase mt-3"></p>
+  </div>
+</div>
+
+<!-- Couple's Invite Link Generator Modal (Open via ?admin=1 or Ctrl+Shift+L) -->
+<div id="linkGenModal" class="fixed inset-0 z-[9997] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="linkGenTitle">
+  <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-sage-600/30 space-y-5 relative">
+    <button type="button" onclick="closeLinkGenerator()" aria-label="Close Link Generator" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 flex items-center justify-center font-bold">&times;</button>
+    <div>
+      <span class="text-[11px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Couple's Tool</span>
+      <h3 id="linkGenTitle" class="font-serif text-3xl text-forest-900 font-semibold">Personalized Invite Link Builder</h3>
+      <p class="text-xs text-forest-800/75 mt-1">Generate custom links that greet your guests by name on the seal and lock in their reserved seat count.</p>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label for="gen-guest-name" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Guest / Family Name</label>
+        <input id="gen-guest-name" type="text" placeholder="e.g., Mr. & Mrs. Juan Dela Cruz" oninput="updateGeneratedLink()" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-sm text-forest-900">
+      </div>
+      <div>
+        <label for="gen-guest-seats" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Reserved Seats (1–10)</label>
+        <input id="gen-guest-seats" type="number" min="1" max="10" value="2" oninput="updateGeneratedLink()" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-sm text-forest-900">
+      </div>
+      <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 space-y-2">
+        <span class="block text-[10px] uppercase tracking-widest text-sage-700 font-semibold">Generated URL</span>
+        <input id="gen-result-url" type="text" readonly class="w-full bg-white px-3 py-2 rounded-lg border border-sage-600/20 text-xs text-forest-900 font-mono select-all">
+        <div class="flex flex-wrap gap-2 pt-1">
+          <button type="button" id="copyUrlBtn" onclick="copyInviteLink(false)" class="flex-1 py-2.5 px-4 bg-forest-900 hover:bg-forest-800 text-champagne rounded-xl text-xs uppercase tracking-widest font-semibold transition">Copy Link</button>
+          <button type="button" id="copyMsgBtn" onclick="copyInviteLink(true)" class="flex-1 py-2.5 px-4 bg-gold-500 hover:bg-gold-600 text-forest-950 rounded-xl text-xs uppercase tracking-widest font-semibold transition">Copy Messenger Invite</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -459,21 +593,132 @@ body.modal-open{overflow:hidden}
 <script>
 /* =================== EDIT THESE =================== */
 const RSVP_URL = 'https://script.google.com/macros/s/AKfycbzAojikwlWBTv6QH101AjiWPWCFGcuYArgo1UWYR9T2ZSF6ic2bTr3Owzdr5i47tHlS/exec';
-const CONTACT_FALLBACK = '';   // e.g. '+63 9XX XXX XXXX'. Shown if an RSVP fails or has closed.
-const GIFT_ACCOUNTS = {        // shown under each QR with a Copy button; leave '' to hide
+const CONTACT_FALLBACK = ''; // e.g. '+63 9XX XXX XXXX'. Shown if an RSVP fails or has closed.
+const GIFT_ACCOUNTS = {      // shown under each QR with a Copy button; leave '' to hide
   bpi:   { name: '', number: '' },
   gcash: { name: '', number: '' }
 };
-const GOOD_TO_KNOW = [         // cards with empty text are skipped; the section hides if all are empty
+const GOOD_TO_KNOW = [       // cards with empty text are skipped; the section & nav link hide if all are empty
   { title: 'Where to Stay', text: 'Tagbilaran City has many hotels within minutes of both venues. December is peak season in Bohol, so we recommend booking early.' },
-  { title: 'Parking & Getting Around', text: '' },
-  { title: 'Children', text: '' },
-  { title: 'Weather', text: 'December can bring light rain, so a small umbrella is handy.' }
+  { title: 'Parking & Getting Around', text: 'Complimentary parking is available at both Tagbilaran Cathedral and Bohol Tropics Resort. Tricycles and taxis are also readily available between venues.' },
+  { title: 'Arrival & Unplugged Ceremony', text: 'Kindly arrive by 9:30 AM so everyone is seated before the processional. Please keep phones on silent during the Holy Mass.' },
+  { title: 'Weather', text: 'December in Bohol is pleasantly breezy with occasional light showers, so bringing a small umbrella or hand fan is handy.' }
 ];
-const GTK_CONTACT = { name: '', phone: '' };   // "Questions on the day?" box; hidden if empty
+const GTK_CONTACT = { name: '', phone: '' }; // "Questions on the day?" box; hidden if empty
 /* ================================================== */
 
-/* ---------- Intro ---------- */
+/* ---------- URL Guest Personalization (?guest=...&seats=...) ---------- */
+const urlParams = new URLSearchParams(window.location.search);
+const invitedGuestName = (urlParams.get('guest') || urlParams.get('to') || urlParams.get('name') || '').replace(/\s+/g, ' ').trim();
+const rawSeatsParam = parseInt(urlParams.get('seats') || urlParams.get('max') || '', 10);
+const invitedGuestSeats = (!isNaN(rawSeatsParam) && rawSeatsParam >= 1 && rawSeatsParam <= 15) ? rawSeatsParam : null;
+
+function applyGuestPersonalization() {
+  const nameInput = document.getElementById('rsvp-name');
+  const guestInputEl = document.getElementById('rsvp-guests');
+  const seatsHintEl = document.getElementById('rsvp-seats-hint');
+  const bannerEl = document.getElementById('rsvp-personalized-banner');
+  const bannerGreetingEl = document.getElementById('rsvp-banner-greeting');
+  const bannerSeatsEl = document.getElementById('rsvp-banner-seats');
+
+  if (invitedGuestName || invitedGuestSeats) {
+    const introCard = document.getElementById('intro-guest-card');
+    const introName = document.getElementById('intro-guest-name');
+    const introSeats = document.getElementById('intro-guest-seats');
+    introCard.classList.remove('hidden');
+
+    if (invitedGuestName) {
+      introName.textContent = invitedGuestName;
+      const heroGreeting = document.getElementById('hero-guest-greeting');
+      const heroName = document.getElementById('hero-guest-name');
+      heroName.textContent = invitedGuestName;
+      heroGreeting.classList.remove('hidden');
+    } else {
+      introName.classList.add('hidden');
+    }
+
+    if (invitedGuestSeats) {
+      introSeats.textContent = `We have reserved ${invitedGuestSeats} ${invitedGuestSeats === 1 ? 'seat' : 'seats'} in your honor`;
+      introSeats.classList.remove('hidden');
+    }
+  }
+
+  if (invitedGuestName && nameInput) {
+    nameInput.value = invitedGuestName;
+  }
+  if (invitedGuestSeats && guestInputEl) {
+    guestInputEl.max = String(invitedGuestSeats);
+    guestInputEl.value = String(invitedGuestSeats);
+    if (seatsHintEl) {
+      seatsHintEl.textContent = `Max ${invitedGuestSeats} ${invitedGuestSeats === 1 ? 'seat' : 'seats'} reserved`;
+      seatsHintEl.classList.remove('hidden');
+    }
+  }
+
+  if ((invitedGuestName || invitedGuestSeats) && bannerEl) {
+    bannerEl.classList.remove('hidden');
+    bannerGreetingEl.textContent = invitedGuestName ? `Invitation for ${invitedGuestName}` : 'Your Reserved Invitation';
+    if (invitedGuestSeats) {
+      bannerSeatsEl.textContent = `We have reserved up to ${invitedGuestSeats} ${invitedGuestSeats === 1 ? 'seat' : 'seats'} in your honor.`;
+    } else {
+      bannerSeatsEl.classList.add('hidden');
+    }
+  }
+}
+
+/* ---------- Couple's Link Generator Tool (?admin=1 or Ctrl+Shift+L) ---------- */
+const linkGenModal = document.getElementById('linkGenModal');
+function openLinkGenerator() {
+  linkGenModal.classList.remove('hidden');
+  linkGenModal.classList.add('flex');
+  updateGeneratedLink();
+  document.getElementById('gen-guest-name').focus();
+}
+function closeLinkGenerator() {
+  linkGenModal.classList.remove('flex');
+  linkGenModal.classList.add('hidden');
+}
+function updateGeneratedLink() {
+  const gName = document.getElementById('gen-guest-name').value.trim();
+  const gSeats = parseInt(document.getElementById('gen-guest-seats').value, 10);
+  const baseUrl = window.location.origin + window.location.pathname;
+  const p = new URLSearchParams();
+  if (gName) p.set('guest', gName);
+  if (!isNaN(gSeats) && gSeats >= 1) p.set('seats', String(gSeats));
+  const finalUrl = p.toString() ? `${baseUrl}?${p.toString()}` : baseUrl;
+  document.getElementById('gen-result-url').value = finalUrl;
+}
+function copyInviteLink(withMessage) {
+  updateGeneratedLink();
+  const url = document.getElementById('gen-result-url').value;
+  const gName = document.getElementById('gen-guest-name').value.trim() || 'our dear guest';
+  const gSeats = parseInt(document.getElementById('gen-guest-seats').value, 10) || 1;
+  const payload = withMessage
+    ? `Dear ${gName},\n\nWith joyful hearts, we invite you to celebrate our wedding on Wednesday, December 30, 2026 in Bohol! We have reserved ${gSeats} ${gSeats === 1 ? 'seat' : 'seats'} in your honor.\n\nView your personalized invitation & RSVP here:\n${url}\n\nWith love,\nMaribeth & Melbhert`
+    : url;
+  const targetBtn = document.getElementById(withMessage ? 'copyMsgBtn' : 'copyUrlBtn');
+  const origText = targetBtn.textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(payload).then(() => {
+      targetBtn.textContent = 'Copied! ✓';
+      setTimeout(() => { targetBtn.textContent = origText; }, 2000);
+    });
+  }
+}
+if (urlParams.get('admin') === '1' || urlParams.get('builder') === '1') {
+  window.addEventListener('DOMContentLoaded', () => {
+    openInvitation();
+    openLinkGenerator();
+  });
+}
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'l') {
+    e.preventDefault();
+    openLinkGenerator();
+  }
+});
+
+/* ---------- Intro & Music ---------- */
 const introOverlay = document.getElementById('intro-overlay');
 const music = document.getElementById('bg-music');
 const btn = document.getElementById('music-btn');
@@ -484,25 +729,40 @@ function setMusicUI(on) {
   btn.setAttribute('aria-label', on ? 'Pause background music' : 'Play background music');
   btn.setAttribute('aria-pressed', String(on));
 }
+
+function hideMusicButton() {
+  musicAvailable = false;
+  btn.style.display = 'none';
+}
+
+music.addEventListener('error', hideMusicButton);
+const musicSource = music.querySelector('source');
+if (musicSource) musicSource.addEventListener('error', hideMusicButton);
+
 function openInvitation() {
   if (!introOverlay || introOverlay.classList.contains('opening')) return;
   introOverlay.classList.add('opening');
   document.body.classList.remove('intro-locked');
-  if (musicAvailable) music.play().then(() => setMusicUI(true)).catch(() => {});
+  if (musicAvailable) {
+    music.play().then(() => setMusicUI(true)).catch(() => {});
+  }
   introOverlay.addEventListener('transitionend', () => { introOverlay.style.display = 'none'; }, { once: true });
   setTimeout(() => { introOverlay.style.display = 'none'; }, 1600);
 }
-// Failsafe: if a guest doesn't tap, open on its own so the page is never stuck behind the seal
+
 setTimeout(openInvitation, 12000);
 
-function hideMusicButton() { musicAvailable = false; btn.style.display = 'none'; }
-music.addEventListener('error', hideMusicButton);
-const musicSource = music.querySelector('source');
-if (musicSource) musicSource.addEventListener('error', hideMusicButton);
 function toggleMusic() {
   if (!musicAvailable) return;
-  if (music.paused) { music.play().then(() => setMusicUI(true)).catch(err => console.warn('Could not play music:', err)); }
-  else { music.pause(); setMusicUI(false); }
+  if (music.paused) {
+    music.play().then(() => setMusicUI(true)).catch(err => {
+      console.warn('Could not play music:', err);
+      if (music.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) hideMusicButton();
+    });
+  } else {
+    music.pause();
+    setMusicUI(false);
+  }
 }
 
 /* ---------- Motion preference ---------- */
@@ -511,8 +771,10 @@ let prefersReducedMotion = motionQuery.matches;
 
 /* ---------- Sponsors toggle ---------- */
 function toggleEntourage() {
-  const c = document.getElementById('moreSponsors'), t = document.getElementById('entourageToggleText'),
-        i = document.getElementById('entourageToggleIcon'), b = document.getElementById('entourageToggleBtn');
+  const c = document.getElementById('moreSponsors'),
+        t = document.getElementById('entourageToggleText'),
+        i = document.getElementById('entourageToggleIcon'),
+        b = document.getElementById('entourageToggleBtn');
   const hide = !c.classList.contains('hidden');
   c.classList.toggle('hidden', hide);
   t.textContent = hide ? 'View All 17 Sponsor Pairs' : 'Show Compact List';
@@ -520,24 +782,13 @@ function toggleEntourage() {
   b.setAttribute('aria-expanded', String(!hide));
 }
 
-/* ---------- Calendar (.ics) ---------- */
-function downloadICS() {
-  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Maribeth and Melbhert Wedding//EN','BEGIN:VEVENT',
-    'UID:mm-wedding-20261230@bohol','DTSTAMP:20260101T000000Z','DTSTART:20261230T020000Z','DTEND:20261230T080000Z',
-    "SUMMARY:Maribeth & Melbhert's Wedding",
-    'DESCRIPTION:Ceremony at Tagbilaran Cathedral (10:00 AM) followed by Reception at Bohol Tropics Resort (12:00 PM).',
-    'LOCATION:Tagbilaran Cathedral\\, Tagbilaran City\\, Bohol\\, Philippines','END:VEVENT','END:VCALENDAR'];
-  const url = URL.createObjectURL(new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' }));
-  const a = document.createElement('a');
-  a.href = url; a.download = 'Maribeth-and-Melbhert-Wedding.ics';
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}
-
 /* ---------- Falling leaves + confetti ---------- */
 const canvas = document.getElementById('leaves-canvas');
 const ctx = canvas.getContext('2d');
 function resizeCanvas() { canvas.width = innerWidth; canvas.height = innerHeight; }
-addEventListener('resize', resizeCanvas); resizeCanvas();
+addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
 let mouseX = innerWidth / 2, mouseY = innerHeight / 2;
 addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
 
@@ -548,83 +799,151 @@ function leafPath(s) {
   ctx.bezierCurveTo(-s / 2, s / 2, -s / 2, -s / 4, 0, -s / 2);
   ctx.fill();
 }
+
 class Leaf {
   constructor() { this.reset(); }
   reset() {
-    this.x = Math.random() * canvas.width; this.y = -50 - Math.random() * 200;
-    this.size = Math.random() * 11 + 9; this.speedY = Math.random() * 1.3 + .6; this.speedX = Math.random() * 1.6 - .8;
-    this.angle = Math.random() * Math.PI * 2; this.spin = Math.random() * .025 - .0125;
-    const colors = ['#739574','#5c7a5d','#3b5c3e','#9cb1a4','#c5a059'];
-    this.color = colors[Math.floor(Math.random() * colors.length)]; this.opacity = Math.random() * .45 + .25;
+    this.x = Math.random() * canvas.width;
+    this.y = -50 - Math.random() * 200;
+    this.size = Math.random() * 11 + 9;
+    this.speedY = Math.random() * 1.3 + .6;
+    this.speedX = Math.random() * 1.6 - .8;
+    this.angle = Math.random() * Math.PI * 2;
+    this.spin = Math.random() * .025 - .0125;
+    const colors = ['#739574', '#5c7a5d', '#3b5c3e', '#9cb1a4', '#c5a059'];
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+    this.opacity = Math.random() * .45 + .25;
   }
   update() {
-    this.y += this.speedY; this.x += this.speedX + Math.sin(this.angle) * .7; this.angle += this.spin;
+    this.y += this.speedY;
+    this.x += this.speedX + Math.sin(this.angle) * .7;
+    this.angle += this.spin;
     const dx = this.x - mouseX, dy = this.y - mouseY, d = Math.hypot(dx, dy);
-    if (d < 110 && d > 0) { const f = (110 - d) / 110; this.x += dx / d * f * 2.5; this.y += dy / d * f * 2.5; }
+    if (d < 110 && d > 0) {
+      const f = (110 - d) / 110;
+      this.x += dx / d * f * 2.5;
+      this.y += dy / d * f * 2.5;
+    }
     if (this.y > canvas.height + 50 || this.x < -50 || this.x > canvas.width + 50) this.reset();
   }
   draw() {
-    ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.angle);
-    ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color; leafPath(this.size); ctx.restore();
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle = this.color;
+    leafPath(this.size);
+    ctx.restore();
   }
 }
 const leaves = Array.from({ length: 22 }, () => new Leaf());
 
 class BurstParticle {
   constructor(x, y, o = {}) {
-    this.x = x; this.y = y; this.shape = o.shape || 'leaf'; this.size = o.size || (Math.random() * 10 + 8);
+    this.x = x;
+    this.y = y;
+    this.shape = o.shape || 'leaf';
+    this.size = o.size || (Math.random() * 10 + 8);
     const a = o.angle !== undefined ? o.angle : Math.random() * Math.PI * 2;
     const sp = o.speed !== undefined ? o.speed : Math.random() * 3 + 2;
-    this.vx = Math.cos(a) * sp; this.vy = Math.sin(a) * sp; this.gravity = o.gravity !== undefined ? o.gravity : .12;
-    this.rotation = Math.random() * Math.PI * 2; this.spin = Math.random() * .24 - .12;
-    this.life = 1; this.decay = o.decay || (Math.random() * .01 + .007);
-    const colors = o.colors || ['#739574','#5c7a5d','#c5a059','#9cb1a4','#a2b86e'];
+    this.vx = Math.cos(a) * sp;
+    this.vy = Math.sin(a) * sp;
+    this.gravity = o.gravity !== undefined ? o.gravity : .12;
+    this.rotation = Math.random() * Math.PI * 2;
+    this.spin = Math.random() * .24 - .12;
+    this.life = 1;
+    this.decay = o.decay || (Math.random() * .01 + .007);
+    const colors = o.colors || ['#739574', '#5c7a5d', '#c5a059', '#9cb1a4', '#a2b86e'];
     this.color = colors[Math.floor(Math.random() * colors.length)];
   }
-  update() { this.vy += this.gravity; this.x += this.vx; this.y += this.vy; this.rotation += this.spin; this.life -= this.decay; }
+  update() {
+    this.vy += this.gravity;
+    this.x += this.vx;
+    this.y += this.vy;
+    this.rotation += this.spin;
+    this.life -= this.decay;
+  }
   draw() {
     if (this.life <= 0) return;
-    ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rotation);
-    ctx.globalAlpha = Math.max(this.life, 0); ctx.fillStyle = this.color;
-    if (this.shape === 'rect') ctx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2); else leafPath(this.size);
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.globalAlpha = Math.max(this.life, 0);
+    ctx.fillStyle = this.color;
+    if (this.shape === 'rect') ctx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2);
+    else leafPath(this.size);
     ctx.restore();
   }
   isDead() { return this.life <= 0 || this.y > canvas.height + 80; }
 }
+
 let burstParticles = [];
 function spawnLeafBurst(x, y) {
   if (prefersReducedMotion) return;
   for (let i = 0; i < 12; i++) burstParticles.push(new BurstParticle(x, y, { shape: 'leaf', speed: Math.random() * 3 + 1.5, gravity: .1 }));
   if (burstParticles.length > 220) burstParticles.splice(0, burstParticles.length - 220);
 }
+
 function fireConfetti() {
   if (prefersReducedMotion) return;
-  const ox = innerWidth / 2, oy = Math.min(innerHeight * .4, 380), colors = ['#c5a059','#f7f4ef','#739574','#a2b86e','#e2c78d'];
-  for (let i = 0; i < 75; i++) burstParticles.push(new BurstParticle(ox, oy, {
-    shape: 'rect', size: Math.random() * 8 + 6, angle: -Math.PI / 2 + (Math.random() * 1.4 - .7),
-    speed: Math.random() * 7 + 4, gravity: .18, decay: Math.random() * .006 + .004, colors }));
+  const ox = innerWidth / 2, oy = Math.min(innerHeight * .4, 380);
+  const colors = ['#c5a059', '#f7f4ef', '#739574', '#a2b86e', '#e2c78d'];
+  for (let i = 0; i < 75; i++) {
+    burstParticles.push(new BurstParticle(ox, oy, {
+      shape: 'rect',
+      size: Math.random() * 8 + 6,
+      angle: -Math.PI / 2 + (Math.random() * 1.4 - .7),
+      speed: Math.random() * 7 + 4,
+      gravity: .18,
+      decay: Math.random() * .006 + .004,
+      colors
+    }));
+  }
   if (burstParticles.length > 300) burstParticles.splice(0, burstParticles.length - 300);
 }
+
 addEventListener('click', e => {
   if (prefersReducedMotion) return;
-  if (e.target.closest('a, button, input, select, textarea, label, iframe, #photoModal, #intro-overlay')) return;
+  if (e.target.closest('a, button, input, select, textarea, label, iframe, #photoModal, #linkGenModal, #intro-overlay')) return;
   spawnLeafBurst(e.clientX, e.clientY);
 });
+
 let leavesAnimationId = null;
 function animateLeaves() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (!prefersReducedMotion) leaves.forEach(l => { l.update(); l.draw(); });
-  if (burstParticles.length) { burstParticles.forEach(p => { p.update(); p.draw(); }); burstParticles = burstParticles.filter(p => !p.isDead()); }
+  if (burstParticles.length) {
+    burstParticles.forEach(p => { p.update(); p.draw(); });
+    burstParticles = burstParticles.filter(p => !p.isDead());
+  }
   leavesAnimationId = requestAnimationFrame(animateLeaves);
 }
+
 function startLeaves() {
-  if (prefersReducedMotion) { ctx.clearRect(0, 0, canvas.width, canvas.height); if (leavesAnimationId) cancelAnimationFrame(leavesAnimationId); leavesAnimationId = null; return; }
+  if (prefersReducedMotion) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (leavesAnimationId) cancelAnimationFrame(leavesAnimationId);
+    leavesAnimationId = null;
+    return;
+  }
   if (!leavesAnimationId) animateLeaves();
 }
 startLeaves();
-if (motionQuery.addEventListener) motionQuery.addEventListener('change', e => { prefersReducedMotion = e.matches; burstParticles = []; startLeaves(); });
+
+if (motionQuery.addEventListener) {
+  motionQuery.addEventListener('change', e => {
+    prefersReducedMotion = e.matches;
+    burstParticles = [];
+    startLeaves();
+  });
+}
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) { if (leavesAnimationId) cancelAnimationFrame(leavesAnimationId); leavesAnimationId = null; } else startLeaves();
+  if (document.hidden) {
+    if (leavesAnimationId) cancelAnimationFrame(leavesAnimationId);
+    leavesAnimationId = null;
+  } else {
+    startLeaves();
+  }
 });
 
 /* ---------- Nav ---------- */
@@ -641,25 +960,38 @@ mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => 
 (function () {
   const items = GOOD_TO_KNOW.filter(i => i.text && i.text.trim());
   const hasContact = GTK_CONTACT.name || GTK_CONTACT.phone;
-  if (!items.length && !hasContact) return;
+  if (!items.length && !hasContact) {
+    document.querySelectorAll('[data-nav-gtk]').forEach(el => el.classList.add('hidden'));
+    return;
+  }
   const sec = document.getElementById('goodtoknow'), grid = document.getElementById('gtkGrid');
   items.forEach((it, n) => {
     const d = document.createElement('div');
     d.className = 'reveal bg-white p-6 rounded-3xl shadow-sm border border-sage-600/25';
     d.style.transitionDelay = (n * .08) + 's';
-    const h = document.createElement('h3'); h.className = 'font-serif text-2xl text-forest-900 font-semibold mb-1'; h.textContent = it.title;
-    const p = document.createElement('p'); p.className = 'text-sm text-forest-800/80 leading-relaxed'; p.textContent = it.text;
-    d.append(h, p); grid.appendChild(d);
+    const h = document.createElement('h3');
+    h.className = 'font-serif text-2xl text-forest-900 font-semibold mb-1';
+    h.textContent = it.title;
+    const p = document.createElement('p');
+    p.className = 'text-sm text-forest-800/80 leading-relaxed';
+    p.textContent = it.text;
+    d.append(h, p);
+    grid.appendChild(d);
   });
   if (hasContact) {
     const c = document.getElementById('gtkContact');
     c.classList.remove('hidden');
-    const l = document.createElement('p'); l.className = 'text-xs uppercase tracking-[0.22em] text-sage-700 font-semibold mb-1'; l.textContent = 'Questions on the Day?';
-    const p = document.createElement('p'); p.className = 'text-sm text-forest-800/85';
+    const l = document.createElement('p');
+    l.className = 'text-xs uppercase tracking-[0.22em] text-sage-700 font-semibold mb-1';
+    l.textContent = 'Questions on the Day?';
+    const p = document.createElement('p');
+    p.className = 'text-sm text-forest-800/85';
     p.append('Please contact ' + (GTK_CONTACT.name || 'us'));
     if (GTK_CONTACT.phone) {
-      const a = document.createElement('a'); a.href = 'tel:' + GTK_CONTACT.phone.replace(/[^+\d]/g, '');
-      a.className = 'underline decoration-gold-500 underline-offset-4 font-medium'; a.textContent = GTK_CONTACT.phone;
+      const a = document.createElement('a');
+      a.href = 'tel:' + GTK_CONTACT.phone.replace(/[^+\d]/g, '');
+      a.className = 'underline decoration-gold-500 underline-offset-4 font-medium';
+      a.textContent = GTK_CONTACT.phone;
       p.append(' at ', a);
     }
     c.append(l, p);
@@ -669,36 +1001,52 @@ mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => 
 
 /* ---------- Gifts ---------- */
 function toggleQrCodes() {
-  const wrap = document.getElementById('qrWrap'), t = document.getElementById('qrToggleText'), b = document.getElementById('qrToggleBtn');
+  const wrap = document.getElementById('qrWrap'),
+        t = document.getElementById('qrToggleText'),
+        b = document.getElementById('qrToggleBtn');
   const show = wrap.classList.contains('hidden');
-  wrap.classList.toggle('hidden', !show); wrap.classList.toggle('grid', show);
+  wrap.classList.toggle('hidden', !show);
+  wrap.classList.toggle('grid', show);
   t.textContent = show ? 'Hide Digital Gift QR Codes' : 'Show Digital Gift QR Codes';
   b.setAttribute('aria-expanded', String(show));
 }
+
 function qrFailed(img) {
-  // Never show a fake placeholder QR; tell guests to use the account details instead
   const note = document.createElement('p');
   note.className = 'text-xs text-forest-800/70 p-6';
   note.textContent = 'QR code unavailable right now. Please use the account details below' + (CONTACT_FALLBACK ? ' or contact ' + CONTACT_FALLBACK : '') + '.';
   img.replaceWith(note);
 }
+
 function renderGift(id, acct) {
   const el = document.getElementById(id);
   if (!el || !(acct.name || acct.number)) return;
-  if (acct.name) { const n = document.createElement('p'); n.className = 'font-medium text-center'; n.textContent = acct.name; el.appendChild(n); }
+  if (acct.name) {
+    const n = document.createElement('p');
+    n.className = 'font-medium text-center';
+    n.textContent = acct.name;
+    el.appendChild(n);
+  }
   if (acct.number) {
-    const row = document.createElement('div'); row.className = 'flex items-center justify-center gap-2';
-    const num = document.createElement('span'); num.className = 'tracking-wider'; num.textContent = acct.number;
-    const cp = document.createElement('button'); cp.type = 'button';
-    cp.className = 'text-[11px] uppercase tracking-widest px-2.5 py-1 rounded-full border border-sage-600/40 hover:bg-sage-100 transition'; cp.textContent = 'Copy';
+    const row = document.createElement('div');
+    row.className = 'flex items-center justify-center gap-2 mt-1';
+    const num = document.createElement('span');
+    num.className = 'tracking-wider';
+    num.textContent = acct.number;
+    const cp = document.createElement('button');
+    cp.type = 'button';
+    cp.className = 'text-[11px] uppercase tracking-widest px-2.5 py-1 rounded-full border border-sage-600/40 hover:bg-sage-100 transition';
+    cp.textContent = 'Copy';
     cp.addEventListener('click', () => {
       const done = () => { cp.textContent = 'Copied'; setTimeout(() => cp.textContent = 'Copy', 1800); };
       if (navigator.clipboard) navigator.clipboard.writeText(acct.number.replace(/\s/g, '')).then(done).catch(() => {});
     });
-    row.append(num, cp); el.appendChild(row);
+    row.append(num, cp);
+    el.appendChild(row);
   }
 }
-renderGift('giftBpi', GIFT_ACCOUNTS.bpi); renderGift('giftGcash', GIFT_ACCOUNTS.gcash);
+renderGift('giftBpi', GIFT_ACCOUNTS.bpi);
+renderGift('giftGcash', GIFT_ACCOUNTS.gcash);
 
 /* ---------- Slideshow ---------- */
 const memoryPhotos = [
@@ -708,18 +1056,28 @@ const memoryPhotos = [
 ].map(f => 'https://i.imgur.com/' + f);
 
 let currentSlide = 0, currentSlideSrc = memoryPhotos[0], slideTimer = null;
-const slideImg = document.getElementById('slideshowImage'), slideBackdrop = document.getElementById('slideshowBackdrop'),
-      slideIndexEl = document.getElementById('slideIndex'), thumbStrip = document.getElementById('thumbStrip');
+const slideImg = document.getElementById('slideshowImage'),
+      slideBackdrop = document.getElementById('slideshowBackdrop'),
+      slideIndexEl = document.getElementById('slideIndex'),
+      thumbStrip = document.getElementById('thumbStrip');
 document.getElementById('slideTotal').textContent = memoryPhotos.length;
 
 memoryPhotos.forEach((src, idx) => {
   const b = document.createElement('button');
-  b.type = 'button'; b.setAttribute('aria-label', 'Go to memory photo ' + (idx + 1));
+  b.type = 'button';
+  b.setAttribute('aria-label', 'Go to memory photo ' + (idx + 1));
   b.className = 'relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all duration-200';
-  const im = document.createElement('img'); im.src = src; im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.className = 'w-full h-full object-cover';
-  b.appendChild(im); b.onclick = () => { currentSlide = idx; updateSlide(); restartAutoplay(); };
+  const im = document.createElement('img');
+  im.src = src;
+  im.alt = '';
+  im.loading = 'lazy';
+  im.decoding = 'async';
+  im.className = 'w-full h-full object-cover';
+  b.appendChild(im);
+  b.onclick = () => { currentSlide = idx; updateSlide(); restartAutoplay(); };
   thumbStrip.appendChild(b);
 });
+
 function updateSlide() {
   slideImg.style.opacity = '0';
   setTimeout(() => {
@@ -731,31 +1089,43 @@ function updateSlide() {
     slideIndexEl.textContent = currentSlide + 1;
     Array.from(thumbStrip.children).forEach((t, i) => {
       const on = i === currentSlide;
-      t.classList.toggle('border-gold-500', on); t.classList.toggle('scale-105', on); t.classList.toggle('shadow-md', on);
-      t.classList.toggle('border-transparent', !on); t.classList.toggle('opacity-60', !on);
+      t.classList.toggle('border-gold-500', on);
+      t.classList.toggle('scale-105', on);
+      t.classList.toggle('shadow-md', on);
+      t.classList.toggle('border-transparent', !on);
+      t.classList.toggle('opacity-60', !on);
     });
-    // Scroll only the thumbnail strip (not the whole page)
     const cur = thumbStrip.children[currentSlide];
     if (cur) thumbStrip.scrollTo({ left: cur.offsetLeft - thumbStrip.clientWidth / 2 + cur.clientWidth / 2, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     [currentSlide + 1, currentSlide - 1].forEach(i => { new Image().src = memoryPhotos[(i + memoryPhotos.length) % memoryPhotos.length]; });
   }, prefersReducedMotion ? 0 : 140);
 }
+
 function nextSlide() { currentSlide = (currentSlide + 1) % memoryPhotos.length; updateSlide(); }
 function prevSlide() { currentSlide = (currentSlide - 1 + memoryPhotos.length) % memoryPhotos.length; updateSlide(); }
 function startAutoplay() { if (!slideTimer && !prefersReducedMotion) slideTimer = setInterval(nextSlide, 5000); }
 function stopAutoplay() { clearInterval(slideTimer); slideTimer = null; }
 function restartAutoplay() { stopAutoplay(); startAutoplay(); }
-updateSlide(); startAutoplay();
+updateSlide();
+startAutoplay();
 
 const slideOuter = document.getElementById('slideshowOuter'), slideStage = document.getElementById('slideshowStage');
-slideOuter.addEventListener('mouseenter', stopAutoplay); slideOuter.addEventListener('mouseleave', startAutoplay);
-slideOuter.addEventListener('focusin', stopAutoplay); slideOuter.addEventListener('focusout', startAutoplay);
+slideOuter.addEventListener('mouseenter', stopAutoplay);
+slideOuter.addEventListener('mouseleave', startAutoplay);
+slideOuter.addEventListener('focusin', stopAutoplay);
+slideOuter.addEventListener('focusout', startAutoplay);
+
 let tx = 0, ty = 0, resumeTimer = null;
-slideStage.addEventListener('touchstart', e => { stopAutoplay(); tx = e.changedTouches[0].screenX; ty = e.changedTouches[0].screenY; }, { passive: true });
+slideStage.addEventListener('touchstart', e => {
+  stopAutoplay();
+  tx = e.changedTouches[0].screenX;
+  ty = e.changedTouches[0].screenY;
+}, { passive: true });
 slideStage.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].screenX - tx, dy = e.changedTouches[0].screenY - ty;
   if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? nextSlide() : prevSlide(); }
-  clearTimeout(resumeTimer); resumeTimer = setTimeout(startAutoplay, 8000);
+  clearTimeout(resumeTimer);
+  resumeTimer = setTimeout(startAutoplay, 8000);
 }, { passive: true });
 slideOuter.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); restartAutoplay(); }
@@ -763,25 +1133,57 @@ slideOuter.addEventListener('keydown', e => {
 });
 
 /* ---------- Lightbox ---------- */
-const photoModal = document.getElementById('photoModal'), modalImage = document.getElementById('modalImage'),
-      modalCaption = document.getElementById('modalCaption'), modalCloseBtn = document.getElementById('modalCloseBtn');
+const photoModal = document.getElementById('photoModal'),
+      modalImage = document.getElementById('modalImage'),
+      modalCaption = document.getElementById('modalCaption'),
+      modalCloseBtn = document.getElementById('modalCloseBtn'),
+      modalPrevBtn = document.getElementById('modalPrevBtn'),
+      modalNextBtn = document.getElementById('modalNextBtn');
 let lastFocused = null;
-function openModal(src, label) {
+let modalInGalleryMode = false;
+
+function openModal(src, label, isGallery = false) {
   lastFocused = document.activeElement;
-  modalImage.src = src; modalImage.alt = label || 'Enlarged photo'; modalCaption.textContent = label || '';
-  photoModal.classList.remove('hidden'); photoModal.classList.add('flex');
-  document.body.classList.add('modal-open'); modalCloseBtn.focus();
+  modalInGalleryMode = isGallery;
+  modalImage.src = src;
+  modalImage.alt = label || 'Enlarged photo';
+  modalCaption.textContent = label || '';
+  modalPrevBtn.classList.toggle('hidden', !isGallery);
+  modalPrevBtn.classList.toggle('flex', isGallery);
+  modalNextBtn.classList.toggle('hidden', !isGallery);
+  modalNextBtn.classList.toggle('flex', isGallery);
+  photoModal.classList.remove('hidden');
+  photoModal.classList.add('flex');
+  document.body.classList.add('modal-open');
+  modalCloseBtn.focus();
 }
+
+function modalStep(dir) {
+  if (!modalInGalleryMode) return;
+  dir > 0 ? nextSlide() : prevSlide();
+  const src = memoryPhotos[currentSlide];
+  const label = 'Memory photo ' + (currentSlide + 1) + ' of ' + memoryPhotos.length;
+  modalImage.src = src;
+  modalImage.alt = label;
+  modalCaption.textContent = label;
+}
+
 function closeModal() {
-  photoModal.classList.remove('flex'); photoModal.classList.add('hidden');
-  document.body.classList.remove('modal-open'); modalImage.src = '';
+  photoModal.classList.remove('flex');
+  photoModal.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  modalImage.src = '';
+  modalInGalleryMode = false;
   if (lastFocused && lastFocused.focus) lastFocused.focus();
 }
+
 const modalIsOpen = () => !photoModal.classList.contains('hidden');
 photoModal.addEventListener('click', e => { if (e.target === photoModal) closeModal(); });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && modalIsOpen()) { e.preventDefault(); closeModal(); }
-  if (e.key === 'Tab' && modalIsOpen()) { e.preventDefault(); modalCloseBtn.focus(); }
+  if (!modalIsOpen()) return;
+  if (e.key === 'Escape') { e.preventDefault(); closeModal(); }
+  if (e.key === 'ArrowRight' && modalInGalleryMode) { e.preventDefault(); modalStep(1); }
+  if (e.key === 'ArrowLeft' && modalInGalleryMode) { e.preventDefault(); modalStep(-1); }
 });
 
 /* ---------- Countdown (Philippine Time) ---------- */
@@ -802,51 +1204,83 @@ function updateCountdown() {
   document.getElementById('minutes').textContent = pad(Math.floor(d % 36e5 / 6e4));
   document.getElementById('seconds').textContent = pad(Math.floor(d % 6e4 / 1e3));
 }
-setInterval(updateCountdown, 1000); updateCountdown();
+setInterval(updateCountdown, 1000);
+updateCountdown();
 
 /* ---------- RSVP ---------- */
 const RSVP_DEADLINE = new Date('2026-11-30T23:59:59+08:00').getTime();
-const form = document.getElementById('rsvpForm'), submitBtn = document.getElementById('submitBtn'),
-      guestCountWrapper = document.getElementById('guestCountWrapper'), guestInput = document.getElementById('rsvp-guests'),
+const form = document.getElementById('rsvpForm'),
+      submitBtn = document.getElementById('submitBtn'),
+      guestCountWrapper = document.getElementById('guestCountWrapper'),
+      guestInput = document.getElementById('rsvp-guests'),
       formStatus = document.getElementById('formStatus');
 const contactHint = () => CONTACT_FALLBACK ? ' or contact us at ' + CONTACT_FALLBACK : '';
+
+applyGuestPersonalization();
 
 function handleAttendanceChange(v) {
   const no = v === "I can't make it.";
   guestCountWrapper.classList.toggle('hidden', no);
-  if (no) guestInput.value = '0'; else if (guestInput.value === '0') guestInput.value = '1';
+  if (no) {
+    guestInput.min = '0';
+    guestInput.value = '0';
+  } else {
+    guestInput.min = '1';
+    if (guestInput.value === '0' || !guestInput.value) {
+      guestInput.value = String(invitedGuestSeats || 1);
+    }
+  }
 }
+
 function showStatus(html, ok) {
   formStatus.innerHTML = html;
   formStatus.className = 'text-center text-sm mt-3 p-4 rounded-2xl border pop ' + (ok ? 'text-forest-900 bg-sage-100/80 border-sage-600/30' : 'text-red-700 bg-red-50 border-red-200');
   formStatus.addEventListener('animationend', () => formStatus.classList.remove('pop'), { once: true });
 }
+
 if (Date.now() > RSVP_DEADLINE) {
   form.querySelectorAll('input, select, textarea, button').forEach(el => el.disabled = true);
   submitBtn.textContent = 'RSVP Closed';
   showStatus('RSVPs have closed. Please reach out to the couple directly' + (CONTACT_FALLBACK ? ' at ' + CONTACT_FALLBACK : '') + '.', false);
 }
+
 form.addEventListener('submit', async e => {
   e.preventDefault();
   if (submitBtn.disabled) return;
-  if (form.elements['website'].value) { showStatus('✨ <strong>Thank you!</strong> Your RSVP has been recorded.', true); return; } // honeypot
-  if (!form.checkValidity()) { form.reportValidity(); return; }
+  if (form.elements['website'].value) {
+    showStatus('✨ <strong>Thank you!</strong> Your RSVP has been recorded.', true);
+    return;
+  }
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
   const data = new URLSearchParams();
   ['name', 'status', 'participants', 'message'].forEach(k => data.append(k, form.elements[k].value.trim()));
-  submitBtn.disabled = true; submitBtn.textContent = 'Recording your RSVP...';
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Recording your RSVP...';
   try {
-    // no-cors: the reply is opaque, but a network failure still throws
-    await fetch(RSVP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: data.toString() });
+    await fetch(RSVP_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: data.toString()
+    });
     showStatus('✨ <strong>Thank you!</strong> Your RSVP has been recorded. We look forward to celebrating with you!', true);
-    form.reset(); handleAttendanceChange(form.elements['status'].value);
+    form.reset();
+    applyGuestPersonalization();
+    handleAttendanceChange(form.elements['status'].value);
     submitBtn.textContent = 'Send Another RSVP';
     try { localStorage.setItem('mm_wedding_rsvp_done', 'true'); } catch (err) {}
     fireConfetti();
   } catch (err) {
     showStatus("Sorry, we couldn't send your RSVP. Please check your connection and try again" + contactHint() + '.', false);
     submitBtn.textContent = 'Try Again';
-  } finally { submitBtn.disabled = false; }
+  } finally {
+    submitBtn.disabled = false;
+  }
 });
+
 try {
   if (localStorage.getItem('mm_wedding_rsvp_done') === 'true' && Date.now() <= RSVP_DEADLINE) {
     formStatus.textContent = 'You have previously submitted an RSVP from this device. Feel free to submit again if you need to update your response.';
@@ -862,11 +1296,16 @@ if ('IntersectionObserver' in window) {
   }), { rootMargin: '-35% 0px -55% 0px' });
   document.querySelectorAll('main section[id]').forEach(s => navObs.observe(s));
 }
+
 const revealEls = document.querySelectorAll('.reveal');
-if (prefersReducedMotion || !('IntersectionObserver' in window)) revealEls.forEach(el => el.classList.add('is-visible'));
-else {
+if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+  revealEls.forEach(el => el.classList.add('is-visible'));
+} else {
   const rObs = new IntersectionObserver(entries => entries.forEach(en => {
-    if (en.isIntersecting) { en.target.classList.add('is-visible'); rObs.unobserve(en.target); }
+    if (en.isIntersecting) {
+      en.target.classList.add('is-visible');
+      rObs.unobserve(en.target);
+    }
   }), { threshold: .12, rootMargin: '0px 0px -6% 0px' });
   revealEls.forEach(el => rObs.observe(el));
 }
