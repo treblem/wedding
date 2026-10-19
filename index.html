@@ -694,7 +694,7 @@ function copyInviteLink(withMessage) {
   const gName = document.getElementById('gen-guest-name').value.trim() || 'our dear guest';
   const gSeats = parseInt(document.getElementById('gen-guest-seats').value, 10) || 1;
   const payload = withMessage
-    ? `Dear ${gName},\n\nWith joyful hearts, we invite you to celebrate our wedding on Wednesday, December 30, 2026 in Bohol! We have reserved ${gSeats} ${gSeats === 1 ? 'seat' : 'seats'} in your honor.\n\nView your personalized invitation & RSVP here:\n${url}\n\nWith love,\nMaribeth & Melbhert`
+    ? `Dear ${gName},\n\nWith joyful hearts, we invite you to celebrate our wedding on Wednesday, December 30, 2026 in St. Joseph the Worker Cathedral-Shrine Tagbilaran, Bohol! We have reserved ${gSeats} ${gSeats === 1 ? 'seat' : 'seats'} in your honor.\n\nView your personalized invitation & RSVP here:\n${url}\n\nWith love,\nMaribeth & Melbhert`
     : url;
   const targetBtn = document.getElementById(withMessage ? 'copyMsgBtn' : 'copyUrlBtn');
   const origText = targetBtn.textContent;
