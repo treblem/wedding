@@ -14,6 +14,8 @@
   <meta name="twitter:title" content="Maribeth & Melbhert's Wedding">
   <meta name="twitter:description" content="December 30, 2026 • Bohol, Philippines. We'd love for you to join us on our special day.">
   <meta name="twitter:image" content="https://i.imgur.com/0kkZR9Z.png">
+  <link rel="preload" as="image" href="https://i.imgur.com/NlrUujf.png" referrerpolicy="no-referrer">
+  <link rel="preload" as="image" href="https://i.imgur.com/0kkZR9Z.png" referrerpolicy="no-referrer">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%23142b15' stroke='%23c5a059' stroke-width='2'/%3E%3Ctext x='32' y='40' font-family='Georgia, serif' font-size='22' fill='%23f7f4ef' text-anchor='middle'%3EM%26M%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,7 +79,7 @@
     .entourage-frame { position: relative; }
     .entourage-frame::before { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(197,160,89,.28); border-radius: 1.25rem; pointer-events: none; }
     /* Sponsor rows */
-    .sp { display: grid; grid-template-columns: 1fr; gap: .25rem; padding: .75rem; text-align: center; border-top: 1px solid rgba(115,149,116,.12); border-radius: .75rem; transition: background .2s; }
+    .sp { display: grid; grid-template-columns: 1fr; gap: .25rem; padding: .75rem; text-align: center; border-top: 1px solid rgba(115,149,116,.12); border-radius: .75rem; transition: background .2s, opacity .25s, transform .2s; }
     .sps > .sp:first-child { border-top: 0; }
     .sp:hover { background: rgba(245,248,245,.6); }
     .sp b { font-weight: 500; font-size: .95rem; color: #142b15; }
@@ -88,15 +90,19 @@
       .sp b:last-child { text-align: left; }
       .sp i { display: block; }
     }
+    .entourage-match { background: rgba(226, 199, 141, 0.28) !important; box-shadow: 0 0 0 1.5px #c5a059; transform: scale(1.01); }
+    .entourage-dim { opacity: 0.22; }
     #thumbStrip::-webkit-scrollbar { height: 5px; }
     #thumbStrip::-webkit-scrollbar-track { background: #f5f8f5; border-radius: 9999px; }
     #thumbStrip::-webkit-scrollbar-thumb { background: #c7dac8; border-radius: 9999px; }
     @keyframes status-pop { 0% { transform: scale(.9); opacity: 0; } 60% { transform: scale(1.02); opacity: 1; } 100% { transform: scale(1); } }
     .pop { animation: status-pop .45s ease; }
+    @keyframes pin-shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+    .pin-shake { animation: pin-shake .35s ease; }
     @media (prefers-reduced-motion: reduce) {
       #intro-overlay, #intro-overlay.opening { transition: opacity .5s; transform: none; }
       #intro-overlay.opening { opacity: 0; }
-      .intro-seal, .intro-frame, #music-btn.playing, .eq-bar, .pop { animation: none; }
+      .intro-seal, .intro-frame, #music-btn.playing, .eq-bar, .pop, .pin-shake { animation: none; }
       .reveal { transition: none; opacity: 1; transform: none; }
     }
   </style>
@@ -267,6 +273,14 @@
         </div>
       </div>
     </div>
+
+    <!-- Route Connector Pill -->
+    <div class="reveal mt-6">
+      <a href="https://www.google.com/maps/dir/St.+Joseph+the+Worker+Cathedral-Shrine,+Tagbilaran+City,+Bohol/Bohol+Tropics+Resort,+Graham+Ave,+Tagbilaran+City,+Bohol" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-sage-100/80 border border-sage-600/25 shadow-sm text-xs text-forest-800 font-medium transition">
+        <span class="text-gold-600">✦</span>
+        <span>Ceremony to Reception: ~6 mins (2.1 km) drive • <strong class="text-forest-900 underline decoration-gold-500 underline-offset-4">View Driving Route</strong></span>
+      </a>
+    </div>
   </section>
 
   <!-- Timeline -->
@@ -314,15 +328,27 @@
     <span class="reveal text-xs uppercase tracking-[0.25em] text-sage-700 font-semibold block mb-1">To Witness Our Sacred Vows</span>
     <h2 class="reveal text-4xl md:text-5xl font-serif text-forest-900 mb-3">Nuptial Entourage</h2>
     <div class="reveal flex items-center justify-center gap-3 mb-4"><span class="w-10 h-px bg-gold-500/60"></span><span class="text-gold-500 text-xs">✦</span><span class="w-10 h-px bg-gold-500/60"></span></div>
-    <p class="reveal text-forest-800/80 mb-10 max-w-xl mx-auto text-sm sm:text-base">Standing beside us with the blessing of our parents, godparents, mentors, and loved ones as we enter the covenant of marriage.</p>
+    <p class="reveal text-forest-800/80 mb-8 max-w-xl mx-auto text-sm sm:text-base">Standing beside us with the blessing of our parents, godparents, mentors, and loved ones as we enter the covenant of marriage.</p>
+
     <div class="reveal entourage-frame bg-white p-7 sm:p-12 md:p-14 rounded-3xl shadow-sm border border-sage-600/25 space-y-10">
+
+      <!-- Entourage Quick Name Search Bar -->
+      <div class="max-w-md mx-auto">
+        <div class="relative flex items-center">
+          <svg class="w-4 h-4 text-sage-600 absolute left-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"/></svg>
+          <input id="entourageSearch" type="search" oninput="filterEntourage(this.value)" placeholder="Search your name in the entourage..." aria-label="Search your name in the entourage" class="w-full pl-10 pr-20 py-2.5 rounded-full bg-sage-50/80 border border-sage-600/25 text-xs sm:text-sm text-forest-900 placeholder:text-sage-600 focus:outline-none focus:ring-2 focus:ring-gold-500 transition">
+          <button type="button" id="entourageSearchClear" onclick="clearEntourageSearch()" class="hidden absolute right-3 text-[11px] font-semibold uppercase tracking-wider text-gold-600 hover:text-forest-900 px-2 py-0.5">Clear</button>
+        </div>
+        <p id="entourageSearchCount" class="hidden text-xs text-gold-600 font-medium mt-2" role="status" aria-live="polite"></p>
+      </div>
+
       <!-- Bride & Groom -->
       <div class="space-y-2 pb-6 border-b border-sage-600/15">
         <span class="text-[11px] uppercase tracking-[0.3em] text-gold-600 font-semibold block">The Bride &amp; Groom</span>
         <div class="font-serif text-2xl sm:text-4xl text-forest-900 font-semibold tracking-wide flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-4">
-          <span>Maribeth Poncia M. Palapar</span>
+          <span data-entourage-item>Maribeth Poncia M. Palapar</span>
           <span class="text-gold-500 italic font-normal text-2xl sm:text-3xl">&amp;</span>
-          <span>Melbhert A. Boiser</span>
+          <span data-entourage-item>Melbhert A. Boiser</span>
         </div>
         <p class="text-xs uppercase tracking-[0.2em] text-sage-700 pt-1">December 30, 2026 • Wednesday • 10:00 AM</p>
       </div>
@@ -334,14 +360,14 @@
           <h3 class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Parents of the Couple</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-2 text-center">
+          <div data-entourage-item class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-2 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.25em] text-sage-700 font-semibold block">Parents of the Bride</span>
             <div class="space-y-1 pt-0.5">
               <p class="font-serif text-xl text-forest-900 font-semibold">Mr. Louis T. Palapar <span class="text-gold-600 font-normal" title="In Loving Memory">(+)</span></p>
               <p class="font-serif text-xl text-forest-900 font-semibold">Mrs. Aida M. Palapar</p>
             </div>
           </div>
-          <div class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-2 text-center">
+          <div data-entourage-item class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-2 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.25em] text-sage-700 font-semibold block">Parents of the Groom</span>
             <div class="space-y-1 pt-0.5">
               <p class="font-serif text-xl text-forest-900 font-semibold">Mr. Alberto B. Boiser</p>
@@ -363,24 +389,24 @@
         <div class="col-span-5 text-left pl-4">Female Principal Sponsors</div>
       </div>
       <div class="sps max-w-3xl mx-auto">
-        <div class="sp"><b>Mr. Alex Y. Ranoco</b><i>•</i><b>Mrs. Zotica U. Ranoco</b></div>
-        <div class="sp"><b>Mr. German T. Palapar</b><i>•</i><b>Mrs. Emilia J. Palapar</b></div>
-        <div class="sp"><b>Mr. Avito S. Andoy</b><i>•</i><b>Mrs. Cleopatra P. Andoy</b></div>
-        <div class="sp"><b>Mr. Manuel G. Jayectin</b><i>•</i><b>Mrs. Julieta P. Hilot</b></div>
-        <div class="sp"><b>Mr. Wilfredo L. Miano</b><i>•</i><b>Dr. Zenaida L. Miano</b></div>
-        <div class="sp"><b>Hon. Galicano E. Atup</b><i>•</i><b>Mrs. Ma. Delilah C. Atup</b></div>
-        <div class="sp"><b>Engr. Fredegelbert A. Flor</b><i>•</i><b>Dr. Wilfreda O. Flor</b></div>
-        <div class="sp"><b>Engr. Eutiqio A. Bernales Jr.</b><i>•</i><b>Mrs. Mafay D. Bernales</b></div>
+        <div data-entourage-item class="sp"><b>Mr. Alex Y. Ranoco</b><i>•</i><b>Mrs. Zotica U. Ranoco</b></div>
+        <div data-entourage-item class="sp"><b>Mr. German T. Palapar</b><i>•</i><b>Mrs. Emilia J. Palapar</b></div>
+        <div data-entourage-item class="sp"><b>Mr. Avito S. Andoy</b><i>•</i><b>Mrs. Cleopatra P. Andoy</b></div>
+        <div data-entourage-item class="sp"><b>Mr. Manuel G. Jayectin</b><i>•</i><b>Mrs. Julieta P. Hilot</b></div>
+        <div data-entourage-item class="sp"><b>Mr. Wilfredo L. Miano</b><i>•</i><b>Dr. Zenaida L. Miano</b></div>
+        <div data-entourage-item class="sp"><b>Hon. Galicano E. Atup</b><i>•</i><b>Mrs. Ma. Delilah C. Atup</b></div>
+        <div data-entourage-item class="sp"><b>Engr. Fredegelbert A. Flor</b><i>•</i><b>Dr. Wilfreda O. Flor</b></div>
+        <div data-entourage-item class="sp"><b>Engr. Eutiqio A. Bernales Jr.</b><i>•</i><b>Mrs. Mafay D. Bernales</b></div>
         <div id="moreSponsors">
-          <div class="sp"><b>Mr. Sary I. Lim</b><i>•</i><b>Mrs. Rosario F. Lim</b></div>
-          <div class="sp"><b>Mr. Ponce M. Mandabon</b><i>•</i><b>Mrs. Diema A. Mandabon</b></div>
-          <div class="sp"><b>Dr. Edilberto B. Avenido</b><i>•</i><b>Mrs. Ma. Lolette L. Avenido</b></div>
-          <div class="sp"><b>Dr. Jupiter I. Maboloc</b><i>•</i><b>Dr. Ma. Maya V. Tumalon</b></div>
-          <div class="sp"><b>Mr. Yehudi L. Santillan</b><i>•</i><b>Mrs. Zenaida A. Boyonas</b></div>
-          <div class="sp"><b>Mr. Didoy P. Salmasan</b><i>•</i><b>Mrs. Joelita C. Salmasan</b></div>
-          <div class="sp"><b>Atty. Teodoro M. Lagang</b><i>•</i><b>Mrs. Cherry Belle G. Lagang</b></div>
-          <div class="sp"><b>Atty. Generoso G. Esmero</b><i>•</i><b>Dr. Arceli M. Hernando</b></div>
-          <div class="sp"><b>Mr. Antonio L. Boyles</b><i>•</i><b>Dr. Zenaida L. Boyles</b></div>
+          <div data-entourage-item class="sp"><b>Mr. Sary I. Lim</b><i>•</i><b>Mrs. Rosario F. Lim</b></div>
+          <div data-entourage-item class="sp"><b>Mr. Ponce M. Mandabon</b><i>•</i><b>Mrs. Diema A. Mandabon</b></div>
+          <div data-entourage-item class="sp"><b>Dr. Edilberto B. Avenido</b><i>•</i><b>Mrs. Ma. Lolette L. Avenido</b></div>
+          <div data-entourage-item class="sp"><b>Dr. Jupiter I. Maboloc</b><i>•</i><b>Dr. Ma. Maya V. Tumalon</b></div>
+          <div data-entourage-item class="sp"><b>Mr. Yehudi L. Santillan</b><i>•</i><b>Mrs. Zenaida A. Boyonas</b></div>
+          <div data-entourage-item class="sp"><b>Mr. Didoy P. Salmasan</b><i>•</i><b>Mrs. Joelita C. Salmasan</b></div>
+          <div data-entourage-item class="sp"><b>Atty. Teodoro M. Lagang</b><i>•</i><b>Mrs. Cherry Belle G. Lagang</b></div>
+          <div data-entourage-item class="sp"><b>Atty. Generoso G. Esmero</b><i>•</i><b>Dr. Arceli M. Hernando</b></div>
+          <div data-entourage-item class="sp"><b>Mr. Antonio L. Boyles</b><i>•</i><b>Dr. Zenaida L. Boyles</b></div>
         </div>
       </div>
       <div class="pt-2">
@@ -397,11 +423,11 @@
           <h3 class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Honor Attendants</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1.5 text-center">
+          <div data-entourage-item class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1.5 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.25em] text-sage-700 font-semibold block">Best Man</span>
             <p class="font-serif text-xl text-forest-900 font-semibold">Mr. Gener Kevin A. Boiser</p>
           </div>
-          <div class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1.5 text-center">
+          <div data-entourage-item class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1.5 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.25em] text-sage-700 font-semibold block">Maid of Honor</span>
             <p class="font-serif text-xl text-forest-900 font-semibold">Ms. Rheian Louisse P. Gases</p>
           </div>
@@ -418,14 +444,12 @@
             <div class="col-span-5 text-left pl-4">Matron of Honor</div>
           </div>
           <div class="sps max-w-3xl mx-auto">
-            <div class="sp"><b>Atty. Carm Albert A. Boiser</b><i>•</i><b>Mrs. June Faith Marie T. Boiser</b></div>
-            <div class="sp"><b>Mr. Ryan Gases</b><i>•</i><b>Mrs. Loida Mirasol Melone P. Gases</b></div>
-            <div class="sp"><b>Mr. Neil Louie M. Palapar</b><i>•</i><b>Mrs. Remedios Z. Palapar</b></div>
-            <div class="sp"><b>Mr. Philip Louis M. Palapar</b><i>•</i><b>Mrs. Geneva G. Palapar</b></div>
-            <div class="sp"><b>Mr. Ramcel Baquial</b><i>•</i><b>Mrs. Doreen Yvonne P. Baquial</b></div>
-            <div class="sp"><b>Mr. Jerome Palapar</b><i>•</i><b>Ms. Rosemarie J. Palapar</b></div>
-            
-            </div>
+            <div data-entourage-item class="sp"><b>Atty. Carm Albert A. Boiser</b><i>•</i><b>Mrs. June Faith Marie T. Boiser</b></div>
+            <div data-entourage-item class="sp"><b>Mr. Ryan Gases</b><i>•</i><b>Mrs. Loida Mirasol Melone P. Gases</b></div>
+            <div data-entourage-item class="sp"><b>Mr. Neil Louie M. Palapar</b><i>•</i><b>Mrs. Remedios Z. Palapar</b></div>
+            <div data-entourage-item class="sp"><b>Mr. Philip Louis M. Palapar</b><i>•</i><b>Mrs. Geneva G. Palapar</b></div>
+            <div data-entourage-item class="sp"><b>Mr. Ramcel Baquial</b><i>•</i><b>Mrs. Doreen Yvonne P. Baquial</b></div>
+            <div data-entourage-item class="sp"><b>Mr. Jerome Palapar</b><i>•</i><b>Ms. Rosemarie J. Palapar</b></div>
           </div>
         </div>
       </div>
@@ -437,25 +461,25 @@
           <h3 class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Secondary Sponsors</h3>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center">
+          <div data-entourage-item class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Candle Sponsors</span>
             <p class="text-[11px] italic text-forest-800/70 font-serif pb-1">To light our path in faith</p>
             <p class="font-serif text-lg text-forest-900 font-semibold">Mr. Sherwin C. Achas</p>
             <p class="font-serif text-lg text-forest-900 font-semibold">Mrs. Maria Ezra T. Achas</p>
           </div>
-          <div class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center">
+          <div data-entourage-item class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Veil Sponsors</span>
             <p class="text-[11px] italic text-forest-800/70 font-serif pb-1">To clothe us as one</p>
             <p class="font-serif text-lg text-forest-900 font-semibold">Mr. Niño G. Lagumbay</p>
             <p class="font-serif text-lg text-forest-900 font-semibold">Mrs. Bernarda T. Lagumbay</p>
           </div>
-          <div class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center">
+          <div data-entourage-item class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Cord Sponsors</span>
             <p class="text-[11px] italic text-forest-800/70 font-serif pb-1">To bind us together in love</p>
             <p class="font-serif text-lg text-forest-900 font-semibold">Atty. Jansyl Lovan P. Tumanda</p>
             <p class="font-serif text-lg text-forest-900 font-semibold">Mrs. Merry Yvonne L. Tumanda</p>
           </div>
-          <div class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center">
+          <div data-entourage-item class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Coin (Arrhae) Sponsors</span>
             <p class="text-[11px] italic text-forest-800/70 font-serif pb-1">To bless our shared abundance</p>
             <p class="font-serif text-lg text-forest-900 font-semibold">Mr. Francis Albert B. Jubac</p>
@@ -471,11 +495,11 @@
           <h3 class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Groomsman &amp; Bridesmaid</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1.5 text-center">
+          <div data-entourage-item class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1.5 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.25em] text-sage-700 font-semibold block">Groomsman</span>
             <p class="font-serif text-xl text-forest-900 font-semibold">Mr. John Loyd U. Ranoco</p>
           </div>
-          <div class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1.5 text-center">
+          <div data-entourage-item class="p-5 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1.5 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.25em] text-sage-700 font-semibold block">Bridesmaid</span>
             <p class="font-serif text-xl text-forest-900 font-semibold">Ms. Krizia Lou Z. Palapar</p>
           </div>
@@ -489,15 +513,15 @@
           <h3 class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Bearers &amp; Flower Girls</h3>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center">
+          <div data-entourage-item class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.22em] text-sage-700 font-semibold block">Ring Bearer</span>
             <p class="font-serif text-lg text-forest-900 font-semibold">Laurence Gabriel G. Palapar</p>
           </div>
-          <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center">
+          <div data-entourage-item class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.22em] text-sage-700 font-semibold block">Coin Bearer</span>
             <p class="font-serif text-lg text-forest-900 font-semibold">Niño Shawn B. Bernales</p>
           </div>
-          <div class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center">
+          <div data-entourage-item class="p-4 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-1 text-center transition">
             <span class="text-[10px] uppercase tracking-[0.22em] text-sage-700 font-semibold block">Bible Bearer</span>
             <p class="font-serif text-lg text-forest-900 font-semibold">Johann Carmelo T. Boiser</p>
           </div>
@@ -506,14 +530,15 @@
         <div class="p-6 rounded-2xl bg-sage-50/70 border border-sage-600/15 space-y-3 text-center">
           <span class="text-[10px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Flower Girls</span>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-4 pt-1">
-            <p class="font-serif text-lg text-forest-900 font-semibold">Yvaine Lousyl P. Baquial</p>
-            <p class="font-serif text-lg text-forest-900 font-semibold">Alenna Ymari P. Baquial</p>
-            <p class="font-serif text-lg text-forest-900 font-semibold">Jaiyana Caith T. Boiser</p>
-            <p class="font-serif text-lg text-forest-900 font-semibold sm:col-span-1 md:col-start-1 md:col-end-2">Chrissa Xhaine Berenguer</p>
-            <p class="font-serif text-lg text-forest-900 font-semibold sm:col-span-1 md:col-start-2 md:col-end-4">Mariah Ysabelle P. Cheung</p>
+            <p data-entourage-item class="font-serif text-lg text-forest-900 font-semibold rounded-lg py-1 transition">Yvaine Lousyl P. Baquial</p>
+            <p data-entourage-item class="font-serif text-lg text-forest-900 font-semibold rounded-lg py-1 transition">Alenna Ymari P. Baquial</p>
+            <p data-entourage-item class="font-serif text-lg text-forest-900 font-semibold rounded-lg py-1 transition">Jaiyana Caith T. Boiser</p>
+            <p data-entourage-item class="font-serif text-lg text-forest-900 font-semibold rounded-lg py-1 transition sm:col-span-1 md:col-start-1 md:col-end-2">Chrissa Xhaine Berenguer</p>
+            <p data-entourage-item class="font-serif text-lg text-forest-900 font-semibold rounded-lg py-1 transition sm:col-span-1 md:col-start-2 md:col-end-4">Mariah Ysabelle P. Cheung</p>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -557,7 +582,7 @@
           <p>"Two are better than one… If either of them falls down, one can help the other up."</p>
           <cite class="block text-xs font-sans uppercase tracking-widest text-sage-700 not-italic font-semibold">— Ecclesiastes 4:9–10</cite>
         </blockquote>
-        <p>One day, we hope to stand before God, our families, and the people we love, promising to walk together for the rest of our lives.</p>
+        <p>On December 30, 2026, we will stand before God, our families, and the people we love, promising to walk together for the rest of our lives.</p>
         <p>From the place where we first met, to the day we say "I do," and through all the years that follow—our greatest story will always be the one we write together.</p>
       </div>
       <div class="pt-4 font-serif text-3xl italic text-forest-900 font-semibold">Maribeth <span class="text-gold-500">&amp;</span> Melbhert</div>
@@ -667,10 +692,14 @@
           <p id="rsvp-banner-seats" class="text-sage-700 font-medium"></p>
         </div>
       </div>
+
+      <!-- Persisted Wedding Pass View (Shown when guest already submitted) -->
+      <div id="savedRsvpPass" class="hidden space-y-4"></div>
+
       <form id="rsvpForm" class="space-y-5" novalidate>
         <div>
           <div class="flex items-center justify-between mb-1.5">
-            <label for="rsvp-name" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold">Full Name / Party Name</label>
+            <label for="rsvp-name" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold">Primary Guest / Party Name</label>
             <button type="button" id="unlockNameBtn" onclick="unlockGuestName()" class="hidden text-[11px] font-semibold text-gold-600 hover:underline">Edit spelling</button>
           </div>
           <input id="rsvp-name" type="text" name="name" placeholder="e.g., Juan Dela Cruz" required autocomplete="name" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900 read-only:bg-sage-100/70 read-only:text-forest-800">
@@ -682,23 +711,33 @@
             <option value="I can't make it.">Regretfully, I can't make it</option>
           </select>
         </div>
-        <div id="guestCountWrapper">
-          <div class="flex items-center justify-between mb-1.5">
-            <label for="rsvp-guests" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold">Number of Guests (Including Yourself)</label>
-            <span id="rsvp-seats-hint" class="hidden text-[11px] font-semibold text-gold-600 bg-gold-300/20 px-2 py-0.5 rounded-full"></span>
+        <div id="guestCountWrapper" class="space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="rsvp-guests" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold">Number of Guests (Including Yourself)</label>
+              <span id="rsvp-seats-hint" class="hidden text-[11px] font-semibold text-gold-600 bg-gold-300/20 px-2 py-0.5 rounded-full"></span>
+            </div>
+            <input id="rsvp-guests" type="number" name="participants" min="1" max="5" value="1" required inputmode="numeric" oninput="renderCompanionInputs()" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900 read-only:bg-sage-100/70 read-only:cursor-not-allowed">
           </div>
-          <input id="rsvp-guests" type="number" name="participants" min="1" max="5" value="1" required inputmode="numeric" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900 read-only:bg-sage-100/70 read-only:cursor-not-allowed">
+
+          <!-- Dynamic Companion Full Name Inputs -->
+          <div id="companionFieldsWrap" class="hidden p-4 rounded-2xl bg-sage-50/80 border border-sage-600/20 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] uppercase tracking-wider text-sage-700 font-semibold">Accompanying Guest Names <span class="normal-case font-normal text-sage-600">(for seating chart)</span></span>
+            </div>
+            <div id="companionInputsList" class="space-y-2.5"></div>
+          </div>
         </div>
         <div>
           <label for="rsvp-message" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1.5">Message for the Couple <span class="normal-case tracking-normal font-normal text-sage-600">(optional)</span></label>
-          <textarea id="rsvp-message" name="message" rows="3" maxlength="500" placeholder="Well wishes, dietary needs, or names of accompanying guests" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900"></textarea>
+          <textarea id="rsvp-message" name="message" rows="3" maxlength="500" placeholder="Well wishes, dietary needs, or song requests" class="w-full px-4 py-3 rounded-xl border border-sage-600/30 focus:outline-none focus:ring-2 focus:ring-sage-600 bg-sage-50/40 text-forest-900"></textarea>
         </div>
         <div style="position:absolute;left:-9999px" aria-hidden="true">
           <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
         </div>
         <button type="submit" id="submitBtn" class="w-full py-3.5 bg-forest-900 text-champagne rounded-xl font-semibold text-xs uppercase tracking-widest hover:bg-forest-800 transition shadow-md disabled:opacity-60 disabled:cursor-not-allowed">Send RSVP</button>
-        <div id="formStatus" class="text-center text-sm mt-3 hidden" role="status" aria-live="polite"></div>
       </form>
+      <div id="formStatus" class="text-center text-sm mt-3 hidden" role="status" aria-live="polite"></div>
     </div>
   </section>
 
@@ -719,20 +758,53 @@
   </div>
 </div>
 
-<!-- Couple's Invite Link Generator Modal (Open via ?admin=1 or Ctrl+Shift+L) -->
-<div id="linkGenModal" class="fixed inset-0 z-[9997] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="linkGenTitle">
-  <div class="bg-white rounded-3xl max-w-4xl w-full p-5 sm:p-8 shadow-2xl border border-sage-600/30 space-y-5 relative my-auto max-h-[92vh] flex flex-col">
-    <button type="button" onclick="closeLinkGenerator()" aria-label="Close Link Generator" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 flex items-center justify-center font-bold text-lg">&times;</button>
+<!-- 5-Digit PIN Lock Modal for Couple's Command Center -->
+<div id="pinLockModal" class="fixed inset-0 z-[9998] bg-forest-950/85 backdrop-blur-md hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="pinModalTitle">
+  <div id="pinModalCard" class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl border border-gold-400/40 text-center space-y-5 relative">
+    <button type="button" onclick="closePinModal()" aria-label="Cancel PIN entry" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 flex items-center justify-center font-bold text-base">&times;</button>
+    <div class="w-12 h-12 rounded-full bg-forest-900 text-gold-300 mx-auto flex items-center justify-center shadow-md border border-gold-400/40">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+    </div>
+    <div class="space-y-1">
+      <span class="text-[10px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Restricted Access</span>
+      <h3 id="pinModalTitle" class="font-serif text-2xl text-forest-900 font-semibold">Couple's Command Center</h3>
+      <p class="text-xs text-forest-800/75">Enter the 5-digit PIN to unlock the Invite Builder &amp; Live RSVP Dashboard.</p>
+    </div>
+    <form id="pinLockForm" onsubmit="submitAdminPin(event)" class="space-y-4">
+      <input id="adminPinInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="•••••" required autocomplete="off" class="w-full px-4 py-3 text-center text-2xl tracking-[0.55em] font-mono rounded-2xl border border-sage-600/35 bg-sage-50/60 text-forest-900 focus:outline-none focus:ring-2 focus:ring-gold-500">
+      <p id="pinErrorMsg" class="hidden text-xs text-red-600 font-medium" role="alert">Incorrect PIN. Please try again.</p>
+      <div class="flex gap-2">
+        <button type="button" onclick="closePinModal()" class="flex-1 py-3 rounded-xl bg-sage-50 hover:bg-sage-100 text-forest-800 text-xs uppercase tracking-widest font-semibold transition">Cancel</button>
+        <button type="submit" class="flex-1 py-3 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-xs uppercase tracking-widest font-semibold transition shadow-md">Unlock</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-    <div class="shrink-0">
-      <span class="text-[11px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Couple's Tool • Maribeth &amp; Melbhert</span>
-      <h3 id="linkGenTitle" class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Personalized Invite Link Builder</h3>
-      <p class="text-xs text-forest-800/75 mt-1">Create custom links that greet guests on the seal and lock in their reserved seat count.</p>
+<!-- Couple's Command Center Modal (Protected by PIN 31726) -->
+<div id="linkGenModal" class="fixed inset-0 z-[9997] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-2.5 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="linkGenTitle">
+  <div class="bg-white rounded-3xl max-w-5xl w-full p-5 sm:p-8 shadow-2xl border border-sage-600/30 space-y-5 relative my-auto max-h-[94vh] flex flex-col">
+    <div class="absolute top-5 right-5 flex items-center gap-2">
+      <button type="button" onclick="lockAdminSession()" title="Lock Admin Session" class="px-3 py-1.5 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-800 border border-sage-600/25 text-[10px] uppercase tracking-wider font-semibold flex items-center gap-1 transition">
+        <svg class="w-3.5 h-3.5 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <span>Lock</span>
+      </button>
+      <button type="button" onclick="closeLinkGenerator()" aria-label="Close Command Center" class="w-9 h-9 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 flex items-center justify-center font-bold text-lg">&times;</button>
+    </div>
+
+    <div class="shrink-0 pr-24">
+      <span class="text-[11px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Couple's Command Center • Maribeth &amp; Melbhert</span>
+      <h3 id="linkGenTitle" class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Invite Builder &amp; Live RSVP Check-In</h3>
+      <p class="text-xs text-forest-800/75 mt-1">Generate personalized guest links or track real-time Google Sheets RSVPs, messages, and reception arrivals.</p>
 
       <!-- Mode Switch Tabs -->
-      <div class="inline-flex rounded-xl bg-sage-50 p-1 border border-sage-600/20 mt-4">
-        <button type="button" id="tabSingleBtn" onclick="switchBuilderTab('single')" class="px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition bg-forest-900 text-champagne shadow-sm">Single Guest</button>
-        <button type="button" id="tabBatchBtn" onclick="switchBuilderTab('batch')" class="px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900">Batch Paste (Excel / Sheets)</button>
+      <div class="inline-flex flex-wrap rounded-xl bg-sage-50 p-1 border border-sage-600/20 mt-4 gap-1">
+        <button type="button" id="tabSingleBtn" onclick="switchBuilderTab('single')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition bg-forest-900 text-champagne shadow-sm">Single Guest</button>
+        <button type="button" id="tabBatchBtn" onclick="switchBuilderTab('batch')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900">Batch Paste (Excel / Sheets)</button>
+        <button type="button" id="tabRsvpBtn" onclick="switchBuilderTab('rsvps')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-gold-500 animate-pulse"></span>
+          <span>Live RSVPs &amp; Check-In</span>
+        </button>
       </div>
     </div>
 
@@ -821,18 +893,94 @@
         </div>
       </div>
     </div>
+
+    <!-- TAB 3: Live RSVPs & Reception Guest Check-In -->
+    <div id="builderRsvpPane" class="hidden flex-col space-y-4 overflow-y-auto pr-1">
+      <!-- KPI Summary Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+          <span id="rsvpStatTotalSeats" class="block font-serif text-2xl sm:text-3xl font-bold text-forest-900">0</span>
+          <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Confirmed Guests (Seats)</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+          <span id="rsvpStatAttendingParties" class="block font-serif text-2xl sm:text-3xl font-bold text-sage-700">0</span>
+          <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Attending Parties</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+          <span id="rsvpStatDeclinedParties" class="block font-serif text-2xl sm:text-3xl font-bold text-red-700/80">0</span>
+          <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Declined Parties</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-gold-300/15 border border-gold-400/40 text-center">
+          <span id="rsvpStatCheckedIn" class="block font-serif text-2xl sm:text-3xl font-bold text-gold-600">0 / 0</span>
+          <span class="text-[10px] uppercase tracking-wider text-forest-900 font-semibold">Arrived &amp; Checked In</span>
+        </div>
+      </div>
+
+      <!-- Controls Bar: Search, Status Filter, Deduplicate, Refresh & Export -->
+      <div class="flex flex-wrap items-center justify-between gap-2.5 bg-sage-100/70 p-3 rounded-2xl border border-sage-600/20">
+        <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[240px]">
+          <input id="rsvpAdminSearch" type="search" oninput="renderRsvpDashboard()" placeholder="Search guest, companion, or message..." class="flex-1 min-w-[180px] px-3.5 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 focus:outline-none focus:ring-2 focus:ring-sage-600">
+          <select id="rsvpAdminFilter" onchange="renderRsvpDashboard()" aria-label="Filter RSVP rows" class="px-3 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 font-medium">
+            <option value="all">All Responses</option>
+            <option value="attending">Attending Only</option>
+            <option value="declined">Declined Only</option>
+            <option value="checkedin">Checked-In (Arrived)</option>
+            <option value="pending">Attending • Not Yet Arrived</option>
+          </select>
+          <label class="inline-flex items-center gap-1.5 text-[11px] text-forest-800 font-medium cursor-pointer select-none px-1">
+            <input id="rsvpDedupeToggle" type="checkbox" checked onchange="renderRsvpDashboard()" class="rounded border-sage-600/40 text-forest-900 focus:ring-sage-600">
+            <span>Latest per guest</span>
+          </label>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="refreshRsvpBtn" onclick="fetchLiveRsvps()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-[11px] uppercase tracking-wider font-semibold transition shadow-sm">
+            <svg id="refreshRsvpSpinner" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <span>Refresh Sheet</span>
+          </button>
+          <button type="button" onclick="exportLiveRsvpCSV()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-sage-50 text-forest-900 border border-sage-600/30 text-[11px] uppercase tracking-wider font-semibold transition">Export .CSV</button>
+        </div>
+      </div>
+
+      <!-- Status / Setup Banner -->
+      <div id="rsvpLiveNotice" class="hidden p-4 rounded-2xl bg-gold-300/15 border border-gold-500/40 text-xs text-forest-900 space-y-1.5"></div>
+
+      <!-- Live RSVP & Check-In Table -->
+      <div class="border border-sage-600/25 rounded-2xl overflow-hidden bg-white">
+        <div class="max-h-[340px] overflow-y-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="bg-sage-50 border-b border-sage-600/20 sticky top-0 z-10 text-[10px] uppercase tracking-wider text-sage-700 font-semibold">
+              <tr>
+                <th class="py-2.5 px-3 w-28 text-center">Check-In</th>
+                <th class="py-2.5 px-3">Guest / Companions &amp; Message</th>
+                <th class="py-2.5 px-3 w-24 text-center">Status</th>
+                <th class="py-2.5 px-3 w-16 text-center">Seats</th>
+                <th class="py-2.5 px-3 hidden md:table-cell">Message for the Couple</th>
+                <th class="py-2.5 px-3 w-28 text-right hidden sm:table-cell">Submitted</th>
+              </tr>
+            </thead>
+            <tbody id="rsvpLiveTableBody" class="divide-y divide-sage-600/15">
+              <tr>
+                <td colspan="6" class="py-10 text-center text-sage-600 italic">Click "Refresh Sheet" to load live RSVPs from Google Sheets.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <footer class="text-center py-10 px-4 text-xs text-sage-700 border-t border-sage-600/20 bg-white/60 relative z-10 space-y-2">
   <p class="font-serif text-2xl text-forest-900">Maribeth Poncia Palapar &amp; Melbhert Boiser</p>
   <p class="tracking-widest uppercase text-[11px] text-sage-600">December 30, 2026 • Bohol, Philippines</p>
-  <p class="pt-2 text-sage-700/70">&copy; 2026 Maribeth &amp; Melbhert. All Rights Reserved.</p>
+  <p id="secretAdminTrigger" onclick="handleSecretAdminTap()" class="pt-2 text-sage-700/70 select-none cursor-pointer inline-block px-3 py-1 rounded-lg active:bg-sage-100/60 transition" style="touch-action: manipulation;" title="Tap 5 times to open Couple's Command Center">&copy; 2026 Maribeth &amp; Melbhert. All Rights Reserved.</p>
 </footer>
 
 <script>
 /* =================== EDIT THESE =================== */
-const RSVP_URL = 'https://script.google.com/macros/s/AKfycbzAojikwlWBTv6QH101AjiWPWCFGcuYArgo1UWYR9T2ZSF6ic2bTr3Owzdr5i47tHlS/exec';
+const RSVP_URL = 'https://script.google.com/macros/s/AKfycbyH1AQl9nodcZc0b6we7rf97-sOA678sAX4Orml6UKvoi0scYkQlV4N6hsph-EeySyX/exec';
+const ADMIN_PIN = '31726';   // 5-digit PIN required to open the Couple's Command Center
 const CONTACT_FALLBACK = ''; // e.g. '+63 9XX XXX XXXX'. Shown if an RSVP fails or has closed.
 const GIFT_ACCOUNTS = {      // shown under each QR with a Copy button; leave '' to hide
   bpi:   { name: '', number: '' },
@@ -955,11 +1103,207 @@ function applyGuestPersonalization() {
       bannerSeatsEl.classList.add('hidden');
     }
   }
+
+  renderCompanionInputs();
 }
 
-/* ---------- Couple's Link Generator Tool (Single & Batch Excel Mode) ---------- */
+/* ---------- Dynamic Companion Name Fields ---------- */
+function renderCompanionInputs(prefillNames = []) {
+  const statusEl = document.getElementById('rsvp-status');
+  const guestInputEl = document.getElementById('rsvp-guests');
+  const wrap = document.getElementById('companionFieldsWrap');
+  const list = document.getElementById('companionInputsList');
+  if (!guestInputEl || !wrap || !list) return;
+
+  const isAttending = !statusEl || statusEl.value !== "I can't make it.";
+  const maxAllowed = parseInt(guestInputEl.max, 10) || 15;
+  let totalGuests = parseInt(guestInputEl.value, 10) || 1;
+  if (totalGuests > maxAllowed) {
+    totalGuests = maxAllowed;
+    guestInputEl.value = String(maxAllowed);
+  }
+
+  const companionCount = isAttending ? Math.max(0, totalGuests - 1) : 0;
+  const existingValues = Array.from(list.querySelectorAll('input[data-companion-input]')).map(inp => inp.value);
+
+  if (companionCount <= 0) {
+    wrap.classList.add('hidden');
+    list.innerHTML = '';
+    return;
+  }
+
+  wrap.classList.remove('hidden');
+  list.innerHTML = '';
+
+  for (let i = 0; i < companionCount; i++) {
+    const guestNumber = i + 2;
+    const row = document.createElement('div');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.setAttribute('data-companion-input', String(guestNumber));
+    input.placeholder = `Guest #${guestNumber} Full Name (optional)`;
+    input.value = prefillNames[i] !== undefined ? prefillNames[i] : (existingValues[i] || '');
+    input.className = 'w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-white text-xs sm:text-sm text-forest-900 focus:outline-none focus:ring-2 focus:ring-sage-600';
+    row.appendChild(input);
+    list.appendChild(row);
+  }
+}
+
+function getEnteredCompanions() {
+  return Array.from(document.querySelectorAll('#companionInputsList input[data-companion-input]'))
+    .map(inp => inp.value.trim())
+    .filter(Boolean);
+}
+
+/* ---------- Entourage Live Search & Toggle ---------- */
+function toggleEntourage(forceExpand) {
+  const c = document.getElementById('moreSponsors'),
+        t = document.getElementById('entourageToggleText'),
+        i = document.getElementById('entourageToggleIcon'),
+        b = document.getElementById('entourageToggleBtn');
+  const hide = forceExpand !== undefined ? !forceExpand : !c.classList.contains('hidden');
+  c.classList.toggle('hidden', hide);
+  t.textContent = hide ? 'View All 17 Sponsor Pairs' : 'Show Compact List';
+  i.classList.toggle('rotate-180', !hide);
+  b.setAttribute('aria-expanded', String(!hide));
+}
+
+function filterEntourage(rawQuery) {
+  const q = (rawQuery || '').trim().toLowerCase();
+  const clearBtn = document.getElementById('entourageSearchClear');
+  const countEl = document.getElementById('entourageSearchCount');
+  const items = document.querySelectorAll('#entourage [data-entourage-item]');
+
+  if (clearBtn) clearBtn.classList.toggle('hidden', !q);
+
+  if (!q) {
+    items.forEach(el => {
+      el.classList.remove('entourage-match', 'entourage-dim');
+    });
+    if (countEl) countEl.classList.add('hidden');
+    return;
+  }
+
+  toggleEntourage(true);
+
+  let matches = 0;
+  items.forEach(el => {
+    const text = (el.textContent || '').toLowerCase();
+    const isHit = text.includes(q);
+    el.classList.toggle('entourage-match', isHit);
+    el.classList.toggle('entourage-dim', !isHit);
+    if (isHit) matches++;
+  });
+
+  if (countEl) {
+    countEl.classList.remove('hidden');
+    countEl.textContent = matches > 0
+      ? `Found ${matches} matching ${matches === 1 ? 'entry' : 'entries'} in the entourage`
+      : `No matching name found for "${rawQuery.trim()}"`;
+  }
+}
+
+function clearEntourageSearch() {
+  const input = document.getElementById('entourageSearch');
+  if (input) {
+    input.value = '';
+    filterEntourage('');
+    input.focus();
+  }
+}
+
+/* ---------- 5-Tap Secret Trigger, 5-Digit PIN Gate & Couple's Command Center ---------- */
 const linkGenModal = document.getElementById('linkGenModal');
+const pinLockModal = document.getElementById('pinLockModal');
+const pinModalCard = document.getElementById('pinModalCard');
+const adminPinInput = document.getElementById('adminPinInput');
+const pinErrorMsg = document.getElementById('pinErrorMsg');
+const ADMIN_UNLOCK_KEY = 'mm_admin_pin_unlocked_v1';
+const CHECKIN_STORAGE_KEY = 'mm_wedding_checkins_v1';
+
+let pendingAdminTab = 'rsvps';
 let batchParsedRows = [];
+let liveRsvpRows = [];
+let liveRsvpLoadedOnce = false;
+let secretTapCount = 0;
+let secretTapTimer = null;
+
+function handleSecretAdminTap() {
+  secretTapCount++;
+  clearTimeout(secretTapTimer);
+  if (secretTapCount >= 5) {
+    secretTapCount = 0;
+    requestAdminOpen('rsvps');
+    return;
+  }
+  secretTapTimer = setTimeout(() => {
+    secretTapCount = 0;
+  }, 1800);
+}
+
+function isAdminUnlocked() {
+  try {
+    return sessionStorage.getItem(ADMIN_UNLOCK_KEY) === 'true';
+  } catch (e) {
+    return false;
+  }
+}
+
+function requestAdminOpen(defaultMode = 'rsvps') {
+  pendingAdminTab = defaultMode || 'rsvps';
+  if (isAdminUnlocked()) {
+    openLinkGenerator(pendingAdminTab);
+    return;
+  }
+  pinErrorMsg.classList.add('hidden');
+  adminPinInput.value = '';
+  pinLockModal.classList.remove('hidden');
+  pinLockModal.classList.add('flex');
+  setTimeout(() => adminPinInput.focus(), 50);
+}
+
+function closePinModal() {
+  pinLockModal.classList.remove('flex');
+  pinLockModal.classList.add('hidden');
+  adminPinInput.value = '';
+  pinErrorMsg.classList.add('hidden');
+}
+
+function submitAdminPin(e) {
+  e.preventDefault();
+  const entered = (adminPinInput.value || '').trim();
+  if (entered === ADMIN_PIN) {
+    try { sessionStorage.setItem(ADMIN_UNLOCK_KEY, 'true'); } catch (err) {}
+    closePinModal();
+    openLinkGenerator(pendingAdminTab);
+  } else {
+    pinErrorMsg.classList.remove('hidden');
+    adminPinInput.value = '';
+    pinModalCard.classList.remove('pin-shake');
+    void pinModalCard.offsetWidth;
+    pinModalCard.classList.add('pin-shake');
+    adminPinInput.focus();
+  }
+}
+
+function lockAdminSession() {
+  try { sessionStorage.removeItem(ADMIN_UNLOCK_KEY); } catch (err) {}
+  closeLinkGenerator();
+}
+
+function getLocalCheckins() {
+  try {
+    return JSON.parse(localStorage.getItem(CHECKIN_STORAGE_KEY) || '{}') || {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveLocalCheckins(map) {
+  try {
+    localStorage.setItem(CHECKIN_STORAGE_KEY, JSON.stringify(map));
+  } catch (e) {}
+}
 
 function getBaseInviteUrl() {
   return window.location.origin + window.location.pathname;
@@ -980,16 +1324,24 @@ function buildGuestMessage(name, seats, url) {
 }
 
 function switchBuilderTab(mode) {
-  const isBatch = mode === 'batch';
-  document.getElementById('builderSinglePane').classList.toggle('hidden', isBatch);
+  const singlePane = document.getElementById('builderSinglePane');
   const batchPane = document.getElementById('builderBatchPane');
-  batchPane.classList.toggle('hidden', !isBatch);
-  batchPane.classList.toggle('flex', isBatch);
+  const rsvpPane = document.getElementById('builderRsvpPane');
 
-  const singleBtn = document.getElementById('tabSingleBtn');
-  const batchBtn = document.getElementById('tabBatchBtn');
-  singleBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition ' + (!isBatch ? 'bg-forest-900 text-champagne shadow-sm' : 'text-forest-800 hover:text-forest-900');
-  batchBtn.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition ' + (isBatch ? 'bg-forest-900 text-champagne shadow-sm' : 'text-forest-800 hover:text-forest-900');
+  singlePane.classList.toggle('hidden', mode !== 'single');
+  batchPane.classList.toggle('hidden', mode !== 'batch');
+  batchPane.classList.toggle('flex', mode === 'batch');
+  rsvpPane.classList.toggle('hidden', mode !== 'rsvps');
+  rsvpPane.classList.toggle('flex', mode === 'rsvps');
+
+  const tabClass = active => 'px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition ' + (active ? 'bg-forest-900 text-champagne shadow-sm' : 'text-forest-800 hover:text-forest-900');
+  document.getElementById('tabSingleBtn').className = tabClass(mode === 'single');
+  document.getElementById('tabBatchBtn').className = tabClass(mode === 'batch');
+  document.getElementById('tabRsvpBtn').className = tabClass(mode === 'rsvps') + ' flex items-center gap-1.5';
+
+  if (mode === 'rsvps' && !liveRsvpLoadedOnce) {
+    fetchLiveRsvps();
+  }
 }
 
 function openLinkGenerator(defaultMode) {
@@ -1039,7 +1391,6 @@ function parseBatchInput() {
     let name = trimmed;
     let seats = fallbackSeats;
 
-    // 1. Tab-separated (direct copy from Excel / Google Sheets)
     if (trimmed.includes('\t')) {
       const parts = trimmed.split('\t').map(s => s.trim()).filter(Boolean);
       if (parts.length >= 2 && /^\d+$/.test(parts[parts.length - 1])) {
@@ -1049,7 +1400,6 @@ function parseBatchInput() {
         name = parts[0];
       }
     } else {
-      // 2. Comma, pipe, or semicolon separated with trailing number (e.g., "Mr. & Mrs. Cruz, 2")
       const match = trimmed.match(/^(.*?)\s*[\|,;]\s*(\d+)\s*$/);
       if (match) {
         name = match[1].trim();
@@ -1196,7 +1546,7 @@ function loadSampleSponsors() {
     'Mr. Neil Louie M. Palapar & Mrs. Remedios Z. Palapar\t2',
     'Mr. Philip Louis M. Palapar & Mrs. Geneva G. Palapar\t2',
     'Mr. Ramcel Baquial & Mrs. Doreen Yvonne P. Baquial\t2',
-    'Ms. Rosemarie J. Palapar\t1',
+    'Mr. Jerome Palapar & Ms. Rosemarie J. Palapar\t2',
     'Mr. Sherwin C. Achas & Mrs. Maria Ezra T. Achas\t2',
     'Mr. Niño G. Lagumbay & Mrs. Bernarda T. Lagumbay\t2',
     'Atty. Jansyl Lovan P. Tumanda & Mrs. Merry Yvonne L. Tumanda\t2',
@@ -1221,13 +1571,13 @@ function loadSampleSponsors() {
     'Engr. Eutiqio A. Bernales Jr. & Mrs. Mafay D. Bernales\t2',
     'Mr. Sary I. Lim & Mrs. Rosario F. Lim\t2',
     'Mr. Ponce M. Mandabon & Mrs. Diema A. Mandabon\t2',
-    'Dr. Edilberto Avenido & Mrs. Ma. Lolette L. Avenido\t2',
+    'Dr. Edilberto B. Avenido & Mrs. Ma. Lolette L. Avenido\t2',
     'Dr. Jupiter I. Maboloc & Dr. Ma. Maya V. Tumalon\t2',
-    'Mr. Yehudi L. Santillan & Mrs. Zenaida Boyonas\t2',
+    'Mr. Yehudi L. Santillan & Mrs. Zenaida A. Boyonas\t2',
     'Mr. Didoy P. Salmasan & Mrs. Joelita C. Salmasan\t2',
     'Atty. Teodoro M. Lagang & Mrs. Cherry Belle G. Lagang\t2',
     'Atty. Generoso G. Esmero & Dr. Arceli M. Hernando\t2',
-    'Mr. Antonio L. Boyles & Dr. Zenaida Boyles\t2'
+    'Mr. Antonio L. Boyles & Dr. Zenaida L. Boyles\t2'
   ].join('\n');
   document.getElementById('batch-paste-input').value = sample;
   parseBatchInput();
@@ -1238,24 +1588,407 @@ function clearBatchList() {
   parseBatchInput();
 }
 
-if (urlParams.get('admin') === '1' || urlParams.get('builder') === '1') {
+/* ---------- Live Google Sheets RSVP Fetching, Seat & Message Normalization ---------- */
+function normalizeSheetRow(raw, idx) {
+  const entries = Object.entries(raw || {}).map(([k, v]) => [k.trim().toLowerCase(), v]);
+
+  const getVal = (exactKeys, partialKeywords = [], excludeKeys = []) => {
+    for (const k of exactKeys) {
+      const hit = entries.find(([prop]) => prop === k);
+      if (hit && hit[1] !== '' && hit[1] !== null && hit[1] !== undefined) return hit[1];
+    }
+    for (const kw of partialKeywords) {
+      const hit = entries.find(([prop]) => prop.includes(kw) && !excludeKeys.includes(prop));
+      if (hit && hit[1] !== '' && hit[1] !== null && hit[1] !== undefined) return hit[1];
+    }
+    return '';
+  };
+
+  const name = String(getVal(
+    ['name', 'full name', 'guest', 'guest name', 'party name', 'primary guest', 'invited_party'],
+    ['name', 'guest', 'party'],
+    ['participants', 'number of guests', 'no. of guests', 'accompanying guests', 'message for the couple']
+  ) || '').trim();
+
+  const statusRaw = String(getVal(
+    ['status', 'attendance', 'attendance status', 'rsvp'],
+    ['status', 'attend', 'rsvp']
+  ) || '').trim();
+
+  const isDeclined = /can't|cannot|no|decline|regret/i.test(statusRaw);
+
+  let companions = String(getVal(
+    ['companions', 'accompanying', 'accompanying guests', 'companion names'],
+    ['companion', 'accompany']
+  ) || '').trim();
+
+  let message = String(getVal(
+    [
+      'message',
+      'message for the couple',
+      'message for the couple (optional)',
+      'message_for_couple',
+      'notes',
+      'note',
+      'comments',
+      'comment',
+      'wishes',
+      'well wishes',
+      'remarks'
+    ],
+    ['message', 'note', 'comment', 'wish', 'remark', 'couple', 'dietary'],
+    ['name', 'status', 'participants', 'seats', 'companions', 'timestamp', 'submitted_at', 'checked_in', 'invited_party', 'reserved_seats']
+  ) || '').trim();
+
+  if (!companions && message.includes('Accompanying Guests:')) {
+    const parts = message.split(/\s*\|\s*Accompanying Guests:|\bAccompanying Guests:/i);
+    message = (parts[0] || '').trim();
+    companions = (parts[1] || '').trim();
+  }
+
+  const rawSeatVal = getVal(
+    [
+      'participants',
+      'seats',
+      'guests',
+      'number of guests',
+      'number of guests (including yourself)',
+      'no. of guests',
+      'pax',
+      'count',
+      'total guests',
+      'confirmed seats',
+      'reserved_seats',
+      'reserved seats'
+    ],
+    ['participant', 'seat', 'guest', 'pax', 'count', 'number'],
+    ['name', 'guest name', 'invited_party', 'companions', 'accompanying guests', 'message', 'message for the couple']
+  );
+
+  const numMatch = String(rawSeatVal).match(/\d+/);
+  const seatsParsed = numMatch ? parseInt(numMatch[0], 10) : NaN;
+
+  const companionCount = companions ? companions.split(',').map(s => s.trim()).filter(Boolean).length : 0;
+  const coupleNameHint = /\b(&|and)\b/i.test(name) ? 2 : 1;
+  const fallbackSeats = Math.max(1 + companionCount, coupleNameHint);
+
+  const seats = isDeclined ? 0 : (!isNaN(seatsParsed) && seatsParsed >= 1 ? seatsParsed : fallbackSeats);
+
+  const submittedAt = String(getVal(
+    ['submitted_at', 'timestamp', 'date', 'time'],
+    ['timestamp', 'submitted', 'date']
+  ) || '').trim();
+
+  const sheetCheckin = String(getVal(
+    ['checked_in', 'checkin', 'arrived'],
+    ['check', 'arriv']
+  ) || '').trim();
+
+  const key = (name || `row-${idx}`).toLowerCase().replace(/\s+/g, ' ');
+
+  return {
+    id: key,
+    rowIndex: raw._rowIndex || (idx + 2),
+    name: name || 'Unnamed Guest',
+    status: statusRaw || (isDeclined ? "I can't make it." : "Yes, I'll be there!"),
+    isAttending: !isDeclined,
+    seats,
+    companions,
+    message,
+    submittedAt,
+    sheetCheckedIn: Boolean(sheetCheckin && !/^(false|no|0)$/i.test(sheetCheckin))
+  };
+}
+
+async function fetchLiveRsvps() {
+  const spinner = document.getElementById('refreshRsvpSpinner');
+  const notice = document.getElementById('rsvpLiveNotice');
+
+  if (spinner) spinner.classList.add('animate-spin');
+  if (notice) notice.classList.add('hidden');
+
+  try {
+    const res = await fetch(RSVP_URL + '?action=list&t=' + Date.now(), { method: 'GET', redirect: 'follow' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    const rawList = Array.isArray(json) ? json : (Array.isArray(json.rows) ? json.rows : (Array.isArray(json.data) ? json.data : []));
+
+    liveRsvpRows = rawList
+      .map((r, i) => normalizeSheetRow(r, i))
+      .filter(r => r.name && r.name !== 'Unnamed Guest');
+
+    // Merge local device submission message/companions if the sheet row was missing them
+    try {
+      const localRec = JSON.parse(localStorage.getItem('mm_wedding_rsvp_record_v2') || 'null');
+      if (localRec && localRec.name) {
+        const localKey = localRec.name.trim().toLowerCase().replace(/\s+/g, ' ');
+        const match = liveRsvpRows.find(r => r.id === localKey);
+        if (match) {
+          if (!match.message && localRec.rawMessage) match.message = localRec.rawMessage;
+          if (!match.companions && Array.isArray(localRec.companions) && localRec.companions.length) {
+            match.companions = localRec.companions.join(', ');
+          }
+        }
+      }
+    } catch (e) {}
+
+    const checkins = getLocalCheckins();
+    liveRsvpRows.forEach(r => {
+      if (r.sheetCheckedIn) checkins[r.id] = true;
+    });
+    saveLocalCheckins(checkins);
+
+    liveRsvpLoadedOnce = true;
+    renderRsvpDashboard();
+  } catch (err) {
+    console.warn('Could not fetch live RSVPs from Google Sheet:', err);
+    if (notice) {
+      notice.classList.remove('hidden');
+      notice.innerHTML = `
+        <p class="font-semibold text-forest-900">Unable to read live rows from Google Sheets yet.</p>
+        <p class="text-forest-800/80">Make sure your Google Apps Script includes the updated <code>doGet(e)</code> &amp; <code>doPost(e)</code> code and is deployed as a <strong>New version</strong> with <strong>Who has access: Anyone</strong>.</p>
+      `;
+    }
+    try {
+      const localRec = JSON.parse(localStorage.getItem('mm_wedding_rsvp_record_v2') || 'null');
+      if (localRec && localRec.name && !liveRsvpRows.length) {
+        liveRsvpRows = [normalizeSheetRow({
+          name: localRec.name,
+          status: localRec.status,
+          participants: localRec.seats,
+          companions: (localRec.companions || []).join(', '),
+          message: localRec.rawMessage || '',
+          submitted_at: localRec.submittedAt || ''
+        }, 0)];
+      }
+    } catch (e) {}
+    renderRsvpDashboard();
+  } finally {
+    if (spinner) spinner.classList.remove('animate-spin');
+  }
+}
+
+function getProcessedRsvpRows() {
+  const dedupe = document.getElementById('rsvpDedupeToggle')?.checked ?? true;
+  let list = [...liveRsvpRows];
+
+  if (dedupe) {
+    const map = new Map();
+    list.forEach(r => {
+      const prev = map.get(r.id);
+      if (prev) {
+        if (!r.message && prev.message) r.message = prev.message;
+        if (!r.companions && prev.companions) r.companions = prev.companions;
+      }
+      map.set(r.id, r);
+    });
+    list = Array.from(map.values());
+  }
+  return list.reverse();
+}
+
+function toggleGuestCheckin(guestId, guestName) {
+  const checkins = getLocalCheckins();
+  const nextState = !checkins[guestId];
+  if (nextState) {
+    checkins[guestId] = true;
+  } else {
+    delete checkins[guestId];
+  }
+  saveLocalCheckins(checkins);
+  renderRsvpDashboard();
+
+  const body = new URLSearchParams();
+  body.append('action', 'checkin');
+  body.append('name', guestName);
+  body.append('checked_in', String(nextState));
+  const checkinUrl = RSVP_URL + (RSVP_URL.includes('?') ? '&' : '?') + body.toString();
+  fetch(checkinUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: body.toString()
+  }).catch(() => {});
+}
+
+function renderRsvpDashboard() {
+  const tbody = document.getElementById('rsvpLiveTableBody');
+  const query = (document.getElementById('rsvpAdminSearch')?.value || '').trim().toLowerCase();
+  const filter = document.getElementById('rsvpAdminFilter')?.value || 'all';
+  const checkins = getLocalCheckins();
+
+  const allRows = getProcessedRsvpRows();
+
+  let totalConfirmedSeats = 0;
+  let attendingParties = 0;
+  let declinedParties = 0;
+  let checkedInSeats = 0;
+
+  allRows.forEach(r => {
+    const isChecked = Boolean(checkins[r.id]);
+    if (r.isAttending) {
+      attendingParties++;
+      totalConfirmedSeats += r.seats;
+      if (isChecked) checkedInSeats += r.seats;
+    } else {
+      declinedParties++;
+    }
+  });
+
+  document.getElementById('rsvpStatTotalSeats').textContent = String(totalConfirmedSeats);
+  document.getElementById('rsvpStatAttendingParties').textContent = String(attendingParties);
+  document.getElementById('rsvpStatDeclinedParties').textContent = String(declinedParties);
+  document.getElementById('rsvpStatCheckedIn').textContent = `${checkedInSeats} / ${totalConfirmedSeats}`;
+
+  const filtered = allRows.filter(r => {
+    const isChecked = Boolean(checkins[r.id]);
+    if (filter === 'attending' && !r.isAttending) return false;
+    if (filter === 'declined' && r.isAttending) return false;
+    if (filter === 'checkedin' && !isChecked) return false;
+    if (filter === 'pending' && (!r.isAttending || isChecked)) return false;
+
+    if (query) {
+      const hay = `${r.name} ${r.companions} ${r.message} ${r.status}`.toLowerCase();
+      if (!hay.includes(query)) return false;
+    }
+    return true;
+  });
+
+  tbody.innerHTML = '';
+  if (!filtered.length) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="6" class="py-10 text-center text-sage-600 italic">${allRows.length ? 'No guests match your current filter/search.' : 'No RSVP responses found yet.'}</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
+
+  filtered.forEach(r => {
+    const isChecked = Boolean(checkins[r.id]);
+    const tr = document.createElement('tr');
+    tr.className = 'transition ' + (isChecked ? 'bg-gold-300/15 hover:bg-gold-300/25' : 'hover:bg-sage-50/80');
+
+    const tdCheck = document.createElement('td');
+    tdCheck.className = 'py-2.5 px-3 text-center align-top';
+    if (r.isAttending) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = isChecked
+        ? 'px-2.5 py-1 rounded-full bg-forest-900 text-gold-300 text-[10px] uppercase tracking-wider font-semibold shadow-sm transition'
+        : 'px-2.5 py-1 rounded-full bg-white hover:bg-sage-100 text-forest-800 border border-sage-600/35 text-[10px] uppercase tracking-wider font-semibold transition';
+      btn.textContent = isChecked ? 'Arrived ✓' : 'Check In';
+      btn.onclick = () => toggleGuestCheckin(r.id, r.name);
+      tdCheck.appendChild(btn);
+    } else {
+      tdCheck.innerHTML = '<span class="text-[10px] text-sage-600">—</span>';
+    }
+
+    const tdName = document.createElement('td');
+    tdName.className = 'py-2.5 px-3 align-top';
+    const nameEl = document.createElement('p');
+    nameEl.className = 'font-semibold text-forest-900';
+    nameEl.textContent = r.name;
+    tdName.appendChild(nameEl);
+    if (r.companions) {
+      const compEl = document.createElement('p');
+      compEl.className = 'text-[11px] text-sage-700 mt-0.5';
+      compEl.textContent = '+ ' + r.companions;
+      tdName.appendChild(compEl);
+    }
+    if (r.message) {
+      const mobileMsgEl = document.createElement('p');
+      mobileMsgEl.className = 'md:hidden text-[11px] italic text-forest-800/85 bg-sage-50/90 border border-gold-400/30 rounded-lg px-2.5 py-1 mt-1.5 break-words';
+      mobileMsgEl.textContent = '“' + r.message + '”';
+      tdName.appendChild(mobileMsgEl);
+    }
+
+    const tdStatus = document.createElement('td');
+    tdStatus.className = 'py-2.5 px-3 text-center align-top';
+    const statusBadge = document.createElement('span');
+    statusBadge.className = r.isAttending
+      ? 'inline-block px-2.5 py-0.5 rounded-full bg-sage-100 text-forest-900 font-semibold text-[10px] uppercase tracking-wider'
+      : 'inline-block px-2.5 py-0.5 rounded-full bg-red-50 text-red-700 font-semibold text-[10px] uppercase tracking-wider';
+    statusBadge.textContent = r.isAttending ? 'Attending' : 'Declined';
+    tdStatus.appendChild(statusBadge);
+
+    const tdSeats = document.createElement('td');
+    tdSeats.className = 'py-2.5 px-3 text-center font-semibold text-forest-900 align-top';
+    tdSeats.textContent = String(r.seats);
+
+    const tdMsg = document.createElement('td');
+    tdMsg.className = 'py-2.5 px-3 hidden md:table-cell text-forest-800/90 max-w-[260px] whitespace-normal break-words align-top';
+    if (r.message) {
+      tdMsg.textContent = '“' + r.message + '”';
+      tdMsg.classList.add('italic');
+    } else {
+      tdMsg.textContent = '—';
+      tdMsg.classList.add('text-sage-600');
+    }
+
+    const tdDate = document.createElement('td');
+    tdDate.className = 'py-2.5 px-3 text-right hidden sm:table-cell text-[11px] text-sage-600 whitespace-nowrap align-top';
+    if (r.submittedAt) {
+      const d = new Date(r.submittedAt);
+      tdDate.textContent = isNaN(d.getTime()) ? r.submittedAt.slice(0, 10) : d.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
+    } else {
+      tdDate.textContent = '—';
+    }
+
+    tr.append(tdCheck, tdName, tdStatus, tdSeats, tdMsg, tdDate);
+    tbody.appendChild(tr);
+  });
+}
+
+function exportLiveRsvpCSV() {
+  const rows = getProcessedRsvpRows();
+  if (!rows.length) return;
+  const checkins = getLocalCheckins();
+  const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const header = ['Guest / Party Name', 'Attendance', 'Confirmed Seats', 'Accompanying Companions', 'Checked In at Venue', 'Message for the Couple', 'Submitted At'].map(esc).join(',');
+  const lines = rows.map(r => [
+    r.name,
+    r.isAttending ? 'Attending' : 'Declined',
+    r.seats,
+    r.companions,
+    checkins[r.id] ? 'YES' : 'NO',
+    r.message,
+    r.submittedAt
+  ].map(esc).join(','));
+
+  const blob = new Blob([[header, ...lines].join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Maribeth-Melbhert-Live-RSVPs.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+if (urlParams.get('admin') === '1' || urlParams.get('builder') === '1' || urlParams.get('checkin') === '1') {
   window.addEventListener('DOMContentLoaded', () => {
     openInvitation();
-    openLinkGenerator('batch');
+    const initialTab = urlParams.get('checkin') === '1' || urlParams.get('admin') === '1' ? 'rsvps' : 'batch';
+    requestAdminOpen(initialTab);
   });
 }
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'l') {
     e.preventDefault();
-    openLinkGenerator('batch');
+    requestAdminOpen('rsvps');
+  }
+  if (e.key === 'Escape' && !pinLockModal.classList.contains('hidden')) {
+    closePinModal();
   }
 });
 
-/* ---------- Intro & Music ---------- */
+/* ---------- Intro & Music (with Smooth Fade-In & Auto-Pause) ---------- */
 const introOverlay = document.getElementById('intro-overlay');
 const music = document.getElementById('bg-music');
 const btn = document.getElementById('music-btn');
 let musicAvailable = true;
+let musicFadeTimer = null;
+let musicWasPlayingBeforeHide = false;
 
 function setMusicUI(on) {
   btn.classList.toggle('playing', on);
@@ -1268,6 +2001,27 @@ function hideMusicButton() {
   btn.style.display = 'none';
 }
 
+function fadeInMusic(targetVolume = 0.75, durationMs = 1600) {
+  if (!musicAvailable) return;
+  clearInterval(musicFadeTimer);
+  music.volume = 0.02;
+  const steps = 25;
+  const stepTime = durationMs / steps;
+  const volIncrement = (targetVolume - 0.02) / steps;
+  music.play().then(() => {
+    setMusicUI(true);
+    musicFadeTimer = setInterval(() => {
+      if (music.paused) {
+        clearInterval(musicFadeTimer);
+        return;
+      }
+      const nextVol = Math.min(targetVolume, music.volume + volIncrement);
+      music.volume = nextVol;
+      if (nextVol >= targetVolume) clearInterval(musicFadeTimer);
+    }, stepTime);
+  }).catch(() => {});
+}
+
 music.addEventListener('error', hideMusicButton);
 const musicSource = music.querySelector('source');
 if (musicSource) musicSource.addEventListener('error', hideMusicButton);
@@ -1277,7 +2031,7 @@ function openInvitation() {
   introOverlay.classList.add('opening');
   document.body.classList.remove('intro-locked');
   if (musicAvailable) {
-    music.play().then(() => setMusicUI(true)).catch(() => {});
+    fadeInMusic(0.75, 1600);
   }
   introOverlay.addEventListener('transitionend', () => { introOverlay.style.display = 'none'; }, { once: true });
   setTimeout(() => { introOverlay.style.display = 'none'; }, 1600);
@@ -1285,7 +2039,9 @@ function openInvitation() {
 
 function toggleMusic() {
   if (!musicAvailable) return;
+  clearInterval(musicFadeTimer);
   if (music.paused) {
+    music.volume = 0.75;
     music.play().then(() => setMusicUI(true)).catch(err => {
       console.warn('Could not play music:', err);
       if (music.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) hideMusicButton();
@@ -1299,19 +2055,6 @@ function toggleMusic() {
 /* ---------- Motion preference ---------- */
 const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 let prefersReducedMotion = motionQuery.matches;
-
-/* ---------- Sponsors toggle ---------- */
-function toggleEntourage() {
-  const c = document.getElementById('moreSponsors'),
-        t = document.getElementById('entourageToggleText'),
-        i = document.getElementById('entourageToggleIcon'),
-        b = document.getElementById('entourageToggleBtn');
-  const hide = !c.classList.contains('hidden');
-  c.classList.toggle('hidden', hide);
-  t.textContent = hide ? 'View All 17 Sponsor Pairs' : 'Show Compact List';
-  i.classList.toggle('rotate-180', !hide);
-  b.setAttribute('aria-expanded', String(!hide));
-}
 
 /* ---------- Falling leaves + confetti ---------- */
 const canvas = document.getElementById('leaves-canvas');
@@ -1435,7 +2178,7 @@ function fireConfetti() {
 
 addEventListener('click', e => {
   if (prefersReducedMotion) return;
-  if (e.target.closest('a, button, input, select, textarea, label, iframe, #photoModal, #linkGenModal, #intro-overlay')) return;
+  if (e.target.closest('a, button, input, select, textarea, label, iframe, #photoModal, #linkGenModal, #pinLockModal, #intro-overlay, #secretAdminTrigger')) return;
   spawnLeafBurst(e.clientX, e.clientY);
 });
 
@@ -1472,8 +2215,17 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     if (leavesAnimationId) cancelAnimationFrame(leavesAnimationId);
     leavesAnimationId = null;
+    if (musicAvailable && !music.paused) {
+      musicWasPlayingBeforeHide = true;
+      music.pause();
+      setMusicUI(false);
+    }
   } else {
     startLeaves();
+    if (musicAvailable && musicWasPlayingBeforeHide) {
+      musicWasPlayingBeforeHide = false;
+      music.play().then(() => setMusicUI(true)).catch(() => {});
+    }
   }
 });
 
@@ -1599,7 +2351,6 @@ memoryPhotos.forEach((src, idx) => {
   b.setAttribute('aria-label', 'Go to memory photo ' + (idx + 1));
   b.className = 'relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all duration-200';
   const im = document.createElement('img');
-  // Use Imgur 't' thumbnail (160x160) to cut thumbnail bandwidth by ~95%
   im.src = src.replace(/(\.[a-zA-Z]+)$/, 't$1');
   im.referrerPolicy = 'no-referrer';
   im.alt = '';
@@ -1744,14 +2495,18 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-/* ---------- RSVP ---------- */
+/* ---------- RSVP & Persisted Pass ---------- */
+const RSVP_STORAGE_KEY = 'mm_wedding_rsvp_record_v2';
 const RSVP_DEADLINE = new Date('2026-11-30T23:59:59+08:00').getTime();
 const form = document.getElementById('rsvpForm'),
       submitBtn = document.getElementById('submitBtn'),
       guestCountWrapper = document.getElementById('guestCountWrapper'),
       guestInput = document.getElementById('rsvp-guests'),
-      formStatus = document.getElementById('formStatus');
+      formStatus = document.getElementById('formStatus'),
+      savedRsvpPass = document.getElementById('savedRsvpPass');
 const contactHint = () => CONTACT_FALLBACK ? ' or contact us at ' + CONTACT_FALLBACK : '';
+
+let latestPassRecord = null;
 
 applyGuestPersonalization();
 
@@ -1769,6 +2524,7 @@ function handleAttendanceChange(v) {
     }
     guestInput.readOnly = invitedGuestSeats === 1;
   }
+  renderCompanionInputs();
 }
 
 function escapeHtml(str) {
@@ -1779,6 +2535,155 @@ function showStatus(html, ok) {
   formStatus.innerHTML = html;
   formStatus.className = 'text-center text-sm mt-3 p-4 rounded-2xl border pop ' + (ok ? 'text-forest-900 bg-sage-100/80 border-sage-600/30' : 'text-red-700 bg-red-50 border-red-200');
   formStatus.addEventListener('animationend', () => formStatus.classList.remove('pop'), { once: true });
+}
+
+function renderSavedPassView(record) {
+  if (!record || !savedRsvpPass) return;
+  latestPassRecord = record;
+  const isAttending = record.status !== "I can't make it.";
+  const companions = Array.isArray(record.companions) ? record.companions.filter(Boolean) : [];
+  const companionsHtml = companions.length
+    ? `<p class="text-xs text-forest-800/85 pt-1"><span class="font-semibold text-sage-700">Accompanying:</span> ${companions.map(escapeHtml).join(', ')}</p>`
+    : '';
+  const messageHtml = record.rawMessage
+    ? `<p class="text-xs italic text-forest-800/80 bg-white/80 border border-gold-400/30 rounded-xl px-3 py-2 max-w-md mx-auto">“${escapeHtml(record.rawMessage)}”</p>`
+    : '';
+
+  if (isAttending) {
+    savedRsvpPass.innerHTML = `
+      <div class="p-6 rounded-2xl bg-sage-50/90 border-2 border-gold-400/50 text-center space-y-2.5 shadow-inner pop">
+        <span class="inline-block px-3 py-0.5 rounded-full bg-gold-500/20 border border-gold-500/40 text-[10px] uppercase tracking-[0.22em] text-forest-900 font-semibold">Confirmed Wedding Pass</span>
+        <p class="font-serif text-3xl font-semibold text-forest-900 leading-tight">${escapeHtml(record.name)}</p>
+        <p class="text-xs font-semibold uppercase tracking-widest text-sage-700">${escapeHtml(record.seats)} ${Number(record.seats) === 1 ? 'Seat' : 'Seats'} Confirmed • Dec 30, 2026 (9:30 AM)</p>
+        ${companionsHtml}
+        ${messageHtml}
+        <p class="text-xs text-forest-800/80">Tagbilaran Cathedral &rarr; Bohol Tropics Resort</p>
+        <div class="pt-3 flex flex-wrap items-center justify-center gap-2.5">
+          <button type="button" onclick="downloadWeddingPassPNG()" class="px-4 py-2.5 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-xs uppercase tracking-wider font-semibold transition shadow-sm">Save Pass Image (.PNG)</button>
+          <button type="button" onclick="editSavedRsvp()" class="px-4 py-2.5 rounded-xl bg-white hover:bg-sage-100 text-forest-900 border border-sage-600/30 text-xs uppercase tracking-wider font-semibold transition">Update / Edit RSVP</button>
+        </div>
+      </div>
+    `;
+  } else {
+    savedRsvpPass.innerHTML = `
+      <div class="p-6 rounded-2xl bg-sage-50/90 border border-sage-600/30 text-center space-y-3 pop">
+        <p class="font-serif text-2xl font-semibold text-forest-900">RSVP Recorded for ${escapeHtml(record.name)}</p>
+        <p class="text-xs text-forest-800/80">Thank you for letting us know you won't be able to attend. You will be warmly in our thoughts on our wedding day.</p>
+        ${messageHtml}
+        <div class="pt-1">
+          <button type="button" onclick="editSavedRsvp()" class="px-4 py-2 rounded-xl bg-white hover:bg-sage-100 text-forest-900 border border-sage-600/30 text-xs uppercase tracking-wider font-semibold transition">Change My Response</button>
+        </div>
+      </div>
+    `;
+  }
+
+  savedRsvpPass.classList.remove('hidden');
+  form.classList.add('hidden');
+  formStatus.classList.add('hidden');
+}
+
+function editSavedRsvp() {
+  savedRsvpPass.classList.add('hidden');
+  form.classList.remove('hidden');
+  if (!latestPassRecord) return;
+
+  const nameInput = document.getElementById('rsvp-name');
+  const statusSelect = document.getElementById('rsvp-status');
+  const msgInput = document.getElementById('rsvp-message');
+
+  if (nameInput && latestPassRecord.name) nameInput.value = latestPassRecord.name;
+  if (statusSelect && latestPassRecord.status) {
+    statusSelect.value = latestPassRecord.status;
+    handleAttendanceChange(latestPassRecord.status);
+  }
+  if (guestInput && latestPassRecord.seats) {
+    guestInput.value = String(latestPassRecord.seats);
+  }
+  renderCompanionInputs(latestPassRecord.companions || []);
+  if (msgInput && latestPassRecord.rawMessage !== undefined) {
+    msgInput.value = latestPassRecord.rawMessage;
+  }
+  submitBtn.textContent = 'Update RSVP';
+}
+
+function downloadWeddingPassPNG() {
+  const rec = latestPassRecord;
+  if (!rec) return;
+
+  const c = document.createElement('canvas');
+  c.width = 1080;
+  c.height = 640;
+  const g = c.getContext('2d');
+
+  const grad = g.createLinearGradient(0, 0, 1080, 640);
+  grad.addColorStop(0, '#142b15');
+  grad.addColorStop(1, '#0b190c');
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 1080, 640);
+
+  g.strokeStyle = 'rgba(197, 160, 89, 0.55)';
+  g.lineWidth = 2;
+  g.strokeRect(32, 32, 1016, 576);
+  g.strokeStyle = 'rgba(226, 199, 141, 0.25)';
+  g.lineWidth = 1;
+  g.strokeRect(46, 46, 988, 548);
+
+  g.fillStyle = '#d4b26f';
+  g.font = '600 18px "Plus Jakarta Sans", sans-serif';
+  g.textAlign = 'center';
+  g.fillText('CONFIRMED WEDDING PASS • DECEMBER 30, 2026', 540, 110);
+
+  g.fillStyle = '#f7f4ef';
+  g.font = '600 58px "Cormorant Garamond", Georgia, serif';
+  g.fillText('Maribeth & Melbhert', 540, 185);
+
+  g.strokeStyle = 'rgba(197, 160, 89, 0.5)';
+  g.beginPath();
+  g.moveTo(370, 215);
+  g.lineTo(710, 215);
+  g.stroke();
+
+  g.fillStyle = '#e2c78d';
+  g.font = '500 16px "Plus Jakarta Sans", sans-serif';
+  g.fillText('RESERVED IN HONOR OF', 540, 265);
+
+  g.fillStyle = '#ffffff';
+  g.font = '600 44px "Cormorant Garamond", Georgia, serif';
+  const displayGuest = rec.name.length > 38 ? rec.name.slice(0, 36) + '…' : rec.name;
+  g.fillText(displayGuest, 540, 320);
+
+  const comps = Array.isArray(rec.companions) ? rec.companions.filter(Boolean) : [];
+  if (comps.length) {
+    g.fillStyle = '#c7dac8';
+    g.font = '400 18px "Plus Jakarta Sans", sans-serif';
+    const compStr = 'Accompanying: ' + comps.join(', ');
+    g.fillText(compStr.length > 72 ? compStr.slice(0, 70) + '…' : compStr, 540, 360);
+  }
+
+  g.fillStyle = 'rgba(197, 160, 89, 0.18)';
+  g.fillRect(360, 395, 360, 54);
+  g.strokeStyle = '#c5a059';
+  g.strokeRect(360, 395, 360, 54);
+
+  g.fillStyle = '#f7f4ef';
+  g.font = '600 22px "Plus Jakarta Sans", sans-serif';
+  const seatsLabel = `${rec.seats} ${Number(rec.seats) === 1 ? 'SEAT' : 'SEATS'} CONFIRMED`;
+  g.fillText(seatsLabel, 540, 430);
+
+  g.fillStyle = '#c7dac8';
+  g.font = '400 19px "Plus Jakarta Sans", sans-serif';
+  g.fillText('9:30 AM Arrival • Tagbilaran Cathedral  →  12:00 PM Bohol Tropics Resort', 540, 515);
+
+  g.fillStyle = '#d4b26f';
+  g.font = 'italic 20px "Cormorant Garamond", Georgia, serif';
+  g.fillText('Tagbilaran City, Bohol, Philippines', 540, 552);
+
+  const link = document.createElement('a');
+  link.download = `Wedding-Pass-${rec.name.replace(/[^a-z0-9]+/gi, '-')}.png`;
+  link.href = c.toDataURL('image/png');
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 }
 
 if (Date.now() > RSVP_DEADLINE) {
@@ -1798,13 +2703,28 @@ form.addEventListener('submit', async e => {
     form.reportValidity();
     return;
   }
-  const submittedName = form.elements['name'].value.trim();
-  const submittedStatus = form.elements['status'].value.trim();
-  const submittedSeats = form.elements['participants'].value.trim();
+  const submittedName = (document.getElementById('rsvp-name')?.value || '').trim();
+  const submittedStatus = (document.getElementById('rsvp-status')?.value || '').trim();
+  const submittedSeats = (document.getElementById('rsvp-guests')?.value || '1').trim();
+  const rawMessage = (document.getElementById('rsvp-message')?.value || '').trim();
   const isAttending = submittedStatus !== "I can't make it.";
+  const companions = isAttending ? getEnteredCompanions() : [];
+
+  const combinedMessage = companions.length
+    ? (rawMessage ? `${rawMessage} | Accompanying Guests: ${companions.join(', ')}` : `Accompanying Guests: ${companions.join(', ')}`)
+    : rawMessage;
 
   const data = new URLSearchParams();
-  ['name', 'status', 'participants', 'message'].forEach(k => data.append(k, form.elements[k].value.trim()));
+  data.append('name', submittedName);
+  data.append('status', submittedStatus);
+  data.append('participants', submittedSeats);
+  data.append('seats', submittedSeats);
+  data.append('guests', submittedSeats);
+  data.append('message', combinedMessage);
+  data.append('message_for_couple', rawMessage);
+  data.append('notes', rawMessage);
+  data.append('comments', rawMessage);
+  if (companions.length) data.append('companions', companions.join(', '));
   if (invitedGuestName) data.append('invited_party', invitedGuestName);
   if (invitedGuestSeats) data.append('reserved_seats', String(invitedGuestSeats));
   data.append('submitted_at', new Date().toISOString());
@@ -1812,30 +2732,29 @@ form.addEventListener('submit', async e => {
   submitBtn.disabled = true;
   submitBtn.textContent = 'Recording your RSVP...';
   try {
-    await fetch(RSVP_URL, {
+    // Passing data in BOTH the URL query string and POST body guarantees Apps Script receives every field
+    const submitUrl = RSVP_URL + (RSVP_URL.includes('?') ? '&' : '?') + data.toString();
+    await fetch(submitUrl, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: data.toString()
     });
-    if (isAttending) {
-      showStatus(`
-        <div class="space-y-2 text-center">
-          <span class="inline-block px-3 py-0.5 rounded-full bg-gold-500/20 border border-gold-500/40 text-[10px] uppercase tracking-[0.2em] text-forest-900 font-semibold">Confirmed Wedding Pass</span>
-          <p class="font-serif text-2xl font-semibold text-forest-900">${escapeHtml(submittedName)}</p>
-          <p class="text-xs font-semibold uppercase tracking-widest text-sage-700">${escapeHtml(submittedSeats)} ${Number(submittedSeats) === 1 ? 'Seat' : 'Seats'} Confirmed • Dec 30, 2026 (9:30 AM)</p>
-          <p class="text-xs text-forest-800/80">Tagbilaran Cathedral &rarr; Bohol Tropics Resort</p>
-          <p class="text-[11px] text-sage-600 pt-1 italic">Feel free to screenshot this pass as a reminder!</p>
-        </div>
-      `, true);
-    } else {
-      showStatus('✨ <strong>Thank you for letting us know!</strong> Your response has been recorded, and you will be warmly in our thoughts on our wedding day.', true);
-    }
-    form.reset();
-    applyGuestPersonalization();
-    handleAttendanceChange(form.elements['status'].value);
-    submitBtn.textContent = 'Send Another RSVP';
-    try { localStorage.setItem('mm_wedding_rsvp_done', 'true'); } catch (err) {}
+
+    const record = {
+      name: submittedName,
+      status: submittedStatus,
+      seats: submittedSeats,
+      companions,
+      rawMessage,
+      submittedAt: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(record));
+      localStorage.setItem('mm_wedding_rsvp_done', 'true');
+    } catch (err) {}
+
+    renderSavedPassView(record);
     if (isAttending) fireConfetti();
   } catch (err) {
     showStatus("Sorry, we couldn't send your RSVP. Please check your connection and try again" + contactHint() + '.', false);
@@ -1845,10 +2764,15 @@ form.addEventListener('submit', async e => {
   }
 });
 
+// Restore saved RSVP Pass on page load if guest matches or no conflicting guest param
 try {
-  if (localStorage.getItem('mm_wedding_rsvp_done') === 'true' && Date.now() <= RSVP_DEADLINE) {
-    formStatus.textContent = 'You have previously submitted an RSVP from this device. Feel free to submit again if you need to update your response.';
-    formStatus.className = 'text-center text-xs mt-3 text-sage-700';
+  const savedRaw = localStorage.getItem(RSVP_STORAGE_KEY);
+  if (savedRaw && Date.now() <= RSVP_DEADLINE) {
+    const parsed = JSON.parse(savedRaw);
+    const sameGuestOrGeneric = !invitedGuestName || (parsed.name && parsed.name.toLowerCase() === invitedGuestName.toLowerCase());
+    if (parsed && parsed.name && sameGuestOrGeneric) {
+      renderSavedPassView(parsed);
+    }
   }
 } catch (err) {}
 
