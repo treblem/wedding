@@ -99,6 +99,15 @@
     .pop { animation: status-pop .45s ease; }
     @keyframes pin-shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
     .pin-shake { animation: pin-shake .35s ease; }
+
+    /* Mobile-Friendly Responsive Admin Tables (< 640px turns table rows into clean cards) */
+    @media (max-width: 639px) {
+      .admin-resp-table thead { display: none; }
+      .admin-resp-table, .admin-resp-table tbody, .admin-resp-table tr, .admin-resp-table td { display: block; width: 100%; }
+      .admin-resp-table tr { padding: 0.85rem 0.9rem; border-bottom: 1px solid rgba(115,149,116,.18); }
+      .admin-resp-table td { padding: 0.2rem 0 !important; text-align: left !important; border: 0 !important; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       #intro-overlay, #intro-overlay.opening { transition: opacity .5s; transform: none; }
       #intro-overlay.opening { opacity: 0; }
@@ -761,7 +770,7 @@
 <!-- 5-Digit PIN Lock Modal for Couple's Command Center -->
 <div id="pinLockModal" class="fixed inset-0 z-[9998] bg-forest-950/85 backdrop-blur-md hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="pinModalTitle">
   <div id="pinModalCard" class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl border border-gold-400/40 text-center space-y-5 relative">
-    <button type="button" onclick="closePinModal()" aria-label="Cancel PIN entry" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 flex items-center justify-center font-bold text-base">&times;</button>
+    <button type="button" onclick="closePinModal()" aria-label="Cancel PIN entry" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 flex items-center justify-center font-bold text-base">&times;</button>
     <div class="w-12 h-12 rounded-full bg-forest-900 text-gold-300 mx-auto flex items-center justify-center shadow-md border border-gold-400/40">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
     </div>
@@ -781,277 +790,293 @@
   </div>
 </div>
 
-<!-- Couple's Command Center Modal (Protected by PIN 31726) -->
-<div id="linkGenModal" class="fixed inset-0 z-[9997] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-2.5 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="linkGenTitle">
-  <div class="bg-white rounded-3xl max-w-5xl w-full p-5 sm:p-8 shadow-2xl border border-sage-600/30 space-y-5 relative my-auto max-h-[94vh] flex flex-col">
-    <div class="absolute top-5 right-5 flex items-center gap-2">
-      <button type="button" onclick="lockAdminSession()" title="Lock Admin Session" class="px-3 py-1.5 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-800 border border-sage-600/25 text-[10px] uppercase tracking-wider font-semibold flex items-center gap-1 transition">
-        <svg class="w-3.5 h-3.5 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-        <span>Lock</span>
-      </button>
-      <button type="button" onclick="closeLinkGenerator()" aria-label="Close Command Center" class="w-9 h-9 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 flex items-center justify-center font-bold text-lg">&times;</button>
-    </div>
+<!-- Mobile-Friendly Couple's Command Center Modal (Protected by PIN 31726) -->
+<div id="linkGenModal" class="fixed inset-0 z-[9997] bg-black/80 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-5 overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="linkGenTitle">
+  <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-5xl w-full h-[94dvh] sm:h-auto sm:max-h-[92vh] p-4 sm:p-7 shadow-2xl border-t sm:border border-sage-600/30 flex flex-col overflow-hidden relative">
 
-    <div class="shrink-0 pr-24">
-      <span class="text-[11px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Couple's Command Center • Maribeth &amp; Melbhert</span>
-      <h3 id="linkGenTitle" class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Invite Builder, RSVPs &amp; Pending Tracker</h3>
-      <p class="text-xs text-forest-800/75 mt-1">Generate personalized guest links, track live Google Sheets RSVPs, and see who hasn't responded yet.</p>
+    <!-- Sticky Header & 2x2 Mobile Tab Bar -->
+    <div class="shrink-0 pb-3 border-b border-sage-600/15">
+      <div class="flex items-start justify-between gap-2">
+        <div>
+          <span class="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold block">Couple's Command Center</span>
+          <h3 id="linkGenTitle" class="font-serif text-xl sm:text-3xl text-forest-900 font-semibold leading-tight">Invite Builder, RSVPs &amp; Check-In</h3>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button type="button" onclick="lockAdminSession()" title="Lock Admin Session" class="px-2.5 py-1.5 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-800 border border-sage-600/25 text-[10px] uppercase tracking-wider font-semibold flex items-center gap-1 transition">
+            <svg class="w-3.5 h-3.5 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <span class="hidden xs:inline">Lock</span>
+          </button>
+          <button type="button" onclick="closeLinkGenerator()" aria-label="Close Command Center" class="w-9 h-9 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 flex items-center justify-center font-bold text-lg">&times;</button>
+        </div>
+      </div>
 
-      <!-- Mode Switch Tabs (4 Tabs) -->
-      <div class="inline-flex flex-wrap rounded-xl bg-sage-50 p-1 border border-sage-600/20 mt-4 gap-1">
-        <button type="button" id="tabSingleBtn" onclick="switchBuilderTab('single')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition bg-forest-900 text-champagne shadow-sm">Single Guest</button>
-        <button type="button" id="tabBatchBtn" onclick="switchBuilderTab('batch')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900">Batch Paste (Excel / Sheets)</button>
-        <button type="button" id="tabRsvpBtn" onclick="switchBuilderTab('rsvps')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-gold-500 animate-pulse"></span>
-          <span>Live RSVPs &amp; Check-In</span>
+      <!-- Mode Switch Tabs: 2x2 Grid on Mobile, Inline Bar on Desktop -->
+      <div class="grid grid-cols-2 sm:inline-flex rounded-2xl bg-sage-50 p-1 border border-sage-600/20 mt-3 gap-1 w-full sm:w-auto">
+        <button type="button" id="tabSingleBtn" onclick="switchBuilderTab('single')" class="px-2.5 sm:px-3.5 py-2 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition text-center justify-center bg-forest-900 text-champagne shadow-sm">Single Guest</button>
+        <button type="button" id="tabBatchBtn" onclick="switchBuilderTab('batch')" class="px-2.5 sm:px-3.5 py-2 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition text-center justify-center text-forest-800 hover:text-forest-900">Batch Paste</button>
+        <button type="button" id="tabRsvpBtn" onclick="switchBuilderTab('rsvps')" class="px-2.5 sm:px-3.5 py-2 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900 flex items-center justify-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-gold-500 animate-pulse shrink-0"></span>
+          <span>Live RSVPs</span>
         </button>
-        <button type="button" id="tabPendingBtn" onclick="switchBuilderTab('pending')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900 flex items-center gap-1.5">
-          <span>Pending Invites</span>
+        <button type="button" id="tabPendingBtn" onclick="switchBuilderTab('pending')" class="px-2.5 sm:px-3.5 py-2 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900 flex items-center justify-center gap-1.5">
+          <span>Pending</span>
           <span id="pendingTabBadge" class="px-1.5 py-0.2 rounded-full bg-gold-500/25 text-forest-900 text-[10px] font-bold">41</span>
         </button>
       </div>
     </div>
 
-    <!-- TAB 1: Single Guest -->
-    <div id="builderSinglePane" class="space-y-4 overflow-y-auto pr-1">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div class="sm:col-span-2">
-          <label for="gen-guest-name" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Guest / Family Name</label>
-          <input id="gen-guest-name" type="text" placeholder="e.g., Mr. & Mrs. Juan Dela Cruz" oninput="updateGeneratedLink()" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-sm text-forest-900">
-        </div>
-        <div>
-          <label for="gen-guest-seats" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Reserved Seats (1–15)</label>
-          <input id="gen-guest-seats" type="number" min="1" max="15" value="2" oninput="updateGeneratedLink()" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-sm text-forest-900">
-        </div>
-      </div>
-      <div class="p-4 rounded-2xl bg-sage-50 border border-sage-600/20 space-y-2.5">
-        <span class="block text-[10px] uppercase tracking-widest text-sage-700 font-semibold">Generated Personalized URL</span>
-        <input id="gen-result-url" type="text" readonly class="w-full bg-white px-3 py-2 rounded-lg border border-sage-600/20 text-xs text-forest-900 font-mono select-all">
-        <div class="flex flex-wrap gap-2 pt-1">
-          <button type="button" id="copyUrlBtn" onclick="copyInviteLink(false)" class="flex-1 py-2.5 px-4 bg-forest-900 hover:bg-forest-800 text-champagne rounded-xl text-xs uppercase tracking-widest font-semibold transition">Copy Link</button>
-          <button type="button" id="copyMsgBtn" onclick="copyInviteLink(true)" class="flex-1 py-2.5 px-4 bg-gold-500 hover:bg-gold-600 text-forest-950 rounded-xl text-xs uppercase tracking-widest font-semibold transition">Copy Messenger Invite</button>
-        </div>
-      </div>
-    </div>
+    <!-- Scrollable Body Container for Active Tab -->
+    <div class="flex-1 overflow-y-auto pt-3 pr-0.5 space-y-4">
 
-    <!-- TAB 2: Batch Paste from Excel / Google Sheets -->
-    <div id="builderBatchPane" class="hidden flex-col space-y-4 overflow-y-auto pr-1">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
-        <div class="md:col-span-2">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
-            <label for="batch-paste-input" class="text-xs uppercase tracking-wider text-sage-700 font-semibold">Paste 2 Columns from Excel / Google Sheets (Name &amp; Seats)</label>
-            <div class="flex items-center gap-2">
-              <button type="button" onclick="loadSampleSponsors()" class="text-[11px] font-semibold text-gold-600 hover:underline">Load Full Entourage Sample</button>
-              <span class="text-sage-600/40">•</span>
-              <button type="button" onclick="clearBatchList()" class="text-[11px] font-semibold text-sage-700 hover:underline">Clear</button>
-            </div>
+      <!-- TAB 1: Single Guest -->
+      <div id="builderSinglePane" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="sm:col-span-2">
+            <label for="gen-guest-name" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Guest / Family Name</label>
+            <input id="gen-guest-name" type="text" placeholder="e.g., Mr. & Mrs. Juan Dela Cruz" oninput="updateGeneratedLink()" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-base sm:text-sm text-forest-900">
           </div>
-          <textarea id="batch-paste-input" rows="4" oninput="parseBatchInput()" placeholder="Mrs. Aida M. Palapar&#9;2&#10;Mr. Alberto B. Boiser & Mrs. Carmelita A. Boiser&#9;2&#10;Mr. Gener Kevin A. Boiser&#9;1&#10;Ms. Rheian Louisse P. Gases&#9;1" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-xs font-mono text-forest-900 focus:outline-none focus:ring-2 focus:ring-sage-600"></textarea>
-        </div>
-        <div class="bg-sage-50/80 border border-sage-600/20 rounded-2xl p-3.5 space-y-2.5">
           <div>
-            <label for="batch-default-seats" class="block text-[11px] uppercase tracking-wider text-sage-700 font-semibold mb-1">Default Seats (if column 2 is blank)</label>
-            <input id="batch-default-seats" type="number" min="1" max="15" value="2" oninput="parseBatchInput()" class="w-full px-3 py-1.5 rounded-lg border border-sage-600/30 bg-white text-xs text-forest-900">
-          </div>
-          <div class="grid grid-cols-2 gap-2 pt-1 text-center">
-            <div class="bg-white p-2 rounded-xl border border-sage-600/15">
-              <span id="batchStatParties" class="block font-serif text-xl font-bold text-forest-900">0</span>
-              <span class="text-[10px] uppercase tracking-wider text-sage-700">Parties</span>
-            </div>
-            <div class="bg-white p-2 rounded-xl border border-sage-600/15">
-              <span id="batchStatSeats" class="block font-serif text-xl font-bold text-gold-600">0</span>
-              <span class="text-[10px] uppercase tracking-wider text-sage-700">Total Seats</span>
-            </div>
+            <label for="gen-guest-seats" class="block text-xs uppercase tracking-wider text-sage-700 font-semibold mb-1">Reserved Seats (1–15)</label>
+            <input id="gen-guest-seats" type="number" min="1" max="15" value="2" inputmode="numeric" oninput="updateGeneratedLink()" class="w-full px-3.5 py-2.5 rounded-xl border border-sage-600/30 bg-sage-50/40 text-base sm:text-sm text-forest-900">
           </div>
         </div>
-      </div>
-
-      <!-- Export Actions Bar -->
-      <div class="flex flex-wrap items-center justify-between gap-2 bg-sage-100/70 px-4 py-2.5 rounded-2xl border border-sage-600/20">
-        <span class="text-xs font-medium text-forest-900">Export or sync pasted guests with your Pending Tracker:</span>
-        <div class="flex flex-wrap items-center gap-2">
-          <button type="button" id="syncMasterBtn" onclick="syncBatchToMasterList()" class="px-3.5 py-1.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-forest-950 text-[11px] uppercase tracking-wider font-semibold transition">Save to Master Pending List</button>
-          <button type="button" id="copyTsvBtn" onclick="exportBatchTSV()" class="px-3.5 py-1.5 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-[11px] uppercase tracking-wider font-semibold transition">Copy Table for Excel / Sheets</button>
-          <button type="button" onclick="downloadBatchCSV()" class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-sage-50 text-forest-900 border border-sage-600/30 text-[11px] uppercase tracking-wider font-semibold transition">Download .CSV</button>
+        <div class="p-4 rounded-2xl bg-sage-50 border border-sage-600/20 space-y-3">
+          <span class="block text-[10px] uppercase tracking-widest text-sage-700 font-semibold">Generated Personalized URL</span>
+          <input id="gen-result-url" type="text" readonly class="w-full bg-white px-3 py-2.5 rounded-lg border border-sage-600/20 text-xs text-forest-900 font-mono select-all">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+            <button type="button" id="copyUrlBtn" onclick="copyInviteLink(false)" class="w-full py-3 px-4 bg-forest-900 hover:bg-forest-800 text-champagne rounded-xl text-xs uppercase tracking-widest font-semibold transition">Copy Link</button>
+            <button type="button" id="copyMsgBtn" onclick="copyInviteLink(true)" class="w-full py-3 px-4 bg-gold-500 hover:bg-gold-600 text-forest-950 rounded-xl text-xs uppercase tracking-widest font-semibold transition">Copy Invite Text</button>
+            <button type="button" id="shareSingleBtn" onclick="shareSingleGuestInvite(this)" class="w-full py-3 px-4 bg-sage-700 hover:bg-forest-800 text-white rounded-xl text-xs uppercase tracking-widest font-semibold transition flex items-center justify-center gap-1.5 shadow-sm">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+              <span>Share via Messenger</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Generated Table -->
-      <div class="border border-sage-600/25 rounded-2xl overflow-hidden bg-white">
-        <div class="max-h-[300px] overflow-y-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead class="bg-sage-50 border-b border-sage-600/20 sticky top-0 z-10 text-[10px] uppercase tracking-wider text-sage-700 font-semibold">
-              <tr>
-                <th class="py-2.5 px-3 w-10 text-center">#</th>
-                <th class="py-2.5 px-3">Guest / Party Name</th>
-                <th class="py-2.5 px-3 w-20 text-center">Seats</th>
-                <th class="py-2.5 px-3 hidden sm:table-cell">Personalized Link</th>
-                <th class="py-2.5 px-3 text-right w-44">Quick Copy</th>
-              </tr>
-            </thead>
-            <tbody id="batchTableBody" class="divide-y divide-sage-600/15">
-              <tr>
-                <td colspan="5" class="py-8 text-center text-sage-600 italic">Paste your guest list above or click "Load Full Entourage Sample" to generate links.</td>
-              </tr>
-            </tbody>
-          </table>
+      <!-- TAB 2: Batch Paste from Excel / Google Sheets -->
+      <div id="builderBatchPane" class="hidden flex-col space-y-3.5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
+          <div class="md:col-span-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+              <label for="batch-paste-input" class="text-[11px] uppercase tracking-wider text-sage-700 font-semibold">Paste Guests (Name &amp; Seats)</label>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="loadSampleSponsors()" class="text-[11px] font-semibold text-gold-600 hover:underline">Load Entourage Sample</button>
+                <span class="text-sage-600/40">•</span>
+                <button type="button" onclick="clearBatchList()" class="text-[11px] font-semibold text-sage-700 hover:underline">Clear</button>
+              </div>
+            </div>
+            <textarea id="batch-paste-input" rows="3" oninput="parseBatchInput()" placeholder="Mrs. Aida M. Palapar&#9;2&#10;Mr. Alberto B. Boiser & Mrs. Carmelita A. Boiser&#9;2" class="w-full px-3.5 py-2 rounded-xl border border-sage-600/30 bg-sage-50/40 text-base sm:text-xs font-mono text-forest-900 focus:outline-none focus:ring-2 focus:ring-sage-600"></textarea>
+          </div>
+          <div class="bg-sage-50/80 border border-sage-600/20 rounded-2xl p-3 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <label for="batch-default-seats" class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Default Seats:</label>
+              <input id="batch-default-seats" type="number" min="1" max="15" value="2" inputmode="numeric" oninput="parseBatchInput()" class="w-16 px-2.5 py-1 rounded-lg border border-sage-600/30 bg-white text-sm sm:text-xs text-forest-900 text-center">
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-center">
+              <div class="bg-white p-2 rounded-xl border border-sage-600/15">
+                <span id="batchStatParties" class="block font-serif text-lg sm:text-xl font-bold text-forest-900">0</span>
+                <span class="text-[10px] uppercase tracking-wider text-sage-700">Parties</span>
+              </div>
+              <div class="bg-white p-2 rounded-xl border border-sage-600/15">
+                <span id="batchStatSeats" class="block font-serif text-lg sm:text-xl font-bold text-gold-600">0</span>
+                <span class="text-[10px] uppercase tracking-wider text-sage-700">Total Seats</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Export Actions Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-sage-100/70 p-2.5 rounded-2xl border border-sage-600/20">
+          <span class="text-[11px] font-medium text-forest-900 px-1">Sync or export generated links:</span>
+          <div class="grid grid-cols-1 sm:flex gap-1.5">
+            <button type="button" id="syncMasterBtn" onclick="syncBatchToMasterList()" class="py-2 px-3 rounded-xl bg-gold-500 hover:bg-gold-600 text-forest-950 text-[11px] uppercase tracking-wider font-semibold transition">Save to Pending Tracker</button>
+            <button type="button" id="copyTsvBtn" onclick="exportBatchTSV()" class="py-2 px-3 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-[11px] uppercase tracking-wider font-semibold transition">Copy for Excel/Sheets</button>
+            <button type="button" onclick="downloadBatchCSV()" class="py-2 px-3 rounded-xl bg-white hover:bg-sage-50 text-forest-900 border border-sage-600/30 text-[11px] uppercase tracking-wider font-semibold transition">Download .CSV</button>
+          </div>
+        </div>
+
+        <!-- Generated Table (Card View on Mobile, Table on Desktop) -->
+        <div class="border border-sage-600/25 rounded-2xl overflow-hidden bg-white">
+          <div class="max-h-[340px] overflow-y-auto">
+            <table class="admin-resp-table w-full text-left border-collapse text-xs">
+              <thead class="bg-sage-50 border-b border-sage-600/20 sticky top-0 z-10 text-[10px] uppercase tracking-wider text-sage-700 font-semibold">
+                <tr>
+                  <th class="py-2.5 px-3 w-10 text-center">#</th>
+                  <th class="py-2.5 px-3">Guest / Party Name</th>
+                  <th class="py-2.5 px-3 w-20 text-center">Seats</th>
+                  <th class="py-2.5 px-3 hidden md:table-cell">Personalized Link</th>
+                  <th class="py-2.5 px-3 text-right w-56">Quick Copy &amp; Share</th>
+                </tr>
+              </thead>
+              <tbody id="batchTableBody" class="divide-y divide-sage-600/15">
+                <tr>
+                  <td colspan="5" class="py-8 text-center text-sage-600 italic">Paste your guest list above or tap "Load Entourage Sample" to generate links.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+
+      <!-- TAB 3: Live RSVPs & Reception Guest Check-In -->
+      <div id="builderRsvpPane" class="hidden flex-col space-y-3.5">
+        <!-- KPI Summary Cards (Compact 2x2 on Mobile, 4-col on Desktop) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+          <div class="p-2.5 sm:p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+            <span id="rsvpStatTotalSeats" class="block font-serif text-xl sm:text-3xl font-bold text-forest-900 leading-tight">0</span>
+            <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Confirmed Guests</span>
+          </div>
+          <div class="p-2.5 sm:p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+            <span id="rsvpStatAttendingParties" class="block font-serif text-xl sm:text-3xl font-bold text-sage-700 leading-tight">0</span>
+            <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Attending Parties</span>
+          </div>
+          <div class="p-2.5 sm:p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+            <span id="rsvpStatDeclinedParties" class="block font-serif text-xl sm:text-3xl font-bold text-red-700/80 leading-tight">0</span>
+            <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Declined Parties</span>
+          </div>
+          <div class="p-2.5 sm:p-3.5 rounded-2xl bg-gold-300/15 border border-gold-400/40 text-center">
+            <span id="rsvpStatCheckedIn" class="block font-serif text-xl sm:text-3xl font-bold text-gold-600 leading-tight">0 / 0</span>
+            <span class="text-[10px] uppercase tracking-wider text-forest-900 font-semibold">Arrived Check-In</span>
+          </div>
+        </div>
+
+        <!-- Mobile-Friendly Controls Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-sage-100/70 p-2.5 sm:p-3 rounded-2xl border border-sage-600/20">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-2 flex-1">
+            <input id="rsvpAdminSearch" type="search" oninput="renderRsvpDashboard()" placeholder="Search guest, companion, or message..." class="w-full sm:flex-1 px-3.5 py-2 rounded-xl border border-sage-600/30 bg-white text-base sm:text-xs text-forest-900 focus:outline-none focus:ring-2 focus:ring-sage-600">
+            <div class="flex items-center gap-2">
+              <select id="rsvpAdminFilter" onchange="renderRsvpDashboard()" aria-label="Filter RSVP rows" class="flex-1 sm:flex-none px-3 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 font-medium">
+                <option value="all">All Responses</option>
+                <option value="attending">Attending Only</option>
+                <option value="declined">Declined Only</option>
+                <option value="checkedin">Checked-In (Arrived)</option>
+                <option value="pending">Attending • Not Arrived</option>
+              </select>
+              <label class="inline-flex items-center gap-1.5 text-[11px] text-forest-800 font-medium cursor-pointer select-none px-1 shrink-0">
+                <input id="rsvpDedupeToggle" type="checkbox" checked onchange="renderRsvpDashboard()" class="rounded border-sage-600/40 text-forest-900 focus:ring-sage-600">
+                <span>Latest</span>
+              </label>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 sm:flex items-center gap-2">
+            <button type="button" id="refreshRsvpBtn" onclick="fetchLiveRsvps()" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 sm:py-2 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-[11px] uppercase tracking-wider font-semibold transition shadow-sm">
+              <svg id="refreshRsvpSpinner" class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span>Refresh Sheet</span>
+            </button>
+            <button type="button" onclick="exportLiveRsvpCSV()" class="px-3.5 py-2.5 sm:py-2 rounded-xl bg-white hover:bg-sage-50 text-forest-900 border border-sage-600/30 text-[11px] uppercase tracking-wider font-semibold transition text-center">Export .CSV</button>
+          </div>
+        </div>
+
+        <!-- Status / Setup Banner -->
+        <div id="rsvpLiveNotice" class="hidden p-3.5 rounded-2xl bg-gold-300/15 border border-gold-500/40 text-xs text-forest-900 space-y-1"></div>
+
+        <!-- Live RSVP & Check-In List (Stacked Mobile Cards on Phones, Table on Desktop) -->
+        <div class="border border-sage-600/25 rounded-2xl overflow-hidden bg-white">
+          <div class="max-h-[380px] overflow-y-auto">
+            <table class="admin-resp-table w-full text-left border-collapse text-xs">
+              <thead class="bg-sage-50 border-b border-sage-600/20 sticky top-0 z-10 text-[10px] uppercase tracking-wider text-sage-700 font-semibold">
+                <tr>
+                  <th class="py-2.5 px-3 w-28 text-center">Check-In</th>
+                  <th class="py-2.5 px-3">Guest / Companions &amp; Message</th>
+                  <th class="py-2.5 px-3 w-24 text-center">Status</th>
+                  <th class="py-2.5 px-3 w-16 text-center">Seats</th>
+                  <th class="py-2.5 px-3 hidden md:table-cell">Message for the Couple</th>
+                  <th class="py-2.5 px-3 w-24 text-right hidden sm:table-cell">Date</th>
+                </tr>
+              </thead>
+              <tbody id="rsvpLiveTableBody" class="divide-y divide-sage-600/15">
+                <tr>
+                  <td colspan="6" class="py-10 text-center text-sage-600 italic">Tap "Refresh Sheet" to load live RSVPs from Google Sheets.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: Pending Invites Tracker (Compares Master Entourage & Guest List vs. Live Google Sheet RSVPs) -->
+      <div id="builderPendingPane" class="hidden flex-col space-y-3.5">
+        <!-- KPI Summary Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+          <div class="p-2.5 sm:p-3.5 rounded-2xl bg-gold-300/15 border border-gold-400/40 text-center">
+            <span id="pendingStatAwaiting" class="block font-serif text-xl sm:text-3xl font-bold text-gold-600 leading-tight">0</span>
+            <span id="pendingStatAwaitingSeats" class="block text-[10px] uppercase tracking-wider text-forest-900 font-semibold">Awaiting (0 Seats)</span>
+          </div>
+          <div class="p-2.5 sm:p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+            <span id="pendingStatRate" class="block font-serif text-xl sm:text-3xl font-bold text-forest-900 leading-tight">0%</span>
+            <span id="pendingStatRespondedCount" class="block text-[10px] uppercase tracking-wider text-sage-700 font-semibold">0 of 0 Replied</span>
+          </div>
+          <div class="p-2.5 sm:p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+            <span id="pendingStatAttending" class="block font-serif text-xl sm:text-3xl font-bold text-sage-700 leading-tight">0</span>
+            <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Confirmed List</span>
+          </div>
+          <div class="p-2.5 sm:p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+            <span id="pendingStatDeclined" class="block font-serif text-xl sm:text-3xl font-bold text-red-700/80 leading-tight">0</span>
+            <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Declined List</span>
+          </div>
+        </div>
+
+        <!-- Mobile-Friendly Controls Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-sage-100/70 p-2.5 sm:p-3 rounded-2xl border border-sage-600/20">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-2 flex-1">
+            <input id="pendingSearchInput" type="search" oninput="renderPendingTracker()" placeholder="Search entourage or guest name..." class="w-full sm:flex-1 px-3.5 py-2 rounded-xl border border-sage-600/30 bg-white text-base sm:text-xs text-forest-900 focus:outline-none focus:ring-2 focus:ring-sage-600">
+            <div class="grid grid-cols-2 sm:flex gap-2">
+              <select id="pendingStatusFilter" onchange="renderPendingTracker()" aria-label="Filter pending guests by status" class="px-2.5 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 font-medium">
+                <option value="pending">Pending Only</option>
+                <option value="all">All Master Guests</option>
+                <option value="responded">Responded</option>
+                <option value="attending">Confirmed</option>
+                <option value="declined">Declined</option>
+              </select>
+              <select id="pendingRoleFilter" onchange="renderPendingTracker()" aria-label="Filter pending guests by group" class="px-2.5 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 font-medium">
+                <option value="all">All Groups</option>
+                <option value="Parents">Parents</option>
+                <option value="Principal Sponsors">Principal Sponsors</option>
+                <option value="Honor Attendants">Honor Attendants</option>
+                <option value="Secondary Sponsors">Secondary Sponsors</option>
+                <option value="Bridal Party">Bridal Party</option>
+                <option value="Custom Guest">Added Guests</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 sm:flex items-center gap-2">
+            <button type="button" onclick="fetchLiveRsvps()" class="px-3.5 py-2.5 sm:py-2 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-[11px] uppercase tracking-wider font-semibold transition shadow-sm text-center">Sync Sheet</button>
+            <button type="button" onclick="exportPendingCSV()" class="px-3.5 py-2.5 sm:py-2 rounded-xl bg-white hover:bg-sage-50 text-forest-900 border border-sage-600/30 text-[11px] uppercase tracking-wider font-semibold transition text-center">Export .CSV</button>
+          </div>
+        </div>
+
+        <!-- Quick Add Custom Guest to Master Tracker Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 bg-sage-50/80 p-2.5 rounded-2xl border border-sage-600/20 text-xs">
+          <span class="font-semibold text-sage-700 uppercase tracking-wider text-[10px] px-1">Add Guest to Tracker:</span>
+          <div class="flex items-center gap-2 flex-1">
+            <input id="customGuestName" type="text" placeholder="e.g., Mr. & Mrs. Roberto Cruz" class="flex-1 min-w-0 px-3 py-2 sm:py-1.5 rounded-lg border border-sage-600/30 bg-white text-base sm:text-xs text-forest-900">
+            <input id="customGuestSeats" type="number" min="1" max="15" value="2" inputmode="numeric" aria-label="Reserved seats" class="w-14 px-2 py-2 sm:py-1.5 rounded-lg border border-sage-600/30 bg-white text-base sm:text-xs text-forest-900 text-center">
+            <button type="button" onclick="addCustomGuestToTracker()" class="px-3 py-2 sm:py-1.5 rounded-lg bg-gold-500 hover:bg-gold-600 text-forest-950 text-[11px] uppercase tracking-wider font-semibold transition shrink-0">+ Add</button>
+          </div>
+          <button type="button" onclick="resetCustomMasterGuests()" class="text-[11px] text-sage-600 hover:text-red-700 underline self-end sm:self-auto px-1" title="Reset to default 41 Entourage parties">Reset Custom</button>
+        </div>
+
+        <!-- Pending Invites Table (Stacked Mobile Cards on Phones, Table on Desktop) -->
+        <div class="border border-sage-600/25 rounded-2xl overflow-hidden bg-white">
+          <div class="max-h-[340px] overflow-y-auto">
+            <table class="admin-resp-table w-full text-left border-collapse text-xs">
+              <thead class="bg-sage-50 border-b border-sage-600/20 sticky top-0 z-10 text-[10px] uppercase tracking-wider text-sage-700 font-semibold">
+                <tr>
+                  <th class="py-2.5 px-3 w-10 text-center">#</th>
+                  <th class="py-2.5 px-3">Invited Party &amp; Group</th>
+                  <th class="py-2.5 px-3 w-20 text-center">Reserved</th>
+                  <th class="py-2.5 px-3 w-32 text-center">RSVP Status</th>
+                  <th class="py-2.5 px-3 text-right w-56">Follow-Up &amp; Share</th>
+                </tr>
+              </thead>
+              <tbody id="pendingTableBody" class="divide-y divide-sage-600/15"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
-
-    <!-- TAB 3: Live RSVPs & Reception Guest Check-In -->
-    <div id="builderRsvpPane" class="hidden flex-col space-y-4 overflow-y-auto pr-1">
-      <!-- KPI Summary Cards -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
-          <span id="rsvpStatTotalSeats" class="block font-serif text-2xl sm:text-3xl font-bold text-forest-900">0</span>
-          <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Confirmed Guests (Seats)</span>
-        </div>
-        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
-          <span id="rsvpStatAttendingParties" class="block font-serif text-2xl sm:text-3xl font-bold text-sage-700">0</span>
-          <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Attending Parties</span>
-        </div>
-        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
-          <span id="rsvpStatDeclinedParties" class="block font-serif text-2xl sm:text-3xl font-bold text-red-700/80">0</span>
-          <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Declined Parties</span>
-        </div>
-        <div class="p-3.5 rounded-2xl bg-gold-300/15 border border-gold-400/40 text-center">
-          <span id="rsvpStatCheckedIn" class="block font-serif text-2xl sm:text-3xl font-bold text-gold-600">0 / 0</span>
-          <span class="text-[10px] uppercase tracking-wider text-forest-900 font-semibold">Arrived &amp; Checked In</span>
-        </div>
-      </div>
-
-      <!-- Controls Bar: Search, Status Filter, Deduplicate, Refresh & Export -->
-      <div class="flex flex-wrap items-center justify-between gap-2.5 bg-sage-100/70 p-3 rounded-2xl border border-sage-600/20">
-        <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[240px]">
-          <input id="rsvpAdminSearch" type="search" oninput="renderRsvpDashboard()" placeholder="Search guest, companion, or message..." class="flex-1 min-w-[180px] px-3.5 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 focus:outline-none focus:ring-2 focus:ring-sage-600">
-          <select id="rsvpAdminFilter" onchange="renderRsvpDashboard()" aria-label="Filter RSVP rows" class="px-3 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 font-medium">
-            <option value="all">All Responses</option>
-            <option value="attending">Attending Only</option>
-            <option value="declined">Declined Only</option>
-            <option value="checkedin">Checked-In (Arrived)</option>
-            <option value="pending">Attending • Not Yet Arrived</option>
-          </select>
-          <label class="inline-flex items-center gap-1.5 text-[11px] text-forest-800 font-medium cursor-pointer select-none px-1">
-            <input id="rsvpDedupeToggle" type="checkbox" checked onchange="renderRsvpDashboard()" class="rounded border-sage-600/40 text-forest-900 focus:ring-sage-600">
-            <span>Latest per guest</span>
-          </label>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button type="button" id="refreshRsvpBtn" onclick="fetchLiveRsvps()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-[11px] uppercase tracking-wider font-semibold transition shadow-sm">
-            <svg id="refreshRsvpSpinner" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            <span>Refresh Sheet</span>
-          </button>
-          <button type="button" onclick="exportLiveRsvpCSV()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-sage-50 text-forest-900 border border-sage-600/30 text-[11px] uppercase tracking-wider font-semibold transition">Export .CSV</button>
-        </div>
-      </div>
-
-      <!-- Status / Setup Banner -->
-      <div id="rsvpLiveNotice" class="hidden p-4 rounded-2xl bg-gold-300/15 border border-gold-500/40 text-xs text-forest-900 space-y-1.5"></div>
-
-      <!-- Live RSVP & Check-In Table -->
-      <div class="border border-sage-600/25 rounded-2xl overflow-hidden bg-white">
-        <div class="max-h-[340px] overflow-y-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead class="bg-sage-50 border-b border-sage-600/20 sticky top-0 z-10 text-[10px] uppercase tracking-wider text-sage-700 font-semibold">
-              <tr>
-                <th class="py-2.5 px-3 w-28 text-center">Check-In</th>
-                <th class="py-2.5 px-3">Guest / Companions &amp; Message</th>
-                <th class="py-2.5 px-3 w-24 text-center">Status</th>
-                <th class="py-2.5 px-3 w-16 text-center">Seats</th>
-                <th class="py-2.5 px-3 hidden md:table-cell">Message for the Couple</th>
-                <th class="py-2.5 px-3 w-28 text-right hidden sm:table-cell">Submitted</th>
-              </tr>
-            </thead>
-            <tbody id="rsvpLiveTableBody" class="divide-y divide-sage-600/15">
-              <tr>
-                <td colspan="6" class="py-10 text-center text-sage-600 italic">Click "Refresh Sheet" to load live RSVPs from Google Sheets.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: Pending Invites Tracker (Compares Master Entourage & Guest List vs. Live Google Sheet RSVPs) -->
-    <div id="builderPendingPane" class="hidden flex-col space-y-4 overflow-y-auto pr-1">
-      <!-- KPI Summary Cards -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="p-3.5 rounded-2xl bg-gold-300/15 border border-gold-400/40 text-center">
-          <span id="pendingStatAwaiting" class="block font-serif text-2xl sm:text-3xl font-bold text-gold-600">0</span>
-          <span id="pendingStatAwaitingSeats" class="block text-[10px] uppercase tracking-wider text-forest-900 font-semibold">Awaiting Response (0 Seats)</span>
-        </div>
-        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
-          <span id="pendingStatRate" class="block font-serif text-2xl sm:text-3xl font-bold text-forest-900">0%</span>
-          <span id="pendingStatRespondedCount" class="block text-[10px] uppercase tracking-wider text-sage-700 font-semibold">0 of 0 Parties Replied</span>
-        </div>
-        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
-          <span id="pendingStatAttending" class="block font-serif text-2xl sm:text-3xl font-bold text-sage-700">0</span>
-          <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Master List Confirmed</span>
-        </div>
-        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
-          <span id="pendingStatDeclined" class="block font-serif text-2xl sm:text-3xl font-bold text-red-700/80">0</span>
-          <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Master List Declined</span>
-        </div>
-      </div>
-
-      <!-- Controls Bar: Search, Role/Status Filter, Add Guest, Refresh & Export -->
-      <div class="flex flex-wrap items-center justify-between gap-2.5 bg-sage-100/70 p-3 rounded-2xl border border-sage-600/20">
-        <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[240px]">
-          <input id="pendingSearchInput" type="search" oninput="renderPendingTracker()" placeholder="Search entourage or guest name..." class="flex-1 min-w-[170px] px-3.5 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 focus:outline-none focus:ring-2 focus:ring-sage-600">
-          <select id="pendingStatusFilter" onchange="renderPendingTracker()" aria-label="Filter pending guests by status" class="px-3 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 font-medium">
-            <option value="pending">Pending Only (Not Yet Replied)</option>
-            <option value="all">All Master List Guests</option>
-            <option value="responded">Responded (Confirmed + Declined)</option>
-            <option value="attending">Confirmed Attending</option>
-            <option value="declined">Regretfully Declined</option>
-          </select>
-          <select id="pendingRoleFilter" onchange="renderPendingTracker()" aria-label="Filter pending guests by group" class="px-3 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 font-medium">
-            <option value="all">All Groups / Roles</option>
-            <option value="Parents">Parents</option>
-            <option value="Principal Sponsors">Principal Sponsors</option>
-            <option value="Honor Attendants">Honor Attendants &amp; Matrons</option>
-            <option value="Secondary Sponsors">Secondary Sponsors</option>
-            <option value="Bridal Party">Bridal Party &amp; Bearers</option>
-            <option value="Custom Guest">Added Guests</option>
-          </select>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button type="button" onclick="fetchLiveRsvps()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-[11px] uppercase tracking-wider font-semibold transition shadow-sm">
-            <span>Sync Sheet</span>
-          </button>
-          <button type="button" onclick="exportPendingCSV()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-sage-50 text-forest-900 border border-sage-600/30 text-[11px] uppercase tracking-wider font-semibold transition">Export Pending .CSV</button>
-        </div>
-      </div>
-
-      <!-- Quick Add Custom Guest to Master Tracker Bar -->
-      <div class="flex flex-wrap items-center gap-2 bg-sage-50/80 px-3.5 py-2.5 rounded-2xl border border-sage-600/20 text-xs">
-        <span class="font-semibold text-sage-700 uppercase tracking-wider text-[10px]">Add Guest to Tracker:</span>
-        <input id="customGuestName" type="text" placeholder="e.g., Mr. & Mrs. Roberto Cruz" class="flex-1 min-w-[160px] px-3 py-1.5 rounded-lg border border-sage-600/30 bg-white text-xs text-forest-900">
-        <input id="customGuestSeats" type="number" min="1" max="15" value="2" aria-label="Reserved seats" class="w-16 px-2.5 py-1.5 rounded-lg border border-sage-600/30 bg-white text-xs text-forest-900 text-center">
-        <button type="button" onclick="addCustomGuestToTracker()" class="px-3 py-1.5 rounded-lg bg-gold-500 hover:bg-gold-600 text-forest-950 text-[11px] uppercase tracking-wider font-semibold transition">+ Add Party</button>
-        <button type="button" onclick="resetCustomMasterGuests()" class="text-[11px] text-sage-600 hover:text-red-700 underline ml-auto" title="Reset to default 41 Entourage parties">Reset Custom</button>
-      </div>
-
-      <!-- Pending Invites Table -->
-      <div class="border border-sage-600/25 rounded-2xl overflow-hidden bg-white">
-        <div class="max-h-[320px] overflow-y-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead class="bg-sage-50 border-b border-sage-600/20 sticky top-0 z-10 text-[10px] uppercase tracking-wider text-sage-700 font-semibold">
-              <tr>
-                <th class="py-2.5 px-3 w-10 text-center">#</th>
-                <th class="py-2.5 px-3">Invited Party &amp; Group</th>
-                <th class="py-2.5 px-3 w-20 text-center">Reserved</th>
-                <th class="py-2.5 px-3 w-32 text-center">RSVP Status</th>
-                <th class="py-2.5 px-3 text-right w-48">Follow-Up Actions</th>
-              </tr>
-            </thead>
-            <tbody id="pendingTableBody" class="divide-y divide-sage-600/15"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
@@ -1389,12 +1414,14 @@ function requestAdminOpen(defaultMode = 'rsvps') {
   adminPinInput.value = '';
   pinLockModal.classList.remove('hidden');
   pinLockModal.classList.add('flex');
+  document.body.classList.add('modal-open');
   setTimeout(() => adminPinInput.focus(), 50);
 }
 
 function closePinModal() {
   pinLockModal.classList.remove('flex');
   pinLockModal.classList.add('hidden');
+  document.body.classList.remove('modal-open');
   adminPinInput.value = '';
   pinErrorMsg.classList.add('hidden');
 }
@@ -1459,6 +1486,53 @@ function buildFollowUpMessage(name, seats, url) {
   return `Warmest greetings, ${gName}! ✨\n\nWe are finalizing our reception seating chart for our wedding on December 30, 2026 at Tagbilaran Cathedral & Bohol Tropics Resort, where we have reserved ${gSeats} ${gSeats === 1 ? 'seat' : 'seats'} in your honor.\n\nWhenever you have a moment, kindly confirm your attendance on or before November 30, 2026 using your personalized link below:\n${url}\n\nWe would be so honored to celebrate with you!\nWith love,\nMaribeth & Melbhert`;
 }
 
+/* ---------- Mobile Web Share API (Messenger / Native Share) + Clipboard Fallback ---------- */
+async function shareGuestInvite(name, seats, url, customText, btnEl) {
+  const gName = name || 'Our Dear Guest';
+  const shareText = customText || buildGuestMessage(name, seats, url);
+  const shareData = {
+    title: `Wedding Invitation for ${gName} • Maribeth & Melbhert`,
+    text: shareText,
+    url: url
+  };
+
+  // Pre-copy full message to clipboard so if Messenger only grabs the URL preview, the couple can still paste the personal note
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(shareText).catch(() => {});
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+      if (btnEl) {
+        const origHtml = btnEl.innerHTML;
+        btnEl.textContent = 'Shared ✓';
+        setTimeout(() => { btnEl.innerHTML = origHtml; }, 1800);
+      }
+      return;
+    } catch (err) {
+      if (err && err.name === 'AbortError') return; // User dismissed native share sheet
+    }
+  }
+
+  // Fallback for desktop browsers without Web Share API
+  if (navigator.clipboard && btnEl) {
+    const origHtml = btnEl.innerHTML;
+    navigator.clipboard.writeText(shareText).then(() => {
+      btnEl.textContent = 'Copied Invite ✓';
+      setTimeout(() => { btnEl.innerHTML = origHtml; }, 1800);
+    });
+  }
+}
+
+function shareSingleGuestInvite(btnEl) {
+  updateGeneratedLink();
+  const url = document.getElementById('gen-result-url').value;
+  const gName = document.getElementById('gen-guest-name').value.trim();
+  const gSeats = parseInt(document.getElementById('gen-guest-seats').value, 10) || 1;
+  shareGuestInvite(gName, gSeats, url, null, btnEl);
+}
+
 function switchBuilderTab(mode) {
   const singlePane = document.getElementById('builderSinglePane');
   const batchPane = document.getElementById('builderBatchPane');
@@ -1473,11 +1547,16 @@ function switchBuilderTab(mode) {
   pendingPane.classList.toggle('hidden', mode !== 'pending');
   pendingPane.classList.toggle('flex', mode === 'pending');
 
-  const tabClass = active => 'px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition ' + (active ? 'bg-forest-900 text-champagne shadow-sm' : 'text-forest-800 hover:text-forest-900');
+  const tabClass = active => 'px-2.5 sm:px-3.5 py-2 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition flex items-center justify-center gap-1.5 ' + (active ? 'bg-forest-900 text-champagne shadow-sm' : 'text-forest-800 hover:text-forest-900');
   document.getElementById('tabSingleBtn').className = tabClass(mode === 'single');
   document.getElementById('tabBatchBtn').className = tabClass(mode === 'batch');
-  document.getElementById('tabRsvpBtn').className = tabClass(mode === 'rsvps') + ' flex items-center gap-1.5';
-  document.getElementById('tabPendingBtn').className = tabClass(mode === 'pending') + ' flex items-center gap-1.5';
+  document.getElementById('tabRsvpBtn').className = tabClass(mode === 'rsvps');
+  document.getElementById('tabPendingBtn').className = tabClass(mode === 'pending');
+
+  const badgeEl = document.getElementById('pendingTabBadge');
+  if (badgeEl) {
+    badgeEl.className = 'px-1.5 py-0.2 rounded-full text-[10px] font-bold ' + (mode === 'pending' ? 'bg-gold-500 text-forest-950' : 'bg-gold-500/25 text-forest-900');
+  }
 
   if ((mode === 'rsvps' || mode === 'pending') && !liveRsvpLoadedOnce) {
     fetchLiveRsvps();
@@ -1489,6 +1568,7 @@ function switchBuilderTab(mode) {
 function openLinkGenerator(defaultMode) {
   linkGenModal.classList.remove('hidden');
   linkGenModal.classList.add('flex');
+  document.body.classList.add('modal-open');
   if (defaultMode) switchBuilderTab(defaultMode);
   updateGeneratedLink();
   renderPendingTracker();
@@ -1497,6 +1577,7 @@ function openLinkGenerator(defaultMode) {
 function closeLinkGenerator() {
   linkGenModal.classList.remove('flex');
   linkGenModal.classList.add('hidden');
+  document.body.classList.remove('modal-open');
 }
 
 function updateGeneratedLink() {
@@ -1576,7 +1657,7 @@ function renderBatchTable() {
   tbody.innerHTML = '';
   if (!batchParsedRows.length) {
     const tr = document.createElement('tr');
-    tr.innerHTML = '<td colspan="5" class="py-8 text-center text-sage-600 italic">Paste your guest list above or click "Load Full Entourage Sample" to generate links.</td>';
+    tr.innerHTML = '<td colspan="5" class="py-8 text-center text-sage-600 italic">Paste your guest list above or tap "Load Entourage Sample" to generate links.</td>';
     tbody.appendChild(tr);
     return;
   }
@@ -1586,22 +1667,27 @@ function renderBatchTable() {
     tr.className = 'hover:bg-sage-50/70 transition';
 
     const tdNum = document.createElement('td');
-    tdNum.className = 'py-2.5 px-3 text-center text-sage-600 font-medium';
+    tdNum.className = 'hidden sm:table-cell py-2.5 px-3 text-center text-sage-600 font-medium';
     tdNum.textContent = String(idx + 1);
 
     const tdName = document.createElement('td');
-    tdName.className = 'py-2.5 px-3 font-medium text-forest-900';
-    tdName.textContent = row.name;
+    tdName.className = 'py-2.5 px-3 font-semibold text-forest-900';
+    tdName.innerHTML = `
+      <div class="flex items-center justify-between gap-2 sm:block">
+        <span><span class="sm:hidden text-sage-600 font-normal mr-1">#${idx + 1}</span>${escapeHtml(row.name)}</span>
+        <span class="sm:hidden inline-block px-2 py-0.5 rounded-full bg-sage-100 text-forest-900 font-semibold text-[10px] shrink-0">${row.seats} ${row.seats === 1 ? 'Seat' : 'Seats'}</span>
+      </div>
+    `;
 
     const tdSeats = document.createElement('td');
-    tdSeats.className = 'py-2.5 px-3 text-center';
+    tdSeats.className = 'hidden sm:table-cell py-2.5 px-3 text-center';
     const seatBadge = document.createElement('span');
     seatBadge.className = 'inline-block px-2 py-0.5 rounded-full bg-sage-100 text-forest-900 font-semibold text-[11px]';
     seatBadge.textContent = String(row.seats);
     tdSeats.appendChild(seatBadge);
 
     const tdUrl = document.createElement('td');
-    tdUrl.className = 'py-2.5 px-3 hidden sm:table-cell max-w-[220px]';
+    tdUrl.className = 'py-2.5 px-3 hidden md:table-cell max-w-[220px]';
     const urlInput = document.createElement('input');
     urlInput.type = 'text';
     urlInput.readOnly = true;
@@ -1610,21 +1696,31 @@ function renderBatchTable() {
     tdUrl.appendChild(urlInput);
 
     const tdActions = document.createElement('td');
-    tdActions.className = 'py-2.5 px-3 text-right whitespace-nowrap space-x-1.5';
+    tdActions.className = 'py-2.5 px-3 sm:text-right whitespace-nowrap';
+    const actionWrap = document.createElement('div');
+    actionWrap.className = 'grid grid-cols-3 sm:inline-flex gap-1.5 pt-1 sm:pt-0';
 
     const btnLink = document.createElement('button');
     btnLink.type = 'button';
-    btnLink.className = 'px-2.5 py-1 rounded-lg bg-forest-900 hover:bg-forest-800 text-champagne text-[10px] uppercase tracking-wider font-semibold transition';
+    btnLink.className = 'px-2.5 py-2 sm:py-1 rounded-lg bg-forest-900 hover:bg-forest-800 text-champagne text-[10px] uppercase tracking-wider font-semibold transition text-center';
     btnLink.textContent = 'Copy Link';
     btnLink.onclick = () => copyBatchItem(idx, false, btnLink);
 
     const btnMsg = document.createElement('button');
     btnMsg.type = 'button';
-    btnMsg.className = 'px-2.5 py-1 rounded-lg bg-gold-500 hover:bg-gold-600 text-forest-950 text-[10px] uppercase tracking-wider font-semibold transition';
-    btnMsg.textContent = 'Copy Msg';
+    btnMsg.className = 'px-2.5 py-2 sm:py-1 rounded-lg bg-gold-500 hover:bg-gold-600 text-forest-950 text-[10px] uppercase tracking-wider font-semibold transition text-center';
+    btnMsg.textContent = 'Copy Invite';
     btnMsg.onclick = () => copyBatchItem(idx, true, btnMsg);
 
-    tdActions.append(btnLink, btnMsg);
+    const btnShare = document.createElement('button');
+    btnShare.type = 'button';
+    btnShare.className = 'px-2.5 py-2 sm:py-1 rounded-lg bg-sage-700 hover:bg-forest-800 text-white text-[10px] uppercase tracking-wider font-semibold transition text-center';
+    btnShare.textContent = 'Share ↗';
+    btnShare.title = 'Share personalized invitation via Messenger or other apps';
+    btnShare.onclick = () => shareGuestInvite(row.name, row.seats, row.url, row.message, btnShare);
+
+    actionWrap.append(btnLink, btnMsg, btnShare);
+    tdActions.appendChild(actionWrap);
     tr.append(tdNum, tdName, tdSeats, tdUrl, tdActions);
     tbody.appendChild(tr);
   });
@@ -1657,7 +1753,7 @@ function exportBatchTSV() {
   const btn = document.getElementById('copyTsvBtn');
   const orig = btn.textContent;
   navigator.clipboard.writeText([header, ...lines].join('\r\n')).then(() => {
-    btn.textContent = 'Copied Table! Paste in Excel/Sheets ✓';
+    btn.textContent = 'Copied Table! ✓';
     setTimeout(() => { btn.textContent = orig; }, 2200);
   });
 }
@@ -1744,7 +1840,7 @@ function syncBatchToMasterList() {
   saveCustomMasterGuests(custom);
   const btn = document.getElementById('syncMasterBtn');
   const orig = btn.textContent;
-  btn.textContent = 'Synced to Pending Tracker! ✓';
+  btn.textContent = 'Saved to Pending! ✓';
   setTimeout(() => { btn.textContent = orig; }, 2000);
   renderPendingTracker();
 }
@@ -1754,7 +1850,6 @@ function resetCustomMasterGuests() {
   renderPendingTracker();
 }
 
-// Clean honorifics, punctuation, and single-letter middle initials for fuzzy matching
 function cleanPersonName(str) {
   return String(str || '')
     .toLowerCase()
@@ -1766,12 +1861,10 @@ function cleanPersonName(str) {
     .trim();
 }
 
-// Match an invited party (e.g. "Mr. Alex Y. Ranoco & Mrs. Zotica U. Ranoco") against live Google Sheet RSVP rows
 function findMatchingRsvpForMasterItem(masterItem, rsvpRows) {
   const masterRawLower = masterItem.name.trim().toLowerCase().replace(/\s+/g, ' ');
   const masterCleanFull = cleanPersonName(masterItem.name);
 
-  // Split couple/pair names on "&" or "and" so if either spouse RSVPs under their own name, it matches
   const subParts = masterItem.name
     .split(/\s+(?:&|and)\s+/i)
     .map(cleanPersonName)
@@ -1781,7 +1874,6 @@ function findMatchingRsvpForMasterItem(masterItem, rsvpRows) {
     const rNameLower = r.name.trim().toLowerCase().replace(/\s+/g, ' ');
     const rInvitedLower = (r.invitedParty || '').trim().toLowerCase().replace(/\s+/g, ' ');
 
-    // 1. Exact raw match on Name or Invited_Party parameter
     if (rNameLower === masterRawLower || (rInvitedLower && rInvitedLower === masterRawLower)) {
       return r;
     }
@@ -1790,12 +1882,10 @@ function findMatchingRsvpForMasterItem(masterItem, rsvpRows) {
     const rInvitedClean = cleanPersonName(r.invitedParty || '');
     const rCompClean = cleanPersonName(r.companions || '');
 
-    // 2. Cleaned full name match
     if (masterCleanFull && (rClean === masterCleanFull || rInvitedClean === masterCleanFull)) {
       return r;
     }
 
-    // 3. Substring / individual spouse match (e.g. "alex ranoco" inside "mr alex ranoco")
     for (const part of subParts) {
       const tokens = part.split(' ').filter(Boolean);
       if (tokens.length >= 2) {
@@ -1853,11 +1943,11 @@ function renderPendingTracker() {
       state,
       match,
       url,
+      inviteMsg: buildGuestMessage(item.name, item.seats, url),
       followUpMsg: buildFollowUpMessage(item.name, item.seats, url)
     };
   });
 
-  // Update KPI badges
   const totalParties = masterList.length || 1;
   const ratePct = Math.round((respondedCount / totalParties) * 100);
 
@@ -1865,13 +1955,12 @@ function renderPendingTracker() {
   if (badgeEl) badgeEl.textContent = String(pendingCount);
 
   document.getElementById('pendingStatAwaiting').textContent = String(pendingCount);
-  document.getElementById('pendingStatAwaitingSeats').textContent = `Awaiting Response (${pendingSeats} Seats)`;
+  document.getElementById('pendingStatAwaitingSeats').textContent = `Awaiting (${pendingSeats} Seats)`;
   document.getElementById('pendingStatRate').textContent = `${ratePct}%`;
-  document.getElementById('pendingStatRespondedCount').textContent = `${respondedCount} of ${masterList.length} Parties Replied`;
+  document.getElementById('pendingStatRespondedCount').textContent = `${respondedCount} of ${masterList.length} Replied`;
   document.getElementById('pendingStatAttending').textContent = `${attendingCount} (${attendingSeats} Seats)`;
   document.getElementById('pendingStatDeclined').textContent = String(declinedCount);
 
-  // Filter rows
   const filtered = evaluated.filter(row => {
     if (statusFilter === 'pending' && row.state !== 'pending') return false;
     if (statusFilter === 'responded' && row.state === 'pending') return false;
@@ -1898,44 +1987,53 @@ function renderPendingTracker() {
     tr.className = 'hover:bg-sage-50/80 transition';
 
     const tdNum = document.createElement('td');
-    tdNum.className = 'py-2.5 px-3 text-center text-sage-600 font-medium align-top';
+    tdNum.className = 'hidden sm:table-cell py-2.5 px-3 text-center text-sage-600 font-medium align-top';
     tdNum.textContent = String(idx + 1);
+
+    let badgeClass = 'bg-gold-300/25 text-forest-900 border border-gold-500/40';
+    let badgeText = 'Awaiting RSVP';
+    if (row.state === 'attending') {
+      badgeClass = 'bg-sage-100 text-forest-900';
+      badgeText = `Confirmed (${row.match.seats})`;
+    } else if (row.state === 'declined') {
+      badgeClass = 'bg-red-50 text-red-700';
+      badgeText = 'Declined';
+    }
 
     const tdName = document.createElement('td');
     tdName.className = 'py-2.5 px-3 align-top';
-    const nameP = document.createElement('p');
-    nameP.className = 'font-semibold text-forest-900';
-    nameP.textContent = row.name;
-    const roleSpan = document.createElement('span');
-    roleSpan.className = 'inline-block mt-0.5 text-[10px] uppercase tracking-wider text-sage-700 bg-sage-50 border border-sage-600/20 px-2 py-0.2 rounded-full';
-    roleSpan.textContent = row.role;
-    tdName.append(nameP, roleSpan);
+    tdName.innerHTML = `
+      <div class="flex items-start justify-between gap-2">
+        <div>
+          <p class="font-semibold text-forest-900"><span class="sm:hidden text-sage-600 font-normal mr-1">#${idx + 1}</span>${escapeHtml(row.name)}</p>
+          <div class="flex flex-wrap items-center gap-1.5 mt-1">
+            <span class="inline-block text-[10px] uppercase tracking-wider text-sage-700 bg-sage-50 border border-sage-600/20 px-2 py-0.2 rounded-full">${escapeHtml(row.role)}</span>
+            <span class="sm:hidden inline-block text-[10px] font-semibold text-forest-900 bg-sage-100/80 px-2 py-0.2 rounded-full">${row.seats} ${row.seats === 1 ? 'Seat' : 'Seats'}</span>
+          </div>
+        </div>
+        <span class="sm:hidden inline-block px-2.5 py-0.5 rounded-full font-semibold text-[10px] uppercase tracking-wider shrink-0 ${badgeClass}">${badgeText}</span>
+      </div>
+    `;
 
     const tdSeats = document.createElement('td');
-    tdSeats.className = 'py-2.5 px-3 text-center font-semibold text-forest-900 align-top';
+    tdSeats.className = 'hidden sm:table-cell py-2.5 px-3 text-center font-semibold text-forest-900 align-top';
     tdSeats.textContent = String(row.seats);
 
     const tdStatus = document.createElement('td');
-    tdStatus.className = 'py-2.5 px-3 text-center align-top';
+    tdStatus.className = 'hidden sm:table-cell py-2.5 px-3 text-center align-top';
     const badge = document.createElement('span');
-    if (row.state === 'pending') {
-      badge.className = 'inline-block px-2.5 py-0.5 rounded-full bg-gold-300/25 text-forest-900 border border-gold-500/40 font-semibold text-[10px] uppercase tracking-wider';
-      badge.textContent = 'Awaiting RSVP';
-    } else if (row.state === 'attending') {
-      badge.className = 'inline-block px-2.5 py-0.5 rounded-full bg-sage-100 text-forest-900 font-semibold text-[10px] uppercase tracking-wider';
-      badge.textContent = `Confirmed (${row.match.seats})`;
-    } else {
-      badge.className = 'inline-block px-2.5 py-0.5 rounded-full bg-red-50 text-red-700 font-semibold text-[10px] uppercase tracking-wider';
-      badge.textContent = 'Declined';
-    }
+    badge.className = `inline-block px-2.5 py-0.5 rounded-full font-semibold text-[10px] uppercase tracking-wider ${badgeClass}`;
+    badge.textContent = badgeText;
     tdStatus.appendChild(badge);
 
     const tdActions = document.createElement('td');
-    tdActions.className = 'py-2.5 px-3 text-right whitespace-nowrap space-x-1.5 align-top';
+    tdActions.className = 'py-2.5 px-3 sm:text-right whitespace-nowrap align-top';
+    const actionWrap = document.createElement('div');
+    actionWrap.className = 'grid grid-cols-3 sm:inline-flex gap-1.5 pt-1.5 sm:pt-0';
 
     const btnLink = document.createElement('button');
     btnLink.type = 'button';
-    btnLink.className = 'px-2.5 py-1 rounded-lg bg-forest-900 hover:bg-forest-800 text-champagne text-[10px] uppercase tracking-wider font-semibold transition';
+    btnLink.className = 'px-2.5 py-2 sm:py-1 rounded-lg bg-forest-900 hover:bg-forest-800 text-champagne text-[10px] uppercase tracking-wider font-semibold transition text-center';
     btnLink.textContent = 'Copy Link';
     btnLink.onclick = () => {
       if (!navigator.clipboard) return;
@@ -1948,7 +2046,7 @@ function renderPendingTracker() {
 
     const btnRemind = document.createElement('button');
     btnRemind.type = 'button';
-    btnRemind.className = 'px-2.5 py-1 rounded-lg bg-gold-500 hover:bg-gold-600 text-forest-950 text-[10px] uppercase tracking-wider font-semibold transition';
+    btnRemind.className = 'px-2.5 py-2 sm:py-1 rounded-lg bg-gold-500 hover:bg-gold-600 text-forest-950 text-[10px] uppercase tracking-wider font-semibold transition text-center';
     btnRemind.textContent = 'Copy Reminder';
     btnRemind.onclick = () => {
       if (!navigator.clipboard) return;
@@ -1959,7 +2057,15 @@ function renderPendingTracker() {
       });
     };
 
-    tdActions.append(btnLink, btnRemind);
+    const btnShare = document.createElement('button');
+    btnShare.type = 'button';
+    btnShare.className = 'px-2.5 py-2 sm:py-1 rounded-lg bg-sage-700 hover:bg-forest-800 text-white text-[10px] uppercase tracking-wider font-semibold transition text-center';
+    btnShare.textContent = 'Share ↗';
+    btnShare.title = 'Share personalized reminder via Messenger or other apps';
+    btnShare.onclick = () => shareGuestInvite(row.name, row.seats, row.url, row.state === 'pending' ? row.followUpMsg : row.inviteMsg, btnShare);
+
+    actionWrap.append(btnLink, btnRemind, btnShare);
+    tdActions.appendChild(actionWrap);
     tr.append(tdNum, tdName, tdSeats, tdStatus, tdActions);
     tbody.appendChild(tr);
   });
@@ -2280,7 +2386,7 @@ function renderRsvpDashboard() {
     tr.className = 'transition ' + (isChecked ? 'bg-gold-300/15 hover:bg-gold-300/25' : 'hover:bg-sage-50/80');
 
     const tdCheck = document.createElement('td');
-    tdCheck.className = 'py-2.5 px-3 text-center align-top';
+    tdCheck.className = 'hidden sm:table-cell py-2.5 px-3 text-center align-top';
     if (r.isAttending) {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -2294,36 +2400,68 @@ function renderRsvpDashboard() {
       tdCheck.innerHTML = '<span class="text-[10px] text-sage-600">—</span>';
     }
 
+    const statusBadgeClass = r.isAttending
+      ? 'bg-sage-100 text-forest-900'
+      : 'bg-red-50 text-red-700';
+
     const tdName = document.createElement('td');
     tdName.className = 'py-2.5 px-3 align-top';
+
+    const topRow = document.createElement('div');
+    topRow.className = 'flex items-start justify-between gap-2';
+
+    const nameBlock = document.createElement('div');
     const nameEl = document.createElement('p');
-    nameEl.className = 'font-semibold text-forest-900';
+    nameEl.className = 'font-semibold text-forest-900 text-sm sm:text-xs';
     nameEl.textContent = r.name;
-    tdName.appendChild(nameEl);
+    nameBlock.appendChild(nameEl);
+
     if (r.companions) {
       const compEl = document.createElement('p');
       compEl.className = 'text-[11px] text-sage-700 mt-0.5';
       compEl.textContent = '+ ' + r.companions;
-      tdName.appendChild(compEl);
+      nameBlock.appendChild(compEl);
     }
+
+    const mobileBadges = document.createElement('div');
+    mobileBadges.className = 'sm:hidden flex items-center gap-1 shrink-0';
+    mobileBadges.innerHTML = `
+      <span class="inline-block px-2 py-0.5 rounded-full font-semibold text-[10px] uppercase tracking-wider ${statusBadgeClass}">${r.isAttending ? `${r.seats} ${r.seats === 1 ? 'Seat' : 'Seats'}` : 'Declined'}</span>
+    `;
+
+    topRow.append(nameBlock, mobileBadges);
+    tdName.appendChild(topRow);
+
     if (r.message) {
       const mobileMsgEl = document.createElement('p');
-      mobileMsgEl.className = 'md:hidden text-[11px] italic text-forest-800/85 bg-sage-50/90 border border-gold-400/30 rounded-lg px-2.5 py-1 mt-1.5 break-words';
+      mobileMsgEl.className = 'md:hidden text-[11px] italic text-forest-800/85 bg-sage-50/90 border border-gold-400/30 rounded-lg px-2.5 py-1.5 mt-1.5 break-words';
       mobileMsgEl.textContent = '“' + r.message + '”';
       tdName.appendChild(mobileMsgEl);
     }
 
+    if (r.isAttending) {
+      const mobActionWrap = document.createElement('div');
+      mobActionWrap.className = 'sm:hidden pt-2';
+      const mobBtn = document.createElement('button');
+      mobBtn.type = 'button';
+      mobBtn.className = isChecked
+        ? 'w-full py-2 rounded-xl bg-forest-900 text-gold-300 text-[11px] uppercase tracking-wider font-semibold shadow-sm transition'
+        : 'w-full py-2 rounded-xl bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/35 text-[11px] uppercase tracking-wider font-semibold transition';
+      mobBtn.textContent = isChecked ? 'Arrived & Checked In ✓ (Tap to Undo)' : 'Tap to Check In Guest at Venue';
+      mobBtn.onclick = () => toggleGuestCheckin(r.id, r.name);
+      mobActionWrap.appendChild(mobBtn);
+      tdName.appendChild(mobActionWrap);
+    }
+
     const tdStatus = document.createElement('td');
-    tdStatus.className = 'py-2.5 px-3 text-center align-top';
+    tdStatus.className = 'hidden sm:table-cell py-2.5 px-3 text-center align-top';
     const statusBadge = document.createElement('span');
-    statusBadge.className = r.isAttending
-      ? 'inline-block px-2.5 py-0.5 rounded-full bg-sage-100 text-forest-900 font-semibold text-[10px] uppercase tracking-wider'
-      : 'inline-block px-2.5 py-0.5 rounded-full bg-red-50 text-red-700 font-semibold text-[10px] uppercase tracking-wider';
+    statusBadge.className = `inline-block px-2.5 py-0.5 rounded-full font-semibold text-[10px] uppercase tracking-wider ${statusBadgeClass}`;
     statusBadge.textContent = r.isAttending ? 'Attending' : 'Declined';
     tdStatus.appendChild(statusBadge);
 
     const tdSeats = document.createElement('td');
-    tdSeats.className = 'py-2.5 px-3 text-center font-semibold text-forest-900 align-top';
+    tdSeats.className = 'hidden sm:table-cell py-2.5 px-3 text-center font-semibold text-forest-900 align-top';
     tdSeats.textContent = String(r.seats);
 
     const tdMsg = document.createElement('td');
