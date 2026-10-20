@@ -794,16 +794,20 @@
 
     <div class="shrink-0 pr-24">
       <span class="text-[11px] uppercase tracking-[0.25em] text-gold-600 font-semibold block">Couple's Command Center • Maribeth &amp; Melbhert</span>
-      <h3 id="linkGenTitle" class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Invite Builder &amp; Live RSVP Check-In</h3>
-      <p class="text-xs text-forest-800/75 mt-1">Generate personalized guest links or track real-time Google Sheets RSVPs, messages, and reception arrivals.</p>
+      <h3 id="linkGenTitle" class="font-serif text-2xl sm:text-3xl text-forest-900 font-semibold">Invite Builder, RSVPs &amp; Pending Tracker</h3>
+      <p class="text-xs text-forest-800/75 mt-1">Generate personalized guest links, track live Google Sheets RSVPs, and see who hasn't responded yet.</p>
 
-      <!-- Mode Switch Tabs -->
+      <!-- Mode Switch Tabs (4 Tabs) -->
       <div class="inline-flex flex-wrap rounded-xl bg-sage-50 p-1 border border-sage-600/20 mt-4 gap-1">
         <button type="button" id="tabSingleBtn" onclick="switchBuilderTab('single')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition bg-forest-900 text-champagne shadow-sm">Single Guest</button>
         <button type="button" id="tabBatchBtn" onclick="switchBuilderTab('batch')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900">Batch Paste (Excel / Sheets)</button>
         <button type="button" id="tabRsvpBtn" onclick="switchBuilderTab('rsvps')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900 flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-gold-500 animate-pulse"></span>
           <span>Live RSVPs &amp; Check-In</span>
+        </button>
+        <button type="button" id="tabPendingBtn" onclick="switchBuilderTab('pending')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900 flex items-center gap-1.5">
+          <span>Pending Invites</span>
+          <span id="pendingTabBadge" class="px-1.5 py-0.2 rounded-full bg-gold-500/25 text-forest-900 text-[10px] font-bold">41</span>
         </button>
       </div>
     </div>
@@ -864,8 +868,9 @@
 
       <!-- Export Actions Bar -->
       <div class="flex flex-wrap items-center justify-between gap-2 bg-sage-100/70 px-4 py-2.5 rounded-2xl border border-sage-600/20">
-        <span class="text-xs font-medium text-forest-900">Export or copy individual guest invitations below:</span>
+        <span class="text-xs font-medium text-forest-900">Export or sync pasted guests with your Pending Tracker:</span>
         <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="syncMasterBtn" onclick="syncBatchToMasterList()" class="px-3.5 py-1.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-forest-950 text-[11px] uppercase tracking-wider font-semibold transition">Save to Master Pending List</button>
           <button type="button" id="copyTsvBtn" onclick="exportBatchTSV()" class="px-3.5 py-1.5 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-[11px] uppercase tracking-wider font-semibold transition">Copy Table for Excel / Sheets</button>
           <button type="button" onclick="downloadBatchCSV()" class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-sage-50 text-forest-900 border border-sage-600/30 text-[11px] uppercase tracking-wider font-semibold transition">Download .CSV</button>
         </div>
@@ -968,6 +973,85 @@
       </div>
     </div>
 
+    <!-- TAB 4: Pending Invites Tracker (Compares Master Entourage & Guest List vs. Live Google Sheet RSVPs) -->
+    <div id="builderPendingPane" class="hidden flex-col space-y-4 overflow-y-auto pr-1">
+      <!-- KPI Summary Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="p-3.5 rounded-2xl bg-gold-300/15 border border-gold-400/40 text-center">
+          <span id="pendingStatAwaiting" class="block font-serif text-2xl sm:text-3xl font-bold text-gold-600">0</span>
+          <span id="pendingStatAwaitingSeats" class="block text-[10px] uppercase tracking-wider text-forest-900 font-semibold">Awaiting Response (0 Seats)</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+          <span id="pendingStatRate" class="block font-serif text-2xl sm:text-3xl font-bold text-forest-900">0%</span>
+          <span id="pendingStatRespondedCount" class="block text-[10px] uppercase tracking-wider text-sage-700 font-semibold">0 of 0 Parties Replied</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+          <span id="pendingStatAttending" class="block font-serif text-2xl sm:text-3xl font-bold text-sage-700">0</span>
+          <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Master List Confirmed</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-sage-50 border border-sage-600/20 text-center">
+          <span id="pendingStatDeclined" class="block font-serif text-2xl sm:text-3xl font-bold text-red-700/80">0</span>
+          <span class="text-[10px] uppercase tracking-wider text-sage-700 font-semibold">Master List Declined</span>
+        </div>
+      </div>
+
+      <!-- Controls Bar: Search, Role/Status Filter, Add Guest, Refresh & Export -->
+      <div class="flex flex-wrap items-center justify-between gap-2.5 bg-sage-100/70 p-3 rounded-2xl border border-sage-600/20">
+        <div class="flex flex-wrap items-center gap-2 flex-1 min-w-[240px]">
+          <input id="pendingSearchInput" type="search" oninput="renderPendingTracker()" placeholder="Search entourage or guest name..." class="flex-1 min-w-[170px] px-3.5 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 focus:outline-none focus:ring-2 focus:ring-sage-600">
+          <select id="pendingStatusFilter" onchange="renderPendingTracker()" aria-label="Filter pending guests by status" class="px-3 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 font-medium">
+            <option value="pending">Pending Only (Not Yet Replied)</option>
+            <option value="all">All Master List Guests</option>
+            <option value="responded">Responded (Confirmed + Declined)</option>
+            <option value="attending">Confirmed Attending</option>
+            <option value="declined">Regretfully Declined</option>
+          </select>
+          <select id="pendingRoleFilter" onchange="renderPendingTracker()" aria-label="Filter pending guests by group" class="px-3 py-2 rounded-xl border border-sage-600/30 bg-white text-xs text-forest-900 font-medium">
+            <option value="all">All Groups / Roles</option>
+            <option value="Parents">Parents</option>
+            <option value="Principal Sponsors">Principal Sponsors</option>
+            <option value="Honor Attendants">Honor Attendants &amp; Matrons</option>
+            <option value="Secondary Sponsors">Secondary Sponsors</option>
+            <option value="Bridal Party">Bridal Party &amp; Bearers</option>
+            <option value="Custom Guest">Added Guests</option>
+          </select>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" onclick="fetchLiveRsvps()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-[11px] uppercase tracking-wider font-semibold transition shadow-sm">
+            <span>Sync Sheet</span>
+          </button>
+          <button type="button" onclick="exportPendingCSV()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-sage-50 text-forest-900 border border-sage-600/30 text-[11px] uppercase tracking-wider font-semibold transition">Export Pending .CSV</button>
+        </div>
+      </div>
+
+      <!-- Quick Add Custom Guest to Master Tracker Bar -->
+      <div class="flex flex-wrap items-center gap-2 bg-sage-50/80 px-3.5 py-2.5 rounded-2xl border border-sage-600/20 text-xs">
+        <span class="font-semibold text-sage-700 uppercase tracking-wider text-[10px]">Add Guest to Tracker:</span>
+        <input id="customGuestName" type="text" placeholder="e.g., Mr. & Mrs. Roberto Cruz" class="flex-1 min-w-[160px] px-3 py-1.5 rounded-lg border border-sage-600/30 bg-white text-xs text-forest-900">
+        <input id="customGuestSeats" type="number" min="1" max="15" value="2" aria-label="Reserved seats" class="w-16 px-2.5 py-1.5 rounded-lg border border-sage-600/30 bg-white text-xs text-forest-900 text-center">
+        <button type="button" onclick="addCustomGuestToTracker()" class="px-3 py-1.5 rounded-lg bg-gold-500 hover:bg-gold-600 text-forest-950 text-[11px] uppercase tracking-wider font-semibold transition">+ Add Party</button>
+        <button type="button" onclick="resetCustomMasterGuests()" class="text-[11px] text-sage-600 hover:text-red-700 underline ml-auto" title="Reset to default 41 Entourage parties">Reset Custom</button>
+      </div>
+
+      <!-- Pending Invites Table -->
+      <div class="border border-sage-600/25 rounded-2xl overflow-hidden bg-white">
+        <div class="max-h-[320px] overflow-y-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="bg-sage-50 border-b border-sage-600/20 sticky top-0 z-10 text-[10px] uppercase tracking-wider text-sage-700 font-semibold">
+              <tr>
+                <th class="py-2.5 px-3 w-10 text-center">#</th>
+                <th class="py-2.5 px-3">Invited Party &amp; Group</th>
+                <th class="py-2.5 px-3 w-20 text-center">Reserved</th>
+                <th class="py-2.5 px-3 w-32 text-center">RSVP Status</th>
+                <th class="py-2.5 px-3 text-right w-48">Follow-Up Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pendingTableBody" class="divide-y divide-sage-600/15"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -994,6 +1078,52 @@ const GOOD_TO_KNOW = [       // cards with empty text are skipped; the section &
 ];
 const GTK_CONTACT = { name: '', phone: '' }; // "Questions on the day?" box; hidden if empty
 /* ================================================== */
+
+/* ---------- Master Entourage & Guest List for Pending Tracker ---------- */
+const DEFAULT_ENTOURAGE_MASTER = [
+  { name: 'Mrs. Aida M. Palapar', seats: 2, role: 'Parents' },
+  { name: 'Mr. Alberto B. Boiser & Mrs. Carmelita A. Boiser', seats: 2, role: 'Parents' },
+  { name: 'Mr. Alex Y. Ranoco & Mrs. Zotica U. Ranoco', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. German T. Palapar & Mrs. Emilia J. Palapar', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Avito S. Andoy & Mrs. Cleopatra P. Andoy', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Manuel G. Jayectin & Mrs. Julieta P. Hilot', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Wilfredo L. Miano & Dr. Zenaida L. Miano', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Hon. Galicano E. Atup & Mrs. Ma. Delilah C. Atup', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Engr. Fredegelbert A. Flor & Dr. Wilfreda O. Flor', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Engr. Eutiqio A. Bernales Jr. & Mrs. Mafay D. Bernales', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Sary I. Lim & Mrs. Rosario F. Lim', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Ponce M. Mandabon & Mrs. Diema A. Mandabon', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Dr. Edilberto B. Avenido & Mrs. Ma. Lolette L. Avenido', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Dr. Jupiter I. Maboloc & Dr. Ma. Maya V. Tumalon', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Yehudi L. Santillan & Mrs. Zenaida A. Boyonas', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Didoy P. Salmasan & Mrs. Joelita C. Salmasan', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Atty. Teodoro M. Lagang & Mrs. Cherry Belle G. Lagang', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Atty. Generoso G. Esmero & Dr. Arceli M. Hernando', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Antonio L. Boyles & Dr. Zenaida L. Boyles', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Gener Kevin A. Boiser', seats: 1, role: 'Honor Attendants' },
+  { name: 'Ms. Rheian Louisse P. Gases', seats: 1, role: 'Honor Attendants' },
+  { name: 'Atty. Carm Albert A. Boiser & Mrs. June Faith Marie T. Boiser', seats: 2, role: 'Honor Attendants' },
+  { name: 'Mr. Ryan Gases & Mrs. Loida Mirasol Melone P. Gases', seats: 2, role: 'Honor Attendants' },
+  { name: 'Mr. Neil Louie M. Palapar & Mrs. Remedios Z. Palapar', seats: 2, role: 'Honor Attendants' },
+  { name: 'Mr. Philip Louis M. Palapar & Mrs. Geneva G. Palapar', seats: 2, role: 'Honor Attendants' },
+  { name: 'Mr. Ramcel Baquial & Mrs. Doreen Yvonne P. Baquial', seats: 2, role: 'Honor Attendants' },
+  { name: 'Mr. Jerome Palapar & Ms. Rosemarie J. Palapar', seats: 2, role: 'Honor Attendants' },
+  { name: 'Mr. Sherwin C. Achas & Mrs. Maria Ezra T. Achas', seats: 2, role: 'Secondary Sponsors' },
+  { name: 'Mr. Niño G. Lagumbay & Mrs. Bernarda T. Lagumbay', seats: 2, role: 'Secondary Sponsors' },
+  { name: 'Atty. Jansyl Lovan P. Tumanda & Mrs. Merry Yvonne L. Tumanda', seats: 2, role: 'Secondary Sponsors' },
+  { name: 'Mr. Francis Albert B. Jubac & Mrs. Lourdes L. Jubac', seats: 2, role: 'Secondary Sponsors' },
+  { name: 'Mr. John Loyd U. Ranoco', seats: 1, role: 'Bridal Party' },
+  { name: 'Ms. Krizia Lou Z. Palapar', seats: 1, role: 'Bridal Party' },
+  { name: 'Laurence Gabriel G. Palapar', seats: 1, role: 'Bridal Party' },
+  { name: 'Niño Shawn B. Bernales', seats: 1, role: 'Bridal Party' },
+  { name: 'Johann Carmelo T. Boiser', seats: 1, role: 'Bridal Party' },
+  { name: 'Yvaine Lousyl P. Baquial', seats: 1, role: 'Bridal Party' },
+  { name: 'Alenna Ymari P. Baquial', seats: 1, role: 'Bridal Party' },
+  { name: 'Jaiyana Caith T. Boiser', seats: 1, role: 'Bridal Party' },
+  { name: 'Chrissa Xhaine Berenguer', seats: 1, role: 'Bridal Party' },
+  { name: 'Mariah Ysabelle P. Cheung', seats: 1, role: 'Bridal Party' }
+];
+const CUSTOM_MASTER_STORAGE_KEY = 'mm_wedding_custom_master_guests_v1';
 
 /* ---------- Apple / Outlook .ics Calendar Download ---------- */
 function downloadICS() {
@@ -1323,24 +1453,36 @@ function buildGuestMessage(name, seats, url) {
   return `Dear ${gName},\n\nWith joyful hearts, we invite you to celebrate our wedding on Wednesday, December 30, 2026 in St. Joseph the Worker Cathedral-Shrine and reception at Bohol Tropics Tagbilaran, Bohol! We have reserved ${gSeats} ${gSeats === 1 ? 'seat' : 'seats'} in your honor.\n\nView your personalized invitation & RSVP here:\n${url}\n\nWith love,\nMaribeth & Melbhert`;
 }
 
+function buildFollowUpMessage(name, seats, url) {
+  const gName = name || 'our dear guest';
+  const gSeats = seats || 1;
+  return `Warmest greetings, ${gName}! ✨\n\nWe are finalizing our reception seating chart for our wedding on December 30, 2026 at Tagbilaran Cathedral & Bohol Tropics Resort, where we have reserved ${gSeats} ${gSeats === 1 ? 'seat' : 'seats'} in your honor.\n\nWhenever you have a moment, kindly confirm your attendance on or before November 30, 2026 using your personalized link below:\n${url}\n\nWe would be so honored to celebrate with you!\nWith love,\nMaribeth & Melbhert`;
+}
+
 function switchBuilderTab(mode) {
   const singlePane = document.getElementById('builderSinglePane');
   const batchPane = document.getElementById('builderBatchPane');
   const rsvpPane = document.getElementById('builderRsvpPane');
+  const pendingPane = document.getElementById('builderPendingPane');
 
   singlePane.classList.toggle('hidden', mode !== 'single');
   batchPane.classList.toggle('hidden', mode !== 'batch');
   batchPane.classList.toggle('flex', mode === 'batch');
   rsvpPane.classList.toggle('hidden', mode !== 'rsvps');
   rsvpPane.classList.toggle('flex', mode === 'rsvps');
+  pendingPane.classList.toggle('hidden', mode !== 'pending');
+  pendingPane.classList.toggle('flex', mode === 'pending');
 
   const tabClass = active => 'px-3.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition ' + (active ? 'bg-forest-900 text-champagne shadow-sm' : 'text-forest-800 hover:text-forest-900');
   document.getElementById('tabSingleBtn').className = tabClass(mode === 'single');
   document.getElementById('tabBatchBtn').className = tabClass(mode === 'batch');
   document.getElementById('tabRsvpBtn').className = tabClass(mode === 'rsvps') + ' flex items-center gap-1.5';
+  document.getElementById('tabPendingBtn').className = tabClass(mode === 'pending') + ' flex items-center gap-1.5';
 
-  if (mode === 'rsvps' && !liveRsvpLoadedOnce) {
+  if ((mode === 'rsvps' || mode === 'pending') && !liveRsvpLoadedOnce) {
     fetchLiveRsvps();
+  } else if (mode === 'pending') {
+    renderPendingTracker();
   }
 }
 
@@ -1349,6 +1491,7 @@ function openLinkGenerator(defaultMode) {
   linkGenModal.classList.add('flex');
   if (defaultMode) switchBuilderTab(defaultMode);
   updateGeneratedLink();
+  renderPendingTracker();
 }
 
 function closeLinkGenerator() {
@@ -1536,49 +1679,7 @@ function downloadBatchCSV() {
 }
 
 function loadSampleSponsors() {
-  const sample = [
-    'Mrs. Aida M. Palapar\t2',
-    'Mr. Alberto B. Boiser & Mrs. Carmelita A. Boiser\t2',
-    'Mr. Gener Kevin A. Boiser\t1',
-    'Ms. Rheian Louisse P. Gases\t1',
-    'Atty. Carm Albert A. Boiser & Mrs. June Faith Marie T. Boiser\t2',
-    'Mr. Ryan Gases & Mrs. Loida Mirasol Melone P. Gases\t2',
-    'Mr. Neil Louie M. Palapar & Mrs. Remedios Z. Palapar\t2',
-    'Mr. Philip Louis M. Palapar & Mrs. Geneva G. Palapar\t2',
-    'Mr. Ramcel Baquial & Mrs. Doreen Yvonne P. Baquial\t2',
-    'Mr. Jerome Palapar & Ms. Rosemarie J. Palapar\t2',
-    'Mr. Sherwin C. Achas & Mrs. Maria Ezra T. Achas\t2',
-    'Mr. Niño G. Lagumbay & Mrs. Bernarda T. Lagumbay\t2',
-    'Atty. Jansyl Lovan P. Tumanda & Mrs. Merry Yvonne L. Tumanda\t2',
-    'Mr. Francis Albert B. Jubac & Mrs. Lourdes L. Jubac\t2',
-    'Mr. John Loyd U. Ranoco\t1',
-    'Ms. Krizia Lou Z. Palapar\t1',
-    'Laurence Gabriel G. Palapar\t1',
-    'Niño Shawn B. Bernales\t1',
-    'Johann Carmelo T. Boiser\t1',
-    'Yvaine Lousyl P. Baquial\t1',
-    'Alenna Ymari P. Baquial\t1',
-    'Jaiyana Caith T. Boiser\t1',
-    'Chrissa Xhaine Berenguer\t1',
-    'Mariah Ysabelle P. Cheung\t1',
-    'Mr. Alex Y. Ranoco & Mrs. Zotica U. Ranoco\t2',
-    'Mr. German T. Palapar & Mrs. Emilia J. Palapar\t2',
-    'Mr. Avito S. Andoy & Mrs. Cleopatra P. Andoy\t2',
-    'Mr. Manuel G. Jayectin & Mrs. Julieta P. Hilot\t2',
-    'Mr. Wilfredo L. Miano & Dr. Zenaida L. Miano\t2',
-    'Hon. Galicano E. Atup & Mrs. Ma. Delilah C. Atup\t2',
-    'Engr. Fredegelbert A. Flor & Dr. Wilfreda O. Flor\t2',
-    'Engr. Eutiqio A. Bernales Jr. & Mrs. Mafay D. Bernales\t2',
-    'Mr. Sary I. Lim & Mrs. Rosario F. Lim\t2',
-    'Mr. Ponce M. Mandabon & Mrs. Diema A. Mandabon\t2',
-    'Dr. Edilberto B. Avenido & Mrs. Ma. Lolette L. Avenido\t2',
-    'Dr. Jupiter I. Maboloc & Dr. Ma. Maya V. Tumalon\t2',
-    'Mr. Yehudi L. Santillan & Mrs. Zenaida A. Boyonas\t2',
-    'Mr. Didoy P. Salmasan & Mrs. Joelita C. Salmasan\t2',
-    'Atty. Teodoro M. Lagang & Mrs. Cherry Belle G. Lagang\t2',
-    'Atty. Generoso G. Esmero & Dr. Arceli M. Hernando\t2',
-    'Mr. Antonio L. Boyles & Dr. Zenaida L. Boyles\t2'
-  ].join('\n');
+  const sample = DEFAULT_ENTOURAGE_MASTER.map(g => `${g.name}\t${g.seats}`).join('\n');
   document.getElementById('batch-paste-input').value = sample;
   parseBatchInput();
 }
@@ -1586,6 +1687,308 @@ function loadSampleSponsors() {
 function clearBatchList() {
   document.getElementById('batch-paste-input').value = '';
   parseBatchInput();
+}
+
+/* ---------- Master Pending Invites List & Fuzzy Name Matcher ---------- */
+function getCustomMasterGuests() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(CUSTOM_MASTER_STORAGE_KEY) || '[]');
+    return Array.isArray(raw) ? raw : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveCustomMasterGuests(list) {
+  try {
+    localStorage.setItem(CUSTOM_MASTER_STORAGE_KEY, JSON.stringify(list));
+  } catch (e) {}
+}
+
+function getCombinedMasterGuestList() {
+  const custom = getCustomMasterGuests();
+  const map = new Map();
+  DEFAULT_ENTOURAGE_MASTER.forEach(item => {
+    map.set(item.name.toLowerCase().replace(/\s+/g, ' '), { ...item });
+  });
+  custom.forEach(item => {
+    if (!item || !item.name) return;
+    const key = item.name.toLowerCase().replace(/\s+/g, ' ');
+    if (!map.has(key)) {
+      map.set(key, { name: item.name, seats: Number(item.seats) || 1, role: item.role || 'Custom Guest' });
+    }
+  });
+  return Array.from(map.values());
+}
+
+function addCustomGuestToTracker() {
+  const nameEl = document.getElementById('customGuestName');
+  const seatsEl = document.getElementById('customGuestSeats');
+  const name = (nameEl?.value || '').trim();
+  const seats = Math.max(1, Math.min(15, parseInt(seatsEl?.value, 10) || 2));
+  if (!name) return;
+
+  const custom = getCustomMasterGuests();
+  custom.push({ name, seats, role: 'Custom Guest' });
+  saveCustomMasterGuests(custom);
+  nameEl.value = '';
+  renderPendingTracker();
+}
+
+function syncBatchToMasterList() {
+  if (!batchParsedRows.length) return;
+  const custom = getCustomMasterGuests();
+  batchParsedRows.forEach(r => {
+    custom.push({ name: r.name, seats: r.seats, role: 'Custom Guest' });
+  });
+  saveCustomMasterGuests(custom);
+  const btn = document.getElementById('syncMasterBtn');
+  const orig = btn.textContent;
+  btn.textContent = 'Synced to Pending Tracker! ✓';
+  setTimeout(() => { btn.textContent = orig; }, 2000);
+  renderPendingTracker();
+}
+
+function resetCustomMasterGuests() {
+  try { localStorage.removeItem(CUSTOM_MASTER_STORAGE_KEY); } catch (e) {}
+  renderPendingTracker();
+}
+
+// Clean honorifics, punctuation, and single-letter middle initials for fuzzy matching
+function cleanPersonName(str) {
+  return String(str || '')
+    .toLowerCase()
+    .replace(/\(\+\)/g, '')
+    .replace(/\b(mr|mrs|ms|miss|dr|atty|engr|hon|jr|sr|ii|iii|iv|ma)\b\.?/gi, ' ')
+    .replace(/[^a-z\u00c0-\u017f\s]/gi, ' ')
+    .replace(/\b[a-z]\b/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Match an invited party (e.g. "Mr. Alex Y. Ranoco & Mrs. Zotica U. Ranoco") against live Google Sheet RSVP rows
+function findMatchingRsvpForMasterItem(masterItem, rsvpRows) {
+  const masterRawLower = masterItem.name.trim().toLowerCase().replace(/\s+/g, ' ');
+  const masterCleanFull = cleanPersonName(masterItem.name);
+
+  // Split couple/pair names on "&" or "and" so if either spouse RSVPs under their own name, it matches
+  const subParts = masterItem.name
+    .split(/\s+(?:&|and)\s+/i)
+    .map(cleanPersonName)
+    .filter(s => s.length >= 4);
+
+  for (const r of rsvpRows) {
+    const rNameLower = r.name.trim().toLowerCase().replace(/\s+/g, ' ');
+    const rInvitedLower = (r.invitedParty || '').trim().toLowerCase().replace(/\s+/g, ' ');
+
+    // 1. Exact raw match on Name or Invited_Party parameter
+    if (rNameLower === masterRawLower || (rInvitedLower && rInvitedLower === masterRawLower)) {
+      return r;
+    }
+
+    const rClean = cleanPersonName(r.name);
+    const rInvitedClean = cleanPersonName(r.invitedParty || '');
+    const rCompClean = cleanPersonName(r.companions || '');
+
+    // 2. Cleaned full name match
+    if (masterCleanFull && (rClean === masterCleanFull || rInvitedClean === masterCleanFull)) {
+      return r;
+    }
+
+    // 3. Substring / individual spouse match (e.g. "alex ranoco" inside "mr alex ranoco")
+    for (const part of subParts) {
+      const tokens = part.split(' ').filter(Boolean);
+      if (tokens.length >= 2) {
+        const first = tokens[0];
+        const last = tokens[tokens.length - 1];
+        const firstAndLastInName = rClean.includes(first) && rClean.includes(last);
+        const firstAndLastInInvited = rInvitedClean.includes(first) && rInvitedClean.includes(last);
+        const firstAndLastInComp = rCompClean.includes(first) && rCompClean.includes(last);
+        if (firstAndLastInName || firstAndLastInInvited || firstAndLastInComp) {
+          return r;
+        }
+      }
+    }
+  }
+  return null;
+}
+
+function renderPendingTracker() {
+  const tbody = document.getElementById('pendingTableBody');
+  if (!tbody) return;
+
+  const masterList = getCombinedMasterGuestList();
+  const rsvpRows = getProcessedRsvpRows();
+  const searchVal = (document.getElementById('pendingSearchInput')?.value || '').trim().toLowerCase();
+  const statusFilter = document.getElementById('pendingStatusFilter')?.value || 'pending';
+  const roleFilter = document.getElementById('pendingRoleFilter')?.value || 'all';
+
+  let pendingCount = 0;
+  let pendingSeats = 0;
+  let respondedCount = 0;
+  let attendingCount = 0;
+  let attendingSeats = 0;
+  let declinedCount = 0;
+
+  const evaluated = masterList.map(item => {
+    const match = findMatchingRsvpForMasterItem(item, rsvpRows);
+    let state = 'pending';
+    if (match) {
+      respondedCount++;
+      if (match.isAttending) {
+        state = 'attending';
+        attendingCount++;
+        attendingSeats += match.seats;
+      } else {
+        state = 'declined';
+        declinedCount++;
+      }
+    } else {
+      pendingCount++;
+      pendingSeats += item.seats;
+    }
+    const url = buildGuestUrl(item.name, item.seats);
+    return {
+      ...item,
+      state,
+      match,
+      url,
+      followUpMsg: buildFollowUpMessage(item.name, item.seats, url)
+    };
+  });
+
+  // Update KPI badges
+  const totalParties = masterList.length || 1;
+  const ratePct = Math.round((respondedCount / totalParties) * 100);
+
+  const badgeEl = document.getElementById('pendingTabBadge');
+  if (badgeEl) badgeEl.textContent = String(pendingCount);
+
+  document.getElementById('pendingStatAwaiting').textContent = String(pendingCount);
+  document.getElementById('pendingStatAwaitingSeats').textContent = `Awaiting Response (${pendingSeats} Seats)`;
+  document.getElementById('pendingStatRate').textContent = `${ratePct}%`;
+  document.getElementById('pendingStatRespondedCount').textContent = `${respondedCount} of ${masterList.length} Parties Replied`;
+  document.getElementById('pendingStatAttending').textContent = `${attendingCount} (${attendingSeats} Seats)`;
+  document.getElementById('pendingStatDeclined').textContent = String(declinedCount);
+
+  // Filter rows
+  const filtered = evaluated.filter(row => {
+    if (statusFilter === 'pending' && row.state !== 'pending') return false;
+    if (statusFilter === 'responded' && row.state === 'pending') return false;
+    if (statusFilter === 'attending' && row.state !== 'attending') return false;
+    if (statusFilter === 'declined' && row.state !== 'declined') return false;
+    if (roleFilter !== 'all' && row.role !== roleFilter) return false;
+    if (searchVal) {
+      const hay = `${row.name} ${row.role}`.toLowerCase();
+      if (!hay.includes(searchVal)) return false;
+    }
+    return true;
+  });
+
+  tbody.innerHTML = '';
+  if (!filtered.length) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="5" class="py-10 text-center text-sage-600 italic">${pendingCount === 0 && statusFilter === 'pending' ? '🎉 Wonderful! Every guest on your master list has responded!' : 'No guests match your current filter/search.'}</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
+
+  filtered.forEach((row, idx) => {
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-sage-50/80 transition';
+
+    const tdNum = document.createElement('td');
+    tdNum.className = 'py-2.5 px-3 text-center text-sage-600 font-medium align-top';
+    tdNum.textContent = String(idx + 1);
+
+    const tdName = document.createElement('td');
+    tdName.className = 'py-2.5 px-3 align-top';
+    const nameP = document.createElement('p');
+    nameP.className = 'font-semibold text-forest-900';
+    nameP.textContent = row.name;
+    const roleSpan = document.createElement('span');
+    roleSpan.className = 'inline-block mt-0.5 text-[10px] uppercase tracking-wider text-sage-700 bg-sage-50 border border-sage-600/20 px-2 py-0.2 rounded-full';
+    roleSpan.textContent = row.role;
+    tdName.append(nameP, roleSpan);
+
+    const tdSeats = document.createElement('td');
+    tdSeats.className = 'py-2.5 px-3 text-center font-semibold text-forest-900 align-top';
+    tdSeats.textContent = String(row.seats);
+
+    const tdStatus = document.createElement('td');
+    tdStatus.className = 'py-2.5 px-3 text-center align-top';
+    const badge = document.createElement('span');
+    if (row.state === 'pending') {
+      badge.className = 'inline-block px-2.5 py-0.5 rounded-full bg-gold-300/25 text-forest-900 border border-gold-500/40 font-semibold text-[10px] uppercase tracking-wider';
+      badge.textContent = 'Awaiting RSVP';
+    } else if (row.state === 'attending') {
+      badge.className = 'inline-block px-2.5 py-0.5 rounded-full bg-sage-100 text-forest-900 font-semibold text-[10px] uppercase tracking-wider';
+      badge.textContent = `Confirmed (${row.match.seats})`;
+    } else {
+      badge.className = 'inline-block px-2.5 py-0.5 rounded-full bg-red-50 text-red-700 font-semibold text-[10px] uppercase tracking-wider';
+      badge.textContent = 'Declined';
+    }
+    tdStatus.appendChild(badge);
+
+    const tdActions = document.createElement('td');
+    tdActions.className = 'py-2.5 px-3 text-right whitespace-nowrap space-x-1.5 align-top';
+
+    const btnLink = document.createElement('button');
+    btnLink.type = 'button';
+    btnLink.className = 'px-2.5 py-1 rounded-lg bg-forest-900 hover:bg-forest-800 text-champagne text-[10px] uppercase tracking-wider font-semibold transition';
+    btnLink.textContent = 'Copy Link';
+    btnLink.onclick = () => {
+      if (!navigator.clipboard) return;
+      const orig = btnLink.textContent;
+      navigator.clipboard.writeText(row.url).then(() => {
+        btnLink.textContent = 'Copied ✓';
+        setTimeout(() => { btnLink.textContent = orig; }, 1800);
+      });
+    };
+
+    const btnRemind = document.createElement('button');
+    btnRemind.type = 'button';
+    btnRemind.className = 'px-2.5 py-1 rounded-lg bg-gold-500 hover:bg-gold-600 text-forest-950 text-[10px] uppercase tracking-wider font-semibold transition';
+    btnRemind.textContent = 'Copy Reminder';
+    btnRemind.onclick = () => {
+      if (!navigator.clipboard) return;
+      const orig = btnRemind.textContent;
+      navigator.clipboard.writeText(row.followUpMsg).then(() => {
+        btnRemind.textContent = 'Copied ✓';
+        setTimeout(() => { btnRemind.textContent = orig; }, 1800);
+      });
+    };
+
+    tdActions.append(btnLink, btnRemind);
+    tr.append(tdNum, tdName, tdSeats, tdStatus, tdActions);
+    tbody.appendChild(tr);
+  });
+}
+
+function exportPendingCSV() {
+  const masterList = getCombinedMasterGuestList();
+  const rsvpRows = getProcessedRsvpRows();
+  const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const header = ['Invited Party Name', 'Group / Role', 'Reserved Seats', 'RSVP Status', 'Confirmed Seats', 'Personalized Link', 'Follow-Up Reminder Message'].map(esc).join(',');
+
+  const lines = masterList.map(item => {
+    const match = findMatchingRsvpForMasterItem(item, rsvpRows);
+    const statusLabel = match ? (match.isAttending ? 'Confirmed Attending' : 'Declined') : 'Pending (No Response Yet)';
+    const confirmedSeats = match ? match.seats : '';
+    const url = buildGuestUrl(item.name, item.seats);
+    const reminder = buildFollowUpMessage(item.name, item.seats, url);
+    return [item.name, item.role, item.seats, statusLabel, confirmedSeats, url, reminder].map(esc).join(',');
+  });
+
+  const blob = new Blob([[header, ...lines].join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Maribeth-Melbhert-Pending-RSVPs.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 /* ---------- Live Google Sheets RSVP Fetching, Seat & Message Normalization ---------- */
@@ -1608,6 +2011,12 @@ function normalizeSheetRow(raw, idx) {
     ['name', 'full name', 'guest', 'guest name', 'party name', 'primary guest', 'invited_party'],
     ['name', 'guest', 'party'],
     ['participants', 'number of guests', 'no. of guests', 'accompanying guests', 'message for the couple']
+  ) || '').trim();
+
+  const invitedParty = String(getVal(
+    ['invited_party', 'invited party'],
+    ['invited'],
+    []
   ) || '').trim();
 
   const statusRaw = String(getVal(
@@ -1690,6 +2099,7 @@ function normalizeSheetRow(raw, idx) {
     id: key,
     rowIndex: raw._rowIndex || (idx + 2),
     name: name || 'Unnamed Guest',
+    invitedParty,
     status: statusRaw || (isDeclined ? "I can't make it." : "Yes, I'll be there!"),
     isAttending: !isDeclined,
     seats,
@@ -1717,7 +2127,6 @@ async function fetchLiveRsvps() {
       .map((r, i) => normalizeSheetRow(r, i))
       .filter(r => r.name && r.name !== 'Unnamed Guest');
 
-    // Merge local device submission message/companions if the sheet row was missing them
     try {
       const localRec = JSON.parse(localStorage.getItem('mm_wedding_rsvp_record_v2') || 'null');
       if (localRec && localRec.name) {
@@ -1740,6 +2149,7 @@ async function fetchLiveRsvps() {
 
     liveRsvpLoadedOnce = true;
     renderRsvpDashboard();
+    renderPendingTracker();
   } catch (err) {
     console.warn('Could not fetch live RSVPs from Google Sheet:', err);
     if (notice) {
@@ -1763,6 +2173,7 @@ async function fetchLiveRsvps() {
       }
     } catch (e) {}
     renderRsvpDashboard();
+    renderPendingTracker();
   } finally {
     if (spinner) spinner.classList.remove('animate-spin');
   }
@@ -1779,6 +2190,7 @@ function getProcessedRsvpRows() {
       if (prev) {
         if (!r.message && prev.message) r.message = prev.message;
         if (!r.companions && prev.companions) r.companions = prev.companions;
+        if (!r.invitedParty && prev.invitedParty) r.invitedParty = prev.invitedParty;
       }
       map.set(r.id, r);
     });
@@ -1965,10 +2377,12 @@ function exportLiveRsvpCSV() {
   URL.revokeObjectURL(url);
 }
 
-if (urlParams.get('admin') === '1' || urlParams.get('builder') === '1' || urlParams.get('checkin') === '1') {
+if (urlParams.get('admin') === '1' || urlParams.get('builder') === '1' || urlParams.get('checkin') === '1' || urlParams.get('pending') === '1') {
   window.addEventListener('DOMContentLoaded', () => {
     openInvitation();
-    const initialTab = urlParams.get('checkin') === '1' || urlParams.get('admin') === '1' ? 'rsvps' : 'batch';
+    let initialTab = 'rsvps';
+    if (urlParams.get('builder') === '1') initialTab = 'batch';
+    if (urlParams.get('pending') === '1') initialTab = 'pending';
     requestAdminOpen(initialTab);
   });
 }
@@ -2509,6 +2923,7 @@ const contactHint = () => CONTACT_FALLBACK ? ' or contact us at ' + CONTACT_FALL
 let latestPassRecord = null;
 
 applyGuestPersonalization();
+renderPendingTracker();
 
 function handleAttendanceChange(v) {
   const no = v === "I can't make it.";
@@ -2732,7 +3147,6 @@ form.addEventListener('submit', async e => {
   submitBtn.disabled = true;
   submitBtn.textContent = 'Recording your RSVP...';
   try {
-    // Passing data in BOTH the URL query string and POST body guarantees Apps Script receives every field
     const submitUrl = RSVP_URL + (RSVP_URL.includes('?') ? '&' : '?') + data.toString();
     await fetch(submitUrl, {
       method: 'POST',
