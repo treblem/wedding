@@ -20,6 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -1196,6 +1197,9 @@ const urlParams = new URLSearchParams(window.location.search);
 const invitedGuestName = (urlParams.get('guest') || urlParams.get('to') || urlParams.get('name') || '').replace(/\s+/g, ' ').trim();
 const rawSeatsParam = parseInt(urlParams.get('seats') || urlParams.get('max') || '', 10);
 const invitedGuestSeats = (!isNaN(rawSeatsParam) && rawSeatsParam >= 1 && rawSeatsParam <= 15) ? rawSeatsParam : null;
+const scannedCheckinGuest = (urlParams.get('checkin_guest') || '').replace(/\s+/g, ' ').trim();
+const scannedCheckinSeats = (!isNaN(rawSeatsParam) && rawSeatsParam >= 1 && rawSeatsParam <= 15) ? rawSeatsParam : null;
+let pendingScannedCheckinProcessed = false;
 
 function unlockGuestName() {
   const nameInput = document.getElementById('rsvp-name');
@@ -2262,6 +2266,7 @@ async function fetchLiveRsvps() {
     liveRsvpLoadedOnce = true;
     renderRsvpDashboard();
     renderPendingTracker();
+    processScannedGuestCheckin();
   } catch (err) {
     console.warn('Could not fetch live RSVPs from Google Sheet:', err);
     if (notice) {
@@ -2286,8 +2291,67 @@ async function fetchLiveRsvps() {
     } catch (e) {}
     renderRsvpDashboard();
     renderPendingTracker();
+    processScannedGuestCheckin();
   } finally {
     if (spinner) spinner.classList.remove('animate-spin');
+  }
+}
+
+function processScannedGuestCheckin() {
+  if (!scannedCheckinGuest || pendingScannedCheckinProcessed || !isAdminUnlocked()) return;
+  pendingScannedCheckinProcessed = true;
+
+  const cleanTarget = scannedCheckinGuest.toLowerCase().replace(/\s+/g, ' ');
+  let matchedRow = liveRsvpRows.find(r => r.id === cleanTarget || r.name.toLowerCase().replace(/\s+/g, ' ') === cleanTarget);
+
+  if (!matchedRow) {
+    const targetPersonClean = cleanPersonName(scannedCheckinGuest);
+    matchedRow = liveRsvpRows.find(r => targetPersonClean && cleanPersonName(r.name) === targetPersonClean);
+  }
+
+  if (!matchedRow) {
+    matchedRow = normalizeSheetRow({
+      name: scannedCheckinGuest,
+      status: "Yes, I'll be there!",
+      participants: scannedCheckinSeats || 1,
+      submitted_at: new Date().toISOString()
+    }, liveRsvpRows.length);
+    liveRsvpRows.push(matchedRow);
+  }
+
+  const checkins = getLocalCheckins();
+  checkins[matchedRow.id] = true;
+  saveLocalCheckins(checkins);
+
+  const searchEl = document.getElementById('rsvpAdminSearch');
+  if (searchEl) searchEl.value = matchedRow.name;
+  const filterEl = document.getElementById('rsvpAdminFilter');
+  if (filterEl) filterEl.value = 'all';
+
+  renderRsvpDashboard();
+
+  const body = new URLSearchParams();
+  body.append('action', 'checkin');
+  body.append('name', matchedRow.name);
+  body.append('checked_in', 'true');
+  const checkinUrl = RSVP_URL + (RSVP_URL.includes('?') ? '&' : '?') + body.toString();
+  fetch(checkinUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: body.toString()
+  }).catch(() => {});
+
+  const notice = document.getElementById('rsvpLiveNotice');
+  if (notice) {
+    notice.className = 'p-3.5 rounded-2xl bg-sage-100 border-2 border-gold-500 text-xs text-forest-900 space-y-1 pop shadow-sm';
+    notice.innerHTML = `
+      <div class="flex items-center justify-between gap-2">
+        <p class="font-serif text-base font-bold text-forest-900">✓ Checked In: ${escapeHtml(matchedRow.name)} (${matchedRow.seats} ${matchedRow.seats === 1 ? 'Seat' : 'Seats'}) — Marked as Arrived at Reception!</p>
+        <button type="button" onclick="document.getElementById('rsvpAdminSearch').value='';renderRsvpDashboard();this.closest('#rsvpLiveNotice').classList.add('hidden');" class="px-2.5 py-1 rounded-lg bg-white hover:bg-sage-50 border border-sage-600/30 text-[10px] uppercase tracking-wider font-semibold shrink-0">Show All</button>
+      </div>
+    `;
+    notice.classList.remove('hidden');
   }
 }
 
@@ -2521,7 +2585,7 @@ function exportLiveRsvpCSV() {
   URL.revokeObjectURL(url);
 }
 
-if (urlParams.get('admin') === '1' || urlParams.get('builder') === '1' || urlParams.get('checkin') === '1' || urlParams.get('pending') === '1') {
+if (urlParams.get('admin') === '1' || urlParams.get('builder') === '1' || urlParams.get('checkin') === '1' || urlParams.get('pending') === '1' || scannedCheckinGuest) {
   window.addEventListener('DOMContentLoaded', () => {
     openInvitation();
     let initialTab = 'rsvps';
@@ -3117,10 +3181,12 @@ function renderSavedPassView(record) {
         ${companionsHtml}
         ${messageHtml}
         <p class="text-xs text-forest-800/80">Tagbilaran Cathedral &rarr; Bohol Tropics Resort</p>
-        <div class="pt-3 flex flex-wrap items-center justify-center gap-2.5">
-          <button type="button" onclick="downloadWeddingPassPNG()" class="px-4 py-2.5 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-xs uppercase tracking-wider font-semibold transition shadow-sm">Save Pass Image (.PNG)</button>
+        <div class="pt-3 flex flex-wrap items-center justify-center gap-2">
+          <button type="button" onclick="downloadWeddingPassPNG(false)" class="px-4 py-2.5 rounded-xl bg-forest-900 hover:bg-forest-800 text-champagne text-xs uppercase tracking-wider font-semibold transition shadow-sm">Save Pass Image (.PNG)</button>
+          <button type="button" onclick="downloadWeddingPassPNG(true)" class="px-4 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-600 text-forest-950 text-xs uppercase tracking-wider font-semibold transition shadow-sm">Preview / Save Pass</button>
           <button type="button" onclick="editSavedRsvp()" class="px-4 py-2.5 rounded-xl bg-white hover:bg-sage-100 text-forest-900 border border-sage-600/30 text-xs uppercase tracking-wider font-semibold transition">Update / Edit RSVP</button>
         </div>
+        <p class="text-[11px] text-sage-700 pt-1">Using Messenger or iOS? Tap <strong>Preview / Save Pass</strong> and long-press the image to save.</p>
       </div>
     `;
   } else {
@@ -3165,21 +3231,79 @@ function editSavedRsvp() {
   submitBtn.textContent = 'Update RSVP';
 }
 
-function downloadWeddingPassPNG() {
+function drawPassQrMatrix(ctx, text, x, y, size) {
+  if (typeof window.qrcode === 'function') {
+    try {
+      const qr = window.qrcode(0, 'M');
+      qr.addData(text);
+      qr.make();
+      const count = qr.getModuleCount();
+      const cellSize = size / count;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(x, y, size, size);
+      ctx.fillStyle = '#142b15';
+      for (let r = 0; r < count; r++) {
+        for (let c = 0; c < count; c++) {
+          if (qr.isDark(r, c)) {
+            ctx.fillRect(
+              Math.floor(x + c * cellSize),
+              Math.floor(y + r * cellSize),
+              Math.ceil(cellSize),
+              Math.ceil(cellSize)
+            );
+          }
+        }
+      }
+      return true;
+    } catch (err) {
+      console.warn('QR matrix generation fallback triggered:', err);
+    }
+  }
+  return false;
+}
+
+function drawRoundedRectPath(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+async function downloadWeddingPassPNG(forcePreviewModal = false) {
   const rec = latestPassRecord;
   if (!rec) return;
+
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready; } catch (e) {}
+  }
 
   const c = document.createElement('canvas');
   c.width = 1080;
   c.height = 640;
   const g = c.getContext('2d');
 
+  // Rich forest gradient background
   const grad = g.createLinearGradient(0, 0, 1080, 640);
   grad.addColorStop(0, '#142b15');
   grad.addColorStop(1, '#0b190c');
   g.fillStyle = grad;
   g.fillRect(0, 0, 1080, 640);
 
+  // Subtle decorative corner glow
+  const glow = g.createRadialGradient(845, 320, 20, 845, 320, 280);
+  glow.addColorStop(0, 'rgba(197, 160, 89, 0.16)');
+  glow.addColorStop(1, 'rgba(197, 160, 89, 0)');
+  g.fillStyle = glow;
+  g.fillRect(0, 0, 1080, 640);
+
+  // Outer & inner luxury gold frames
   g.strokeStyle = 'rgba(197, 160, 89, 0.55)';
   g.lineWidth = 2;
   g.strokeRect(32, 32, 1016, 576);
@@ -3187,62 +3311,150 @@ function downloadWeddingPassPNG() {
   g.lineWidth = 1;
   g.strokeRect(46, 46, 988, 548);
 
-  g.fillStyle = '#d4b26f';
-  g.font = '600 18px "Plus Jakarta Sans", sans-serif';
+  // Perforated ticket divider line between left pass details and right VIP QR card
+  g.save();
+  g.strokeStyle = 'rgba(226, 199, 141, 0.28)';
+  g.lineWidth = 1.5;
+  g.setLineDash([8, 8]);
+  g.beginPath();
+  g.moveTo(675, 66);
+  g.lineTo(675, 574);
+  g.stroke();
+  g.restore();
+
+  // Left section center X = 360
+  const leftCenterX = 360;
   g.textAlign = 'center';
-  g.fillText('CONFIRMED WEDDING PASS • DECEMBER 30, 2026', 540, 110);
+
+  g.fillStyle = '#d4b26f';
+  g.font = '600 16px "Plus Jakarta Sans", sans-serif';
+  g.fillText('CONFIRMED WEDDING PASS • DECEMBER 30, 2026', leftCenterX, 110);
 
   g.fillStyle = '#f7f4ef';
-  g.font = '600 58px "Cormorant Garamond", Georgia, serif';
-  g.fillText('Maribeth & Melbhert', 540, 185);
+  g.font = '600 54px "Cormorant Garamond", Georgia, serif';
+  g.fillText('Maribeth & Melbhert', leftCenterX, 180);
 
   g.strokeStyle = 'rgba(197, 160, 89, 0.5)';
+  g.lineWidth = 1.2;
   g.beginPath();
-  g.moveTo(370, 215);
-  g.lineTo(710, 215);
+  g.moveTo(210, 208);
+  g.lineTo(510, 208);
   g.stroke();
 
   g.fillStyle = '#e2c78d';
-  g.font = '500 16px "Plus Jakarta Sans", sans-serif';
-  g.fillText('RESERVED IN HONOR OF', 540, 265);
+  g.font = '500 15px "Plus Jakarta Sans", sans-serif';
+  g.fillText('RESERVED IN HONOR OF', leftCenterX, 255);
 
   g.fillStyle = '#ffffff';
-  g.font = '600 44px "Cormorant Garamond", Georgia, serif';
-  const displayGuest = rec.name.length > 38 ? rec.name.slice(0, 36) + '…' : rec.name;
-  g.fillText(displayGuest, 540, 320);
+  const rawName = String(rec.name || 'Honored Guest');
+  g.font = rawName.length > 26
+    ? '600 34px "Cormorant Garamond", Georgia, serif'
+    : '600 42px "Cormorant Garamond", Georgia, serif';
+  const displayGuest = rawName.length > 34 ? rawName.slice(0, 32) + '…' : rawName;
+  g.fillText(displayGuest, leftCenterX, 308);
 
   const comps = Array.isArray(rec.companions) ? rec.companions.filter(Boolean) : [];
   if (comps.length) {
     g.fillStyle = '#c7dac8';
-    g.font = '400 18px "Plus Jakarta Sans", sans-serif';
+    g.font = '400 16px "Plus Jakarta Sans", sans-serif';
     const compStr = 'Accompanying: ' + comps.join(', ');
-    g.fillText(compStr.length > 72 ? compStr.slice(0, 70) + '…' : compStr, 540, 360);
+    g.fillText(compStr.length > 52 ? compStr.slice(0, 50) + '…' : compStr, leftCenterX, 346);
   }
 
+  // Confirmed Seats Pill Badge
   g.fillStyle = 'rgba(197, 160, 89, 0.18)';
-  g.fillRect(360, 395, 360, 54);
+  drawRoundedRectPath(g, leftCenterX - 165, 382, 330, 52, 14);
+  g.fill();
   g.strokeStyle = '#c5a059';
-  g.strokeRect(360, 395, 360, 54);
+  g.lineWidth = 1.5;
+  g.stroke();
 
   g.fillStyle = '#f7f4ef';
-  g.font = '600 22px "Plus Jakarta Sans", sans-serif';
+  g.font = '600 20px "Plus Jakarta Sans", sans-serif';
   const seatsLabel = `${rec.seats} ${Number(rec.seats) === 1 ? 'SEAT' : 'SEATS'} CONFIRMED`;
-  g.fillText(seatsLabel, 540, 430);
+  g.fillText(seatsLabel, leftCenterX, 415);
 
   g.fillStyle = '#c7dac8';
-  g.font = '400 19px "Plus Jakarta Sans", sans-serif';
-  g.fillText('9:30 AM Arrival • Tagbilaran Cathedral  →  12:00 PM Bohol Tropics Resort', 540, 515);
+  g.font = '400 16px "Plus Jakarta Sans", sans-serif';
+  g.fillText('9:30 AM Tagbilaran Cathedral  →  12:00 PM Bohol Tropics', leftCenterX, 505);
 
   g.fillStyle = '#d4b26f';
   g.font = 'italic 20px "Cormorant Garamond", Georgia, serif';
-  g.fillText('Tagbilaran City, Bohol, Philippines', 540, 552);
+  g.fillText('Tagbilaran City, Bohol, Philippines', leftCenterX, 542);
 
-  const link = document.createElement('a');
-  link.download = `Wedding-Pass-${rec.name.replace(/[^a-z0-9]+/gi, '-')}.png`;
-  link.href = c.toDataURL('image/png');
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
+  // Right Side VIP QR Card Box (Center X = 855)
+  const qrCardX = 715;
+  const qrCardY = 115;
+  const qrCardW = 280;
+  const qrCardH = 410;
+  const rightCenterX = qrCardX + qrCardW / 2;
+
+  g.fillStyle = '#f7f4ef';
+  drawRoundedRectPath(g, qrCardX, qrCardY, qrCardW, qrCardH, 24);
+  g.fill();
+  g.strokeStyle = '#c5a059';
+  g.lineWidth = 2;
+  g.stroke();
+
+  g.fillStyle = '#a8843e';
+  g.font = '600 13px "Plus Jakarta Sans", sans-serif';
+  g.fillText('VIP RECEPTION PASS', rightCenterX, qrCardY + 38);
+
+  const checkinQrUrl = `${getBaseInviteUrl()}?checkin_guest=${encodeURIComponent(rawName)}&seats=${encodeURIComponent(rec.seats || 1)}`;
+  const qrBoxSize = 210;
+  const qrBoxX = rightCenterX - qrBoxSize / 2;
+  const qrBoxY = qrCardY + 58;
+
+  // White QR container pad
+  g.fillStyle = '#ffffff';
+  drawRoundedRectPath(g, qrBoxX - 10, qrBoxY - 10, qrBoxSize + 20, qrBoxSize + 20, 14);
+  g.fill();
+  g.strokeStyle = 'rgba(20, 43, 21, 0.12)';
+  g.lineWidth = 1;
+  g.stroke();
+
+  const qrSuccess = drawPassQrMatrix(g, checkinQrUrl, qrBoxX, qrBoxY, qrBoxSize);
+  if (!qrSuccess) {
+    // Offline fallback monogram emblem if CDN script was blocked
+    g.fillStyle = '#142b15';
+    g.fillRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize);
+    g.strokeStyle = '#c5a059';
+    g.lineWidth = 2;
+    g.strokeRect(qrBoxX + 12, qrBoxY + 12, qrBoxSize - 24, qrBoxSize - 24);
+    g.fillStyle = '#f7f4ef';
+    g.font = '600 42px "Cormorant Garamond", Georgia, serif';
+    g.fillText('M & M', rightCenterX, qrBoxY + 115);
+  }
+
+  g.fillStyle = '#142b15';
+  g.font = '600 14px "Plus Jakarta Sans", sans-serif';
+  g.fillText('SCAN AT RECEPTION', rightCenterX, qrCardY + 322);
+
+  g.fillStyle = '#5c7a5d';
+  g.font = '400 12px "Plus Jakarta Sans", sans-serif';
+  g.fillText('Instant Usher Check-In', rightCenterX, qrCardY + 344);
+
+  g.fillStyle = '#a8843e';
+  g.font = 'italic 15px "Cormorant Garamond", Georgia, serif';
+  g.fillText('#MaribethAndMelbhert2026', rightCenterX, qrCardY + 378);
+
+  const dataUrl = c.toDataURL('image/png');
+  const isInAppBrowser = /FBAN|FBAV|Messenger|Instagram|Viber|Line/i.test(navigator.userAgent || '');
+
+  if (!forcePreviewModal) {
+    try {
+      const link = document.createElement('a');
+      link.download = `Wedding-Pass-${rawName.replace(/[^a-z0-9]+/gi, '-')}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {}
+  }
+
+  if (forcePreviewModal || isInAppBrowser) {
+    openModal(dataUrl, 'Long-press pass image to Save to Photos • Present QR at Reception', false);
+  }
 }
 
 if (Date.now() > RSVP_DEADLINE) {
