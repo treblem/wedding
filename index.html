@@ -406,7 +406,7 @@
         <div data-entourage-item class="sp"><b>Hon. Galicano E. Atup</b><i>•</i><b>Mrs. Ma. Delilah C. Atup</b></div>
         <div data-entourage-item class="sp"><b>Engr. Fredegelbert A. Flor</b><i>•</i><b>Dr. Wilfreda O. Flor</b></div>
         <div data-entourage-item class="sp"><b>Engr. Eutiqio A. Bernales Jr.</b><i>•</i><b>Mrs. Mafay D. Bernales</b></div>
-        <div id="moreSponsors">
+        <div id="moreSponsors" class="hidden">
           <div data-entourage-item class="sp"><b>Mr. Sary I. Lim</b><i>•</i><b>Mrs. Rosario F. Lim</b></div>
           <div data-entourage-item class="sp"><b>Mr. Rolando T. Ojendras</b><i>•</i><b>Mrs. Merlyn G. Ojendras</b></div>
           <div data-entourage-item class="sp"><b>Dr. Edilberto B. Avenido</b><i>•</i><b>Mrs. Ma. Lolette L. Avenido</b></div>
@@ -422,9 +422,9 @@
         </div>
       </div>
       <div class="pt-2">
-        <button type="button" id="entourageToggleBtn" onclick="toggleEntourage()" aria-expanded="true" aria-controls="moreSponsors" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/30 text-xs uppercase tracking-widest font-semibold transition">
-          <span id="entourageToggleText">Show Compact List</span>
-          <svg id="entourageToggleIcon" class="w-4 h-4 text-gold-600 transition-transform duration-300 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        <button type="button" id="entourageToggleBtn" onclick="toggleEntourage()" aria-expanded="false" aria-controls="moreSponsors" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sage-50 hover:bg-sage-100 text-forest-900 border border-sage-600/30 text-xs uppercase tracking-widest font-semibold transition">
+          <span id="entourageToggleText">View All 20 Sponsor Pairs</span>
+          <svg id="entourageToggleIcon" class="w-4 h-4 text-gold-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
       </div>
 
@@ -823,7 +823,7 @@
         </button>
         <button type="button" id="tabPendingBtn" onclick="switchBuilderTab('pending')" class="px-2.5 sm:px-3.5 py-2 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition text-forest-800 hover:text-forest-900 flex items-center justify-center gap-1.5">
           <span>Pending</span>
-          <span id="pendingTabBadge" class="px-1.5 py-0.2 rounded-full bg-gold-500/25 text-forest-900 text-[10px] font-bold">41</span>
+          <span id="pendingTabBadge" class="px-1.5 py-0.2 rounded-full bg-gold-500/25 text-forest-900 text-[10px] font-bold">44</span>
         </button>
       </div>
     </div>
@@ -1057,7 +1057,7 @@
             <input id="customGuestSeats" type="number" min="1" max="15" value="2" inputmode="numeric" aria-label="Reserved seats" class="w-14 px-2 py-2 sm:py-1.5 rounded-lg border border-sage-600/30 bg-white text-base sm:text-xs text-forest-900 text-center">
             <button type="button" onclick="addCustomGuestToTracker()" class="px-3 py-2 sm:py-1.5 rounded-lg bg-gold-500 hover:bg-gold-600 text-forest-950 text-[11px] uppercase tracking-wider font-semibold transition shrink-0">+ Add</button>
           </div>
-          <button type="button" onclick="resetCustomMasterGuests()" class="text-[11px] text-sage-600 hover:text-red-700 underline self-end sm:self-auto px-1" title="Reset to default 41 Entourage parties">Reset Custom</button>
+          <button type="button" onclick="resetCustomMasterGuests()" class="text-[11px] text-sage-600 hover:text-red-700 underline self-end sm:self-auto px-1" title="Reset to default 44 Entourage parties">Reset Custom</button>
         </div>
 
         <!-- Pending Invites Table (Stacked Mobile Cards on Phones, Table on Desktop) -->
@@ -1114,13 +1114,13 @@ const DEFAULT_ENTOURAGE_MASTER = [
   { name: 'Mr. Alex Y. Ranoco & Mrs. Zotica U. Ranoco', seats: 2, role: 'Principal Sponsors' },
   { name: 'Mr. German T. Palapar & Mrs. Emilia J. Palapar', seats: 2, role: 'Principal Sponsors' },
   { name: 'Mr. Avito S. Andoy & Mrs. Cleopatra P. Andoy', seats: 2, role: 'Principal Sponsors' },
-  { name: 'Mr. Manuel G. Jayectin & Mrs. Julieta P. Hilot', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Hon. Manuel G. Jayectin & Mrs. Julieta P. Hilot', seats: 2, role: 'Principal Sponsors' },
   { name: 'Mr. Wilfredo L. Miano & Dr. Zenaida L. Miano', seats: 2, role: 'Principal Sponsors' },
   { name: 'Hon. Galicano E. Atup & Mrs. Ma. Delilah C. Atup', seats: 2, role: 'Principal Sponsors' },
   { name: 'Engr. Fredegelbert A. Flor & Dr. Wilfreda O. Flor', seats: 2, role: 'Principal Sponsors' },
   { name: 'Engr. Eutiqio A. Bernales Jr. & Mrs. Mafay D. Bernales', seats: 2, role: 'Principal Sponsors' },
   { name: 'Mr. Sary I. Lim & Mrs. Rosario F. Lim', seats: 2, role: 'Principal Sponsors' },
-  { name: 'Mr. Ponce M. Mandabon & Mrs. Diema A. Mandabon', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Rolando T. Ojendras & Mrs. Merlyn G. Ojendras', seats: 2, role: 'Principal Sponsors' },
   { name: 'Dr. Edilberto B. Avenido & Mrs. Ma. Lolette L. Avenido', seats: 2, role: 'Principal Sponsors' },
   { name: 'Dr. Jupiter I. Maboloc & Dr. Ma. Maya V. Tumalon', seats: 2, role: 'Principal Sponsors' },
   { name: 'Mr. Yehudi L. Santillan & Mrs. Zenaida A. Boyonas', seats: 2, role: 'Principal Sponsors' },
@@ -1128,27 +1128,30 @@ const DEFAULT_ENTOURAGE_MASTER = [
   { name: 'Atty. Teodoro M. Lagang & Mrs. Cherry Belle G. Lagang', seats: 2, role: 'Principal Sponsors' },
   { name: 'Atty. Generoso G. Esmero & Dr. Arceli M. Hernando', seats: 2, role: 'Principal Sponsors' },
   { name: 'Mr. Antonio L. Boyles & Dr. Zenaida L. Boyles', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mr. Ray Hope P. Puracan & Mrs. Yolanda U. Autentico', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Atty. Elijah L. Sales & Atty. Alona A. Cristal', seats: 2, role: 'Principal Sponsors' },
+  { name: 'Mayor Norman D. Palacio & Mrs. Mylyn B. Palacio', seats: 2, role: 'Principal Sponsors' },
   { name: 'Mr. Gener Kevin A. Boiser', seats: 1, role: 'Honor Attendants' },
   { name: 'Ms. Rheian Louisse P. Gases', seats: 1, role: 'Honor Attendants' },
   { name: 'Atty. Carm Albert A. Boiser & Mrs. June Faith Marie T. Boiser', seats: 2, role: 'Honor Attendants' },
   { name: 'Mr. Ryan M. Gases & Ms. Loida Mirasol Melone M. Palapar', seats: 2, role: 'Honor Attendants' },
   { name: 'Mr. Neil Louie M. Palapar & Mrs. Remedios Z. Palapar', seats: 2, role: 'Honor Attendants' },
   { name: 'Mr. Philip Louis M. Palapar & Mrs. Geneva G. Palapar', seats: 2, role: 'Honor Attendants' },
-  { name: 'Mr. Ramcel Baquial & Mrs. Doreen Yvonne P. Baquial', seats: 2, role: 'Honor Attendants' },
-  { name: 'Mr. Jerome Palapar & Ms. Rosemarie J. Palapar', seats: 2, role: 'Honor Attendants' },
+  { name: 'Mr. Ramcel B. Baquial & Mrs. Doreen Yvonne P. Baquial', seats: 2, role: 'Honor Attendants' },
+  { name: 'Mr. Jerome B. Palapar & Mrs. Rosemarie P. Legaspi', seats: 2, role: 'Honor Attendants' },
   { name: 'Mr. Sherwin C. Achas & Mrs. Maria Ezra T. Achas', seats: 2, role: 'Secondary Sponsors' },
   { name: 'Mr. Niño G. Lagumbay & Mrs. Bernarda T. Lagumbay', seats: 2, role: 'Secondary Sponsors' },
   { name: 'Atty. Jansyl Lovan P. Tumanda & Mrs. Merry Yvonne L. Tumanda', seats: 2, role: 'Secondary Sponsors' },
   { name: 'Mr. Francis Albert B. Jubac & Mrs. Lourdes L. Jubac', seats: 2, role: 'Secondary Sponsors' },
   { name: 'Mr. John Loyd U. Ranoco', seats: 1, role: 'Bridal Party' },
   { name: 'Ms. Krizia Lou Z. Palapar', seats: 1, role: 'Bridal Party' },
-  { name: 'Laurence Gabriel G. Palapar', seats: 1, role: 'Bridal Party' },
-  { name: 'Niño Shawn B. Bernales', seats: 1, role: 'Bridal Party' },
   { name: 'Johann Carmelo T. Boiser', seats: 1, role: 'Bridal Party' },
+  { name: 'Niño Shawn B. Bernales', seats: 1, role: 'Bridal Party' },
+  { name: 'Laurence Gabriel G. Palapar', seats: 1, role: 'Bridal Party' },
   { name: 'Yvaine Lousyl P. Baquial', seats: 1, role: 'Bridal Party' },
   { name: 'Alenna Ymari P. Baquial', seats: 1, role: 'Bridal Party' },
   { name: 'Jaiyana Caith T. Boiser', seats: 1, role: 'Bridal Party' },
-  { name: 'Chrissa Xhaine Berenguer', seats: 1, role: 'Bridal Party' },
+  { name: 'Chrissa Xhaine H. Berenguer', seats: 1, role: 'Bridal Party' },
   { name: 'Mariah Ysabelle P. Cheung', seats: 1, role: 'Bridal Party' }
 ];
 const CUSTOM_MASTER_STORAGE_KEY = 'mm_wedding_custom_master_guests_v1';
@@ -1321,7 +1324,7 @@ function toggleEntourage(forceExpand) {
         b = document.getElementById('entourageToggleBtn');
   const hide = forceExpand !== undefined ? !forceExpand : !c.classList.contains('hidden');
   c.classList.toggle('hidden', hide);
-  t.textContent = hide ? 'View All 17 Sponsor Pairs' : 'Show Compact List';
+  t.textContent = hide ? 'View All 20 Sponsor Pairs' : 'Show Compact List';
   i.classList.toggle('rotate-180', !hide);
   b.setAttribute('aria-expanded', String(!hide));
 }
